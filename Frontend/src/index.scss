@@ -5,11 +5,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: $global-background-color;
-  font-family: $custom-font-family;
+  font-family: $page-font-family;
   color: $white-text-color;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+// code {
+  // font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  //   monospace;
+// }
