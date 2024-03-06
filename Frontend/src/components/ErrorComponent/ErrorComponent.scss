@@ -15,18 +15,18 @@
        margin:5px 150px;
        margin-bottom: 15px;
     }
-    &__button-home{
+    &__button{
         background-color: $login-button-color;
         border: none;
         padding: 15px;
         border-radius: 40%;
         margin-left: 250px;
         cursor: pointer;
-        &__link-home{
-           color: $pink-text-color;
-           font-size: 40px;
-           font-weight: bold;
-        }
+    }
+    &__button-link{
+        color: $pink-text-color;
+        font-size: 40px;
+        font-weight: bold;
     }
     &__img-404{
         position: absolute;

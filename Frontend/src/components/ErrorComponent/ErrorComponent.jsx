@@ -1,16 +1,16 @@
-import "./Error.scss";
+import "./ErrorComponent.scss";
 import imgError from "../../assets/images/Technics.png";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../utils/routes";
 
-export default function Error() {
+export default function ErrorComponent() {
     return (
         <div className="error-page">
             <h1 className="error-page__title">OOps!</h1>
             <p className="error-page__subtitle">Sorry,this page doesn't exist.</p>    
             
-            <button className="error-page__button-home">
-                <Link className="error-page__button-home__link-home" to={ROUTES.HOME}>
+            <button className="error-page__button">
+                <Link className="error-page__button-link" to={ROUTES.HOME}>
                     Back to Home
                 </Link>
             </button>
