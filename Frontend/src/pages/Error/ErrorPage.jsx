@@ -1,8 +1,6 @@
 import React from "react";
-import Error from "../../components/ErrorComponent/ErrorComponent";
+import Error from "../../components/Error/Error";
 
-const ErrorPage = () => (
-    <Error />
-);
+const ErrorPage = () => <Error />;
 
 export default ErrorPage;

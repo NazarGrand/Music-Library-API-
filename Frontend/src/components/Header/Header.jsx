@@ -1,0 +1,34 @@
+import React, { useState } from "react";
+import "./Header.scss";
+import iconSearch from "../../assets/images/Search.png";
+import Nav from "../Nav/Nav";
+import Button from "../ui/Button/Button";
+
+const Header = () => {
+  const [inputValue, setInputValue] = useState("");
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+  return (
+    <div className="header">
+      <div className="header__search">
+        <img className="header__search-icon" src={iconSearch} alt="search" />
+        <input
+          className="header__search-input"
+          value={inputValue}
+          onChange={handleInputChange}
+          type="text"
+          placeholder="Search For Musics, Artists, Albumes ..."
+        />
+      </div>
+      <Nav />
+      <div className="header__buttons">
+        <Button nameButton="Login"></Button>
+        <Button nameButton="Sign Up"></Button>
+      </div>
+    </div>
+  );
+};
+
+export default Header;
