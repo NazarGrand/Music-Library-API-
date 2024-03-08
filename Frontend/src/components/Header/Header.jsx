@@ -22,10 +22,12 @@ const Header = () => {
           placeholder="Search For Musics, Artists, Albumes ..."
         />
       </div>
+
       <Nav />
+
       <div className="header__buttons">
-        <Button nameButton="Login"></Button>
-        <Button nameButton="Sign Up"></Button>
+        <Button type="login" buttonTitle="Login"></Button>
+        <Button type="sign-up" buttonTitle="Sign Up"></Button>
       </div>
     </div>
   );

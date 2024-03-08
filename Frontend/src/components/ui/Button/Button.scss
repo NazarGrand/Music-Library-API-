@@ -7,13 +7,12 @@
   margin-left: 20px;
   font-weight: 600;
   font-size: 20px;
-  line-height: 31px;
-  &-login {
+  &--login {
     background-color: $login-button-color;
     color: $pink-text-color;
     border: none;
   }
-  &-sign-up {
+  &--sign-up {
     background-color: #f20dae;
     color: #1e1e1e;
     mix-blend-mode: hard-light;

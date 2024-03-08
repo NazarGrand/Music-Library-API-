@@ -1,8 +1,12 @@
+import Header from "./components/Header/Header";
 import AppRoutes from "./routes/AppRoutes";
 
 function App() {
-  return(
-    <AppRoutes />
+  return (
+    <div>
+      <Header />
+      <AppRoutes />
+    </div>
   );
 }
 
