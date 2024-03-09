@@ -1,0 +1,74 @@
+@import "../../styles/variables.scss";
+@import "../ui/Button/ButtonMixin.scss";
+
+.sidebar {
+  width: 272px;
+  height: 100%;
+  background-color: #0f1a20;
+  &__logo {
+    display: block;
+    padding-left: 27px;
+    padding-top: 50px;
+    margin: 0;
+    font-weight: 800;
+    font-size: 40px;
+    background: linear-gradient(90.07deg, #ee10b0 -4.82%, #0e9eefeb 127.01%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    user-select: none;
+  }
+  &_menu {
+    padding-left: 27px;
+    padding-top: 15px;
+    margin: 0;
+    font-weight: 400;
+    font-size: 20px;
+    color: $pink-text-color;
+    opacity: 0.6;
+  }
+  &__list {
+    padding-left: 27px;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  &__item {
+    &-icon {
+      display: block;
+      width: 25px;
+      height: 25px;
+    }
+    &-title {
+      padding-top: 5px;
+    }
+    &-link {
+      display: flex;
+      gap: 10px;
+      width: 200px;
+      height: 40px;
+      text-decoration: none;
+      color: $white-text-color;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 0;
+      justify-content: flex-start;
+      align-items: center;
+      &:hover {
+        text-decoration: underline;
+      }
+
+      &:active {
+        color: $pink-text-color;
+      }
+
+      &--active-link {
+        @include pink-button;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 .header {
   display: flex;
-  padding-left: 16px;
+  padding-left: 30px;
   padding-top: 62px;
   &__buttons {
     display: flex;
@@ -25,13 +25,13 @@
   &-input {
     width: 100%;
     padding-left: 35px;
-    padding-top: 9px;
+    padding-top: 5px;
     align-self: flex-start;
     color: #ffffff;
     background-color: #656565;
     border: none;
     width: 296px;
-    height: 23px;
+    height: 38px;
     font-weight: 500;
     font-size: 16px;
     opacity: 0.6;
