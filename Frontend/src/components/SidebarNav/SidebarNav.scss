@@ -1,0 +1,59 @@
+@import "../../styles/variables.scss";
+@import "../ui/Button/ButtonMixin.scss";
+
+.sidebar {
+  width: 272px;
+  height: 100%;
+  background-color: #0f1a20;
+  &__menu {
+    padding-left: 27px;
+    padding-top: 15px;
+    margin: 0;
+    font-weight: 400;
+    font-size: 20px;
+    color: $pink-text-color;
+    opacity: 0.6;
+  }
+  &__list {
+    padding-left: 27px;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  &__item {
+    &-icon {
+      display: block;
+      width: 25px;
+      height: 25px;
+    }
+    &-title {
+      padding-top: 5px;
+      &--pink {
+        color: $pink-text-color;
+      }
+    }
+    &-link {
+      display: flex;
+      gap: 10px;
+      width: 200px;
+      height: 40px;
+      text-decoration: none;
+      color: $white-text-color;
+      font-weight: 600;
+      font-size: 20px;
+      justify-content: flex-start;
+      align-items: center;
+      &:hover {
+        text-decoration: underline;
+      }
+
+      &--active-link {
+        @include pink-button;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
