@@ -2,7 +2,7 @@ import React from "react";
 import "./Sidebar.scss";
 import { Link } from "react-router-dom";
 import SidebarNav from "../SidebarNav/SidebarNav";
-import * as infoSidebar from "./InformationSidebar";
+import * as infoSidebar from "../../data/InformationSidebar";
 
 const Sidebar = () => {
   return (

@@ -4,4 +4,13 @@
 
 .app {
   display: flex;
+  min-height: 100%;
+  &__page {
+    @extend .app;
+    flex-direction: column;
+    width: 100%;
+  }
+  &__info {
+    flex: 1 1 auto;
+  }
 }

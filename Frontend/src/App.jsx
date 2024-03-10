@@ -2,6 +2,7 @@ import Header from "./components/Header/Header";
 import Sidebar from "./components/Sidebar/Sidebar";
 import AppRoutes from "./routes/AppRoutes";
 import "./App.scss";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   return (
@@ -9,7 +10,10 @@ function App() {
       <Sidebar />
       <div className="app__page">
         <Header />
-        <AppRoutes />
+        <div className="app__info">
+          <AppRoutes />
+        </div>
+        <Footer />
       </div>
     </div>
   );

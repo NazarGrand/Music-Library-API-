@@ -1,15 +1,15 @@
-import { ROUTES } from "../../utils/routes";
+import { ROUTES } from "../utils/routes";
 
-import iconHome from "../../assets/images/Home.svg";
-import iconDiscover from "../../assets/images/Discover.svg";
-import iconArtists from "../../assets/images/Artists.svg";
-import iconRecentlyAdded from "../../assets/images/RecentlyAdded.svg";
-import iconMostPlayed from "../../assets/images/MostPlayed.svg";
-import iconYourFavorites from "../../assets/images/YourFavorites.svg";
-import iconYourPlaylist from "../../assets/images/YourPlaylist.svg";
-import iconAddPlayList from "../../assets/images/AddPlayList.svg";
-import iconSetting from "../../assets/images/Setting.svg";
-import iconLogout from "../../assets/images/Logout.svg";
+import iconHome from "../assets/images/Home.svg";
+import iconDiscover from "../assets/images/Discover.svg";
+import iconArtists from "../assets/images/Artists.svg";
+import iconRecentlyAdded from "../assets/images/RecentlyAdded.svg";
+import iconMostPlayed from "../assets/images/MostPlayed.svg";
+import iconYourFavorites from "../assets/images/YourFavorites.svg";
+import iconYourPlaylist from "../assets/images/YourPlaylist.svg";
+import iconAddPlayList from "../assets/images/AddPlayList.svg";
+import iconSetting from "../assets/images/Setting.svg";
+import iconLogout from "../assets/images/Logout.svg";
 
 export const MenuItems = [
   {

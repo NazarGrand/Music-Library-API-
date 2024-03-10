@@ -14,6 +14,7 @@ const Header = () => {
     <div className="header">
       <div className="header__search">
         <img className="header__search-icon" src={iconSearch} alt="search" />
+
         <input
           className="header__search-input"
           value={inputValue}
