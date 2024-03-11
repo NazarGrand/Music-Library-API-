@@ -41,7 +41,7 @@ const Footer = () => {
         </Link>
 
         <div className="footer__icons-network">
-          <Link to="https://www.facebook.com/applemusic">
+          <Link to="https://www.facebook.com/applemusic" target="_blank">
             <img src={imgFacebook} alt="facebook" />
           </Link>
 
@@ -49,7 +49,7 @@ const Footer = () => {
             <img src={imgInstagram} alt="instagram" />
           </Link>
 
-          <Link to="https://twitter.com/AppleMusic">
+          <Link to="https://twitter.com/AppleMusic" target="_blank">
             <img src={imgTwitter} alt="twitter" />
           </Link>
 
