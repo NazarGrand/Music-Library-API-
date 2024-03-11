@@ -10,7 +10,7 @@ import imgPhone from "../../assets/images/Phone.svg";
 
 const Footer = () => {
   return (
-    <div className="footer">
+    <footer className="footer">
       <div className="footer__about">
         <p className="footer__title">About</p>
 
@@ -53,12 +53,12 @@ const Footer = () => {
             <img src={imgTwitter} alt="twitter" />
           </Link>
 
-          <Link to="phone">
+          <a href="tel:+380698541234">
             <img src={imgPhone} alt="phone" />
-          </Link>
+          </a>
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 

@@ -11,7 +11,7 @@ const Header = () => {
     setInputValue(e.target.value);
   };
   return (
-    <div className="header">
+    <header className="header">
       <div className="header__search">
         <img className="header__search-icon" src={iconSearch} alt="search" />
 
@@ -30,7 +30,7 @@ const Header = () => {
         <Button type="login" buttonTitle="Login"></Button>
         <Button type="sign-up" buttonTitle="Sign Up"></Button>
       </div>
-    </div>
+    </header>
   );
 };
 
