@@ -5,32 +5,28 @@ import "./SidebarNav.scss";
 
 const SidebarNav = ({ menuTitle, menuItems }) => {
   const handleIsActive = ({ isActive }) =>
-    classnames("sidebar__item-link", {
-      "sidebar__item-link--active-link": isActive,
+    classnames("sidebar-nav__item-link", {
+      "sidebar-nav__item-link--active-link": isActive,
     });
 
   return (
-    <div className="sidebar">
-      <p className="sidebar__menu">{menuTitle}</p>
+    <div className="sidebar-nav">
+      <p className="sidebar-nav__menu">{menuTitle}</p>
 
-      <nav className="sidebar__nav">
-        <ul className="sidebar__list">
+      <nav className="sidebar-nav__nav">
+        <ul className="sidebar-nav__list">
           {menuItems.map((item, index) => (
-            <li key={index} className="sidebar__item">
+            <li key={index} className="sidebar-nav__item">
               <NavLink className={handleIsActive} to={item.link}>
-                <img
-                  className="sidebar__item-icon"
-                  src={item.icon}
-                  alt="home"
-                />
+                <div className="sidebar-nav__item-block">
+                  <img
+                    className="sidebar-nav__item-icon"
+                    src={item.icon}
+                    alt="home"
+                  />
 
-                <p
-                  className={`sidebar__item-title ${
-                    item.title === "Logout" ? "sidebar__item-title--pink" : ""
-                  }`}
-                >
-                  {item.title}
-                </p>
+                  <p className="sidebar-nav__item-title">{item.title}</p>
+                </div>
               </NavLink>
             </li>
           ))}
