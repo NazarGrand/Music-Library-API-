@@ -1,0 +1,33 @@
+@import "../../styles/variables.scss";
+
+.music-card {
+  width: 180px;
+  height: 220px;
+  padding-left: 15px;
+  background-color: $login-button-color;
+  border-radius: 10px;
+  &__image {
+    width: 150px;
+    height: 150px;
+    margin-top: 12px;
+  }
+  &__title-song {
+    margin: 0;
+    font-weight: 500;
+    font-size: 16px;
+  }
+  &__title-author {
+    margin: 0;
+    font-weight: 300;
+    font-size: 12px;
+    opacity: 0.8;
+  }
+  &__block {
+    display: flex;
+  }
+  &__notes {
+    height: 17px;
+    margin-left: auto;
+    margin-right: 15px;
+  }
+}
