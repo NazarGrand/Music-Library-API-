@@ -7,7 +7,7 @@ const HomePage = () => {
     <>
       <h1>Home Page</h1>
 
-      <MusicCardsList title="Weekly Top" cardItems={music.MusicItems} />
+      <MusicCardsList title="Weekly Top" cardItems={music.MusicItems ?? []} />
     </>
   );
 };

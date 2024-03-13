@@ -1,4 +1,4 @@
-import img from "../assets/images/ImagineDragons.svg";
+import img from "../assets/images/ImagineDragons.png";
 import imgLoad from "../assets/images/MelodiesLoading.svg";
 
 export const MusicItems = [

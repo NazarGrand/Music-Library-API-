@@ -8,10 +8,9 @@ const MusicCardsList = ({ title, cardItems }) => {
       <p className="music-catalog__title">
         {title} <span className="music-catalog__title--pink">Songs</span>
       </p>
-
-      <ul className="music-catalog__list">
-        {cardItems &&
-          cardItems.map((item, index) => (
+      {cardItems.length !== 0 ? (
+        <ul className="music-catalog__list">
+          {cardItems.map((item, index) => (
             <li key={index}>
               <MusicCard
                 image={item.image}
@@ -20,14 +19,15 @@ const MusicCardsList = ({ title, cardItems }) => {
               />
             </li>
           ))}
-        <li className="music-catalog__view-all">
-          <div className="music-catalog__button">+</div>
+          <li className="music-catalog__view-all">
+            <div className="music-catalog__button">+</div>
 
-          <p className="music-catalog__btn-text">View All</p>
-        </li>
-      </ul>
-
-      {/* <div className="music-catalog__view-all"></div> */}
+            <p className="music-catalog__btn-text">View All</p>
+          </li>
+        </ul>
+      ) : (
+        <p className="music-catalog__subtitle">No music found</p>
+      )}
     </div>
   );
 };
