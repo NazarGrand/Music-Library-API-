@@ -21,5 +21,5 @@ const Loader = () => {
     </div>
   );
 };
-
+debugger;
 export default Loader;

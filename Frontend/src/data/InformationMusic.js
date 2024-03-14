@@ -10,7 +10,7 @@ export const MusicItems = [
   {
     image: img,
     titleSong: "Whatever It Takes",
-    titleAuthor: "Imagine Dragons",
+    titleAuthor: "Imagine Dragons, Justin Bieber, Don Huk",
   },
   {
     image: imgLoad,
