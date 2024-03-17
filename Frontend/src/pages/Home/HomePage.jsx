@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import MusicCardsList from "../../components/MusicCardsList/MusicCardsList";
 import Loader from "../../components/Loader/Loader";
 import * as musicService from "../../services/MusicService";
+// import { MusicItems } from "../../data/InformationMusic";
 
 const HomePage = () => {
   const [topSongs, setTopSongs] = useState([]);

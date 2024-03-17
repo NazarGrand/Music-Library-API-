@@ -9,20 +9,8 @@ const options = {
   },
 };
 
-// export const getWeekTopChart = () => {
-//   try {
-//     return axios.request(options).then((response) => response.data);
-//   } catch (error) {
-//     console.error("Error getting data:", error);
-//   }
-// };
-
 export const getWeekTopChart = async () => {
-  try {
-    const responce = await axios.request(options);
-    console.log(responce.data);
-    return responce.data;
-  } catch (error) {
-    console.error("Error getting data:", error);
-  }
+  const responce = await axios.request(options);
+  console.log(responce.data);
+  return responce.data;
 };

@@ -7,33 +7,54 @@
   padding-right: 15px;
   background-color: $login-button-color;
   border-radius: 10px;
+
+  &__button {
+    background-color: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+    color: $white-text-color;
+    text-align: start;
+  }
+
   &__image {
     width: 150px;
     height: 150px;
     margin-top: 12px;
   }
+
   &__title-song {
     margin: 0;
-    width: 140px;
+    padding-top: 5px;
+    width: 150px;
     font-weight: 500;
     font-size: 16px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  &__title-author {
-    margin-top: 1px;
-    width: 125px;
+
+  &__link-author {
+    text-decoration: none;
+    color: $white-text-color;
     font-weight: 300;
     font-size: 12px;
+  }
+
+  &__title-author {
+    margin-top: 3px;
+    width: 125px;
+
     opacity: 0.8;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
   &__block {
     display: flex;
   }
+
   &__notes {
     height: 17px;
     margin-left: auto;
