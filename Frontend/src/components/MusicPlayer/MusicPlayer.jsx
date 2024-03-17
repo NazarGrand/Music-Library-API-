@@ -21,7 +21,7 @@ const MusicPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMoving, setIsMoving] = useState(false);
 
-  const [isRepeat, setIsRepeat] = useState(false);
+  const [isInfinite, setIsInfinite] = useState(false);
 
   const [volume, setVolume] = useState(10);
   const [isVolume, setIsVolume] = useState(true);
@@ -99,7 +99,7 @@ const MusicPlayer = () => {
     }
   };
 
-  const iconRepeat = !isRepeat ? imgRepeat : imgRepeatOnce;
+  const iconRepeat = !isInfinite ? imgRepeat : imgRepeatOnce;
 
   const imgVolume = isVolume ? imgVolumeOn : imgVolumeOff;
 
@@ -221,7 +221,7 @@ const MusicPlayer = () => {
 
       <button
         className="player__button-repeat"
-        onClick={() => setIsRepeat(!isRepeat)}
+        onClick={() => setIsInfinite(!isInfinite)}
       >
         <img className="player__img-icon" src={iconRepeat} alt="repeat" />
       </button>

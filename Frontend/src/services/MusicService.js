@@ -11,6 +11,5 @@ const options = {
 
 export const getWeekTopChart = async () => {
   const responce = await axios.request(options);
-  console.log(responce.data);
   return responce.data;
 };
