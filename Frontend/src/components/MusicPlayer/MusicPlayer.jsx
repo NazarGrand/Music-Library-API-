@@ -27,7 +27,7 @@ const MusicPlayer = () => {
 
   const [isInfinite, setIsInfinite] = useState(false);
 
-  const [volume, setVolume] = useState(10);
+  const [volume, setVolume] = useState(70);
   const [prevVolume, setPrevVolume] = useState(50);
   const [isVolume, setIsVolume] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
