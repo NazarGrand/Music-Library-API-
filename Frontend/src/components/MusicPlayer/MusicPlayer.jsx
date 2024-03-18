@@ -23,8 +23,6 @@ const MusicPlayer = () => {
 
   const [isEndingSong, setIsEndingSong] = useState(false);
 
-  const [isMouseUpTriggered, setIsMouseUpTriggered] = useState(true);
-
   const [isInfinite, setIsInfinite] = useState(false);
 
   const [volume, setVolume] = useState(70);
@@ -96,20 +94,16 @@ const MusicPlayer = () => {
   const mouseDownTrack = (e) => {
     document.addEventListener("mousemove", mouseMoveTrack);
     document.addEventListener("mouseup", mouseUpTrack);
-    setIsMouseUpTriggered(false);
+    handleDragStart();
   };
 
   const mouseUpTrack = (e) => {
     document.removeEventListener("mousemove", mouseMoveTrack);
     document.removeEventListener("mouseup", mouseUpTrack);
 
-    setIsMouseUpTriggered((prevIsMouseUpTriggered) => {
-      const newIsMouseUpTriggered = !prevIsMouseUpTriggered;
-      if (newIsMouseUpTriggered) {
-        clickAudio(e);
-      }
-      return newIsMouseUpTriggered;
-    });
+    clickAudio(e);
+
+    handleDragEnd();
   };
 
   const clickAudio = (e) => {
@@ -188,11 +182,13 @@ const MusicPlayer = () => {
     document.addEventListener("mousemove", mouseMoveVolume);
     document.addEventListener("mouseup", mouseUpVolume);
     clickVolumeTrack(e);
+    handleDragStart();
   };
 
   const mouseUpVolume = () => {
     document.removeEventListener("mousemove", mouseMoveVolume);
     document.removeEventListener("mouseup", mouseUpVolume);
+    handleDragEnd();
   };
 
   const mouseMoveVolume = (e) => {
@@ -200,6 +196,14 @@ const MusicPlayer = () => {
     if (e.buttons === 1) {
       clickVolumeTrack(e);
     }
+  };
+
+  const handleDragStart = () => {
+    document.body.style.userSelect = "none";
+  };
+
+  const handleDragEnd = () => {
+    document.body.style.userSelect = "initial";
   };
 
   return (
