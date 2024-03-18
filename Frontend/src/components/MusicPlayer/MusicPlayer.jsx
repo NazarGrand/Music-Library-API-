@@ -25,7 +25,7 @@ const MusicPlayer = () => {
 
   const [isInfinite, setIsInfinite] = useState(false);
 
-  const [volume, setVolume] = useState(70);
+  const [volume, setVolume] = useState(50);
   const [prevVolume, setPrevVolume] = useState(50);
   const [isVolume, setIsVolume] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
@@ -91,10 +91,18 @@ const MusicPlayer = () => {
     }
   };
 
+  const DisableUserSelect = () => {
+    document.body.style.userSelect = "none";
+  };
+
+  const EnableUserSelect = () => {
+    document.body.style.userSelect = "initial";
+  };
+
   const mouseDownTrack = (e) => {
     document.addEventListener("mousemove", mouseMoveTrack);
     document.addEventListener("mouseup", mouseUpTrack);
-    handleDragStart();
+    DisableUserSelect();
   };
 
   const mouseUpTrack = (e) => {
@@ -103,7 +111,7 @@ const MusicPlayer = () => {
 
     clickAudio(e);
 
-    handleDragEnd();
+    EnableUserSelect();
   };
 
   const clickAudio = (e) => {
@@ -144,11 +152,9 @@ const MusicPlayer = () => {
   const handleClickVolume = () => {
     setIsVolume((prevIsVolume) => {
       const newIsVolume = !prevIsVolume;
-      if (!newIsVolume) {
-        if (volume !== 0) {
-          setPrevVolume(volume);
-          setVolume(0);
-        }
+      if (!newIsVolume && volume !== 0) {
+        setPrevVolume(volume);
+        setVolume(0);
       } else {
         setVolume(prevVolume);
       }
@@ -182,13 +188,13 @@ const MusicPlayer = () => {
     document.addEventListener("mousemove", mouseMoveVolume);
     document.addEventListener("mouseup", mouseUpVolume);
     clickVolumeTrack(e);
-    handleDragStart();
+    DisableUserSelect();
   };
 
   const mouseUpVolume = () => {
     document.removeEventListener("mousemove", mouseMoveVolume);
     document.removeEventListener("mouseup", mouseUpVolume);
-    handleDragEnd();
+    EnableUserSelect();
   };
 
   const mouseMoveVolume = (e) => {
@@ -196,14 +202,6 @@ const MusicPlayer = () => {
     if (e.buttons === 1) {
       clickVolumeTrack(e);
     }
-  };
-
-  const handleDragStart = () => {
-    document.body.style.userSelect = "none";
-  };
-
-  const handleDragEnd = () => {
-    document.body.style.userSelect = "initial";
   };
 
   return (
