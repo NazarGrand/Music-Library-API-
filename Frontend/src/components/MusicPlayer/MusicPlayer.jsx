@@ -21,9 +21,12 @@ const MusicPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMoving, setIsMoving] = useState(false);
 
+  const [isEndingSong, setIsEndingSong] = useState(false);
+
   const [isInfinite, setIsInfinite] = useState(false);
 
-  const [volume, setVolume] = useState(10);
+  const [volume, setVolume] = useState(50);
+  const [prevVolume, setPrevVolume] = useState(50);
   const [isVolume, setIsVolume] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -53,7 +56,18 @@ const MusicPlayer = () => {
   }, [volume, isVolume]);
 
   const PlayPause = () => {
-    setIsPlaying(!isPlaying);
+    setIsPlaying((prevIsPlaying) => {
+      const newIsPlaying = !prevIsPlaying;
+      if (!newIsPlaying && isEndingSong) {
+        setIsEndingSong(false);
+        setCurrentSong({
+          ...currentSong,
+          progress: 0,
+        });
+        audioElem.current.currentTime = 0;
+      }
+      return newIsPlaying;
+    });
   };
 
   const onPlaying = () => {
@@ -70,31 +84,63 @@ const MusicPlayer = () => {
         length: duration,
       });
     }
+
+    if (currentTime === duration) {
+      setIsPlaying(false);
+      setIsEndingSong(true);
+    }
+  };
+
+  const DisableUserSelect = () => {
+    document.body.style.userSelect = "none";
+  };
+
+  const EnableUserSelect = () => {
+    document.body.style.userSelect = "initial";
+  };
+
+  const mouseDownTrack = (e) => {
+    document.addEventListener("mousemove", mouseMoveTrack);
+    document.addEventListener("mouseup", mouseUpTrack);
+    DisableUserSelect();
+  };
+
+  const mouseUpTrack = (e) => {
+    document.removeEventListener("mousemove", mouseMoveTrack);
+    document.removeEventListener("mouseup", mouseUpTrack);
+
+    clickAudio(e);
+
+    EnableUserSelect();
   };
 
   const clickAudio = (e) => {
-    const width = clickMusicTrack.current.clientWidth;
-    const offset = e.nativeEvent.offsetX;
+    setIsMoving(false);
+    const rect = clickMusicTrack.current.getBoundingClientRect();
+    const offsetX = e.pageX - rect.left;
+    const width = rect.width;
 
-    const divprogress = (offset / width) * 100;
+    const divprogress = (offsetX / width) * 100;
+    const prog = divprogress > 100 ? 100 : divprogress < 0 ? 0 : divprogress;
     setCurrentSong({
       ...currentSong,
-      progress: divprogress,
+      progress: prog,
     });
-    audioElem.current.currentTime = (divprogress / 100) * currentSong.length;
-    setIsMoving(false);
+    audioElem.current.currentTime = (prog / 100) * currentSong.length;
   };
 
-  const mouseMoveAudio = (e) => {
+  const mouseMoveTrack = (e) => {
     if (e.buttons === 1) {
       setIsMoving(true);
-      const width = clickMusicTrack.current.clientWidth;
-      const offset = e.nativeEvent.offsetX;
+      const rect = clickMusicTrack.current.getBoundingClientRect();
+      const offsetX = e.pageX - rect.left;
+      const width = rect.width;
 
-      const divprogress = (offset / width) * 100;
+      const divprogress = (offsetX / width) * 100;
+      const prog = divprogress > 100 ? 100 : divprogress < 0 ? 0 : divprogress;
       setCurrentSong({
         ...currentSong,
-        progress: divprogress,
+        progress: prog,
       });
     }
   };
@@ -103,14 +149,56 @@ const MusicPlayer = () => {
 
   const imgVolume = isVolume ? imgVolumeOn : imgVolumeOff;
 
+  const handleClickVolume = () => {
+    setIsVolume((prevIsVolume) => {
+      const newIsVolume = !prevIsVolume;
+      if (!newIsVolume && volume !== 0) {
+        setPrevVolume(volume);
+        setVolume(0);
+      } else {
+        setVolume(prevVolume);
+      }
+      return newIsVolume;
+    });
+  };
+
   const clickVolumeTrack = (e) => {
-    const width = clickVolume.current.clientWidth;
-    const offset = e.nativeEvent.offsetX;
-    const progress = (offset / width) * 100;
-    setVolume(progress > 100 ? 100 : progress < 0 ? 0 : progress);
+    const rect = clickVolume.current.getBoundingClientRect();
+    const offsetX = e.pageX - rect.left;
+    const width = rect.width;
+    let progress = (offsetX / width) * 100;
+
+    if (progress < 0) {
+      progress = 0;
+    } else if (progress > 100) {
+      progress = 100;
+    }
+    const newVolume = progress > 100 ? 100 : progress < 0 ? 0 : progress;
+
+    if (newVolume === 0) {
+      setIsVolume(false);
+    } else {
+      setIsVolume(true);
+    }
+
+    setVolume(newVolume);
+  };
+
+  const mouseDownVolume = (e) => {
+    document.addEventListener("mousemove", mouseMoveVolume);
+    document.addEventListener("mouseup", mouseUpVolume);
+    clickVolumeTrack(e);
+    DisableUserSelect();
+  };
+
+  const mouseUpVolume = () => {
+    document.removeEventListener("mousemove", mouseMoveVolume);
+    document.removeEventListener("mouseup", mouseUpVolume);
+    EnableUserSelect();
   };
 
   const mouseMoveVolume = (e) => {
+    setIsHovered(true);
     if (e.buttons === 1) {
       clickVolumeTrack(e);
     }
@@ -161,16 +249,18 @@ const MusicPlayer = () => {
         </div>
 
         <div
-          className="player__track"
+          className="player__block-track"
           ref={clickMusicTrack}
-          onClick={clickAudio}
-          onMouseDown={clickAudio}
-          onMouseMove={mouseMoveAudio}
+          onMouseDown={mouseDownTrack}
+          onMouseMove={mouseMoveTrack}
+          onMouseUp={mouseUpTrack}
         >
-          <div
-            className="player__seek-bar"
-            style={{ width: `${currentSong.progress}%` }}
-          ></div>
+          <div className="player__track">
+            <div
+              className="player__seek-bar"
+              style={{ width: `${currentSong.progress}%` }}
+            ></div>
+          </div>
         </div>
 
         <div className="player__current-time">
@@ -186,32 +276,32 @@ const MusicPlayer = () => {
           <div
             className="player__track-volume"
             onMouseEnter={() => {
-              isVolume ? setIsHovered(true) : setIsHovered(false);
+              setIsHovered(true);
             }}
             onMouseLeave={() => setIsHovered(false)}
           >
             <div
-              className="player__track-volume--area"
+              className="player__clickarea-volume"
               ref={clickVolume}
               onClick={clickVolumeTrack}
-              onMouseDown={clickVolumeTrack}
+              onMouseDown={mouseDownVolume}
               onMouseMove={mouseMoveVolume}
+              onMouseUp={mouseUpVolume}
             >
-              <div
-                className="player__change-volume"
-                style={{ width: `${volume}%` }}
-              ></div>
+              <div className="player__track-volume--area">
+                <div
+                  className="player__change-volume"
+                  style={{ width: `${volume}%` }}
+                ></div>
+              </div>
             </div>
           </div>
         )}
         <button
           className="player__button-volume"
-          onClick={() => {
-            setIsVolume(!isVolume);
-            setIsHovered(!isHovered);
-          }}
+          onClick={handleClickVolume}
           onMouseEnter={() => {
-            isVolume ? setIsHovered(true) : setIsHovered(false);
+            setIsHovered(true);
           }}
           onMouseLeave={() => setIsHovered(false)}
         >
