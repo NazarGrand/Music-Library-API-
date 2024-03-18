@@ -7,7 +7,7 @@ import * as musicService from "../../services/MusicService";
 
 const HomePage = () => {
   const [topSongs, setTopSongs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -30,7 +30,7 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    // fetchData();
   }, []);
 
   return (

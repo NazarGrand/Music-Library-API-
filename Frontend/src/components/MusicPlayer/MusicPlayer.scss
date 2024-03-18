@@ -6,6 +6,7 @@
   background-color: transparent;
   border: none;
   margin: 0;
+  cursor: pointer;
 }
 
 .player {
@@ -93,7 +94,8 @@
   }
 
   &__current-time {
-    margin-left: 10px;
+    margin-left: 15px;
+    margin-right: 15px;
     &-title {
       margin: 0;
       font-weight: 500;
@@ -101,13 +103,18 @@
     }
   }
 
+  &__block-track {
+    width: 400px;
+    height: 25px;
+    cursor: pointer;
+  }
+
   &__track {
-    margin-left: 10px;
     width: 400px;
     height: 5px;
     background: #630a4a;
     border-radius: 30px;
-    cursor: pointer;
+    margin-top: 10px;
   }
 
   &__seek-bar {
@@ -125,7 +132,7 @@
       background-color: #ee10b0;
       border-radius: 50%;
       top: 0;
-      right: -10px;
+      right: -5px;
       transform: translateY(-33%);
     }
   }
@@ -141,17 +148,23 @@
     position: relative;
   }
 
+  &__clickarea-volume {
+    width: 150px;
+    height: 30px;
+    margin-left: 20px;
+    margin-top: 22px;
+    padding-top: 10px;
+  }
+
   &__track-volume {
     width: 170px;
-    height: 50px;
+    height: 70px;
 
     position: absolute;
-    top: 26px;
+    top: 16px;
     left: 85px;
 
     &--area {
-      margin-top: 20px;
-      margin-left: 20px;
       width: 150px;
       height: 10px;
       background: #630a4a;
@@ -165,7 +178,6 @@
     background: #ee10b0;
     border-radius: 30px;
     position: relative;
-    cursor: pointer;
 
     &::after {
       content: "";
@@ -175,7 +187,7 @@
       background-color: #ee10b0;
       border-radius: 50%;
       top: 2px;
-      right: -10px;
+      right: -7px;
       transform: translateY(-33%);
     }
   }
