@@ -4,8 +4,12 @@ import AppRoutes from "./routes/AppRoutes";
 import "./App.scss";
 import Footer from "./components/Footer/Footer";
 import MusicPlayer from "./components/MusicPlayer/MusicPlayer";
+import { MusicProvider, useMusicContext } from "./context/MusicProvider";
+import { useEffect, useState } from "react";
 
 function App() {
+  const { currentSong, setCurrentSong } = useMusicContext();
+
   return (
     <>
       <div className="app">
@@ -18,7 +22,7 @@ function App() {
           <Footer />
         </div>
       </div>
-      <MusicPlayer />
+      {currentSong && <MusicPlayer />}
     </>
   );
 }

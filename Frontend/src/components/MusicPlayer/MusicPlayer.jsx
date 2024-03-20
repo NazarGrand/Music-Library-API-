@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./MusicPlayer.scss";
 
-import imgDrag from "../../assets/images/ImagineDragons.png";
+import * as trackService from "../../services/TrackService";
+
+import imgLoading from "../../assets/images/LoadingTrack.svg";
 import imgPrevSong from "../../assets/images/PreviousSong.svg";
 import imgPlay from "../../assets/images/PlayMusic.svg";
 import imgPause from "../../assets/images/Pause.svg";
@@ -10,13 +12,13 @@ import imgRepeat from "../../assets/images/Repeat.svg";
 import imgVolumeOn from "../../assets/images/Volume.svg";
 import imgVolumeOff from "../../assets/images/VolumeOff.svg";
 import imgRepeatOnce from "../../assets/images/Repeat-once.svg";
+import { useMusicContext } from "../../context/MusicProvider";
 
 const MusicPlayer = () => {
-  const song = {
-    url: "https://trustpilot.digitalshopuy.com/spotify-data/downloads/aeoM8-ljVfQ.m4a",
-    title: "10 poverhiv",
-  };
-  const [currentSong, setCurrentSong] = useState(song);
+  const { currentSong, setCurrentSong } = useMusicContext();
+  const { volume, setVolume } = useMusicContext();
+
+  console.log(currentSong);
 
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMoving, setIsMoving] = useState(false);
@@ -25,8 +27,6 @@ const MusicPlayer = () => {
 
   const [isInfinite, setIsInfinite] = useState(false);
 
-  const [volume, setVolume] = useState(50);
-  const [prevVolume, setPrevVolume] = useState(50);
   const [isVolume, setIsVolume] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -34,40 +34,76 @@ const MusicPlayer = () => {
   const clickMusicTrack = useRef();
   const clickVolume = useRef();
 
-  const [currentTime, setCurrentTime] = useState({
-    minutes: 0,
-    seconds: 0,
-  });
+  const [currentTime, setCurrentTime] = useState(null);
+
+  const [durationSong, setDurationSong] = useState(null);
+
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const track = await trackService.getTrackUrl(
+        currentSong.titleSong,
+        currentSong.titleAuthor
+      );
+
+      const trackUrl = track !== null ? track.url : null;
+
+      console.log(trackUrl);
+      setCurrentSong({ ...currentSong, url: trackUrl });
+
+      setCurrentTime(null);
+      setDurationSong(null);
+    } catch (error) {
+      console.error("Error getting data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (isPlaying) {
-      audioElem.current.play();
-    } else {
-      audioElem.current.pause();
-    }
-  }, [isPlaying]);
+    console.log("suka");
+    if (currentSong !== null) fetchData();
+  }, [currentSong?.titleSong, currentSong?.titleAuthor]);
 
   useEffect(() => {
-    if (isVolume) {
-      audioElem.current.volume = volume / 100;
-    } else {
-      audioElem.current.volume = 0;
+    if (!loading) {
+      if (isPlaying) {
+        if (isEndingSong && isInfinite) {
+          setCurrentSong({
+            ...currentSong,
+            progress: 0,
+          });
+          audioElem.current.currentTime = 0;
+        }
+        audioElem.current.play();
+      } else {
+        audioElem.current.pause();
+      }
     }
-  }, [volume, isVolume]);
+  }, [isPlaying, loading, isEndingSong, isInfinite]);
+
+  useEffect(() => {
+    if (!loading) {
+      if (isVolume) {
+        audioElem.current.volume = volume.currentVolume / 100;
+      } else {
+        audioElem.current.volume = 0;
+      }
+    }
+  }, [volume, isVolume, loading]);
 
   const PlayPause = () => {
-    setIsPlaying((prevIsPlaying) => {
-      const newIsPlaying = !prevIsPlaying;
-      if (!newIsPlaying && isEndingSong) {
-        setIsEndingSong(false);
-        setCurrentSong({
-          ...currentSong,
-          progress: 0,
-        });
-        audioElem.current.currentTime = 0;
-      }
-      return newIsPlaying;
-    });
+    setIsPlaying(!isPlaying);
+    if (isEndingSong) {
+      setIsEndingSong(false);
+      setCurrentSong({
+        ...currentSong,
+        progress: 0,
+      });
+      audioElem.current.currentTime = 0;
+    }
   };
 
   const onPlaying = () => {
@@ -77,6 +113,10 @@ const MusicPlayer = () => {
     const minutes = Math.floor(currentTime / 60);
     const remainingSeconds = Math.floor(currentTime % 60);
     setCurrentTime({ minutes, seconds: remainingSeconds });
+
+    const minutesSong = Math.floor(duration / 60);
+    const remainingSecondsSong = Math.floor(duration % 60);
+    setDurationSong({ minutes: minutesSong, seconds: remainingSecondsSong });
     if (!isMoving) {
       setCurrentSong({
         ...currentSong,
@@ -86,8 +126,13 @@ const MusicPlayer = () => {
     }
 
     if (currentTime === duration) {
-      setIsPlaying(false);
-      setIsEndingSong(true);
+      setIsEndingSong((prevIsEndingSong) => {
+        const newIsEndingSong = !prevIsEndingSong;
+
+        if (newIsEndingSong && !isInfinite) setIsPlaying(false);
+
+        return newIsEndingSong;
+      });
     }
   };
 
@@ -153,10 +198,10 @@ const MusicPlayer = () => {
     setIsVolume((prevIsVolume) => {
       const newIsVolume = !prevIsVolume;
       if (!newIsVolume && volume !== 0) {
-        setPrevVolume(volume);
-        setVolume(0);
+        setVolume({ prevVolume: volume.currentVolume, currentVolume: 0 });
       } else {
-        setVolume(prevVolume);
+        // setVolume(prevVolume);
+        setVolume({ ...volume, currentVolume: volume.prevVolume });
       }
       return newIsVolume;
     });
@@ -181,7 +226,8 @@ const MusicPlayer = () => {
       setIsVolume(true);
     }
 
-    setVolume(newVolume);
+    //setVolume(newVolume);
+    setVolume({ ...setVolume, currentVolume: newVolume });
   };
 
   const mouseDownVolume = (e) => {
@@ -206,12 +252,16 @@ const MusicPlayer = () => {
 
   return (
     <div className="player">
-      <img className="player__image-song" src={imgDrag} alt="imgTrack" />
+      <img
+        className="player__image-song"
+        src={currentSong.imgSong}
+        alt="imgTrack"
+      />
 
       <div className="player__title">
-        <p className="player__title-song">Whatever It Takes</p>
+        <p className="player__title-song">{currentSong.titleSong}</p>
 
-        <p className="player__title-author">Imagine Dragons</p>
+        <p className="player__title-author">{currentSong.titleAuthor}</p>
       </div>
 
       <button className="player__button-prev">
@@ -236,85 +286,116 @@ const MusicPlayer = () => {
         <img className="player__img-prev-next" src={imgNextSong} alt="next" />
       </button>
 
-      <audio src={currentSong.url} ref={audioElem} onTimeUpdate={onPlaying} />
-
-      <div className="player__track-song">
-        <div className="player__current-time">
-          <p className="player__current-time-title">
-            {currentTime.minutes}:
-            {currentTime.seconds < 10
-              ? `0${currentTime.seconds}`
-              : currentTime.seconds}
-          </p>
-        </div>
-
-        <div
-          className="player__block-track"
-          ref={clickMusicTrack}
-          onMouseDown={mouseDownTrack}
-          onMouseMove={mouseMoveTrack}
-          onMouseUp={mouseUpTrack}
-        >
-          <div className="player__track">
-            <div
-              className="player__seek-bar"
-              style={{ width: `${currentSong.progress}%` }}
-            ></div>
-          </div>
-        </div>
-
-        <div className="player__current-time">
-          <p className="player__current-time-title">
-            {Math.floor(currentSong.length / 60)}:
-            {Math.floor(currentSong.length % 60)}
-          </p>
-        </div>
-      </div>
-
-      <div className="player__block-track-volume">
-        {isHovered && (
-          <div
-            className="player__track-volume"
-            onMouseEnter={() => {
-              setIsHovered(true);
-            }}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <div
-              className="player__clickarea-volume"
-              ref={clickVolume}
-              onClick={clickVolumeTrack}
-              onMouseDown={mouseDownVolume}
-              onMouseMove={mouseMoveVolume}
-              onMouseUp={mouseUpVolume}
-            >
-              <div className="player__track-volume--area">
-                <div
-                  className="player__change-volume"
-                  style={{ width: `${volume}%` }}
-                ></div>
+      {loading ? (
+        <img
+          className="player__loading-img"
+          src={imgLoading}
+          alt="loading"
+        ></img>
+      ) : (
+        <>
+          <audio
+            src={currentSong.url}
+            ref={audioElem}
+            onTimeUpdate={onPlaying}
+          />
+          <div className="player__track-song">
+            {currentTime && (
+              <div className="player__current-time">
+                <p className="player__current-time-title">
+                  {currentTime.minutes}:
+                  {currentTime.seconds < 10
+                    ? `0${currentTime.seconds}`
+                    : currentTime.seconds}
+                </p>
               </div>
-            </div>
-          </div>
-        )}
-        <button
-          className="player__button-volume"
-          onClick={handleClickVolume}
-          onMouseEnter={() => {
-            setIsHovered(true);
-          }}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          <img className="player__img-volume" src={imgVolume} alt="volume" />
-        </button>
-      </div>
+            )}
 
-      <button
-        className="player__button-repeat"
-        onClick={() => setIsInfinite(!isInfinite)}
-      >
-        <img className="player__img-icon" src={iconRepeat} alt="repeat" />
-      </button>
+            {currentTime && (
+              <div
+                className="player__block-track"
+                ref={clickMusicTrack}
+                onMouseDown={mouseDownTrack}
+                onMouseMove={mouseMoveTrack}
+                onMouseUp={mouseUpTrack}
+              >
+                <div className="player__track">
+                  <div
+                    className="player__seek-bar"
+                    style={{ width: `${currentSong.progress}%` }}
+                  ></div>
+                </div>
+              </div>
+            )}
+
+            {durationSong && (
+              <div className="player__current-time">
+                <p className="player__current-time-title">
+                  {durationSong.minutes}:
+                  {durationSong.seconds < 10
+                    ? `0${durationSong.seconds}`
+                    : durationSong.seconds}
+                </p>
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
+      {!loading && currentTime && (
+        <>
+          <div className="player__block-track-volume">
+            {isHovered && (
+              <div
+                className="player__track-volume"
+                onMouseEnter={() => {
+                  setIsHovered(true);
+                }}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                <div
+                  className="player__clickarea-volume"
+                  ref={clickVolume}
+                  onClick={clickVolumeTrack}
+                  onMouseDown={mouseDownVolume}
+                  onMouseMove={mouseMoveVolume}
+                  onMouseUp={mouseUpVolume}
+                >
+                  <div className="player__track-volume--area">
+                    <div
+                      className="player__change-volume"
+                      style={{ width: `${volume.currentVolume}%` }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            )}
+            <button
+              className="player__button-volume"
+              onClick={handleClickVolume}
+              onMouseEnter={() => {
+                setIsHovered(true);
+              }}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <img
+                className="player__img-volume"
+                src={imgVolume}
+                alt="volume"
+              />
+            </button>
+          </div>
+        </>
+      )}
+
+      {!loading && currentTime && (
+        <button
+          className="player__button-repeat"
+          onClick={() => setIsInfinite(!isInfinite)}
+        >
+          <img className="player__img-icon" src={iconRepeat} alt="repeat" />
+        </button>
+      )}
     </div>
   );
 };
