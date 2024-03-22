@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./MusicPlayer.scss";
 
 import * as trackService from "../../services/TrackService";
@@ -12,13 +12,16 @@ import imgRepeat from "../../assets/images/Repeat.svg";
 import imgVolumeOn from "../../assets/images/Volume.svg";
 import imgVolumeOff from "../../assets/images/VolumeOff.svg";
 import imgRepeatOnce from "../../assets/images/Repeat-once.svg";
-import { useMusicContext } from "../../context/MusicContext";
+import {
+  DispatchTrackContext,
+  StateTrackContext,
+} from "../../context/MusicContext";
 
 const MusicPlayer = () => {
-  const { currentSong, setCurrentSong } = useMusicContext();
-  const { volume, setVolume } = useMusicContext();
+  const state = useContext(StateTrackContext);
+  const dispatch = useContext(DispatchTrackContext);
 
-  console.log(currentSong);
+  const [progressSong, setProgressSong] = useState({ progress: 0 });
 
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMoving, setIsMoving] = useState(false);
@@ -45,13 +48,19 @@ const MusicPlayer = () => {
     setIsPlaying(true);
     try {
       const track = await trackService.getTrackUrl(
-        currentSong.titleSong,
-        currentSong.titleAuthor
+        state.trackName,
+        state.trackAuthor
       );
 
       const trackUrl = track !== null ? track.url : null;
 
-      setCurrentSong({ ...currentSong, url: trackUrl });
+      const action = {
+        type: "SET_TRACK_URL",
+        payload: {
+          trackUrl: trackUrl,
+        },
+      };
+      dispatch(action);
 
       setCurrentTime(null);
       setDurationSong(null);
@@ -63,17 +72,14 @@ const MusicPlayer = () => {
   };
 
   useEffect(() => {
-    if (currentSong !== null) fetchData();
-  }, [currentSong?.titleSong, currentSong?.titleAuthor]);
+    if (state.trackName !== null) fetchData();
+  }, [state.trackName]);
 
   useEffect(() => {
     if (!loading) {
       if (isPlaying) {
         if (isEndingSong && isInfinite) {
-          setCurrentSong({
-            ...currentSong,
-            progress: 0,
-          });
+          setProgressSong({ ...progressSong, progress: 0 });
           audioElem.current.currentTime = 0;
         }
         audioElem.current.play();
@@ -86,21 +92,18 @@ const MusicPlayer = () => {
   useEffect(() => {
     if (!loading) {
       if (isVolume) {
-        audioElem.current.volume = volume.currentVolume / 100;
+        audioElem.current.volume = state.trackVolume / 100;
       } else {
         audioElem.current.volume = 0;
       }
     }
-  }, [volume, isVolume, loading]);
+  }, [state.trackVolume, isVolume, loading]);
 
   const PlayPause = () => {
     setIsPlaying(!isPlaying);
     if (isEndingSong) {
       setIsEndingSong(false);
-      setCurrentSong({
-        ...currentSong,
-        progress: 0,
-      });
+      setProgressSong({ ...progressSong, progress: 0 });
       audioElem.current.currentTime = 0;
     }
   };
@@ -117,8 +120,7 @@ const MusicPlayer = () => {
     const remainingSecondsSong = Math.floor(duration % 60);
     setDurationSong({ minutes: minutesSong, seconds: remainingSecondsSong });
     if (!isMoving) {
-      setCurrentSong({
-        ...currentSong,
+      setProgressSong({
         progress: (currentTime / duration) * 100,
         length: duration,
       });
@@ -166,11 +168,11 @@ const MusicPlayer = () => {
 
     const divprogress = (offsetX / width) * 100;
     const prog = divprogress > 100 ? 100 : divprogress < 0 ? 0 : divprogress;
-    setCurrentSong({
-      ...currentSong,
-      progress: prog,
-    });
-    audioElem.current.currentTime = (prog / 100) * currentSong.length;
+    setProgressSong({ ...progressSong, progress: prog });
+    audioElem.current.currentTime = (prog / 100) * progressSong.length;
+
+    if (prog === 100) setIsEndingSong(true);
+    else setIsEndingSong(false);
   };
 
   const mouseMoveTrack = (e) => {
@@ -182,10 +184,7 @@ const MusicPlayer = () => {
 
       const divprogress = (offsetX / width) * 100;
       const prog = divprogress > 100 ? 100 : divprogress < 0 ? 0 : divprogress;
-      setCurrentSong({
-        ...currentSong,
-        progress: prog,
-      });
+      setProgressSong({ ...progressSong, progress: prog });
     }
   };
 
@@ -196,13 +195,18 @@ const MusicPlayer = () => {
   const handleClickVolume = () => {
     setIsVolume((prevIsVolume) => {
       const newIsVolume = !prevIsVolume;
-      if (!newIsVolume && volume !== 0) {
-        setVolume({ prevVolume: volume.currentVolume, currentVolume: 0 });
+      if (!newIsVolume && state.trackVolume !== 0) {
+        dispatch({
+          type: "SET_VOLUME",
+          payload: { trackPrevVolume: state.trackVolume, trackVolume: 0 },
+        });
       } else {
-        // setVolume(prevVolume);
-        setVolume({ ...volume, currentVolume: volume.prevVolume });
+        dispatch({
+          type: "SET_NEW_VOLUME",
+          payload: { trackVolume: state.trackPrevVolume },
+        });
+        return newIsVolume;
       }
-      return newIsVolume;
     });
   };
 
@@ -225,8 +229,12 @@ const MusicPlayer = () => {
       setIsVolume(true);
     }
 
-    //setVolume(newVolume);
-    setVolume({ ...setVolume, currentVolume: newVolume });
+    dispatch({
+      type: "SET_NEW_VOLUME",
+      payload: {
+        trackVolume: newVolume,
+      },
+    });
   };
 
   const mouseDownVolume = (e) => {
@@ -253,37 +261,39 @@ const MusicPlayer = () => {
     <div className="player">
       <img
         className="player__image-song"
-        src={currentSong.imgSong}
+        src={state.trackImage}
         alt="imgTrack"
       />
 
       <div className="player__title">
-        <p className="player__title-song">{currentSong.titleSong}</p>
+        <p className="player__title-song">{state.trackName}</p>
 
-        <p className="player__title-author">{currentSong.titleAuthor}</p>
+        <p className="player__title-author">{state.trackAuthor}</p>
       </div>
 
-      <button className="player__button-prev">
-        <img
-          className="player__img-prev-next"
-          src={imgPrevSong}
-          alt="previous"
-        />
-      </button>
-
-      {isPlaying ? (
-        <button className="player__button-pause-play" onClick={PlayPause}>
-          <img className="player__img-icon" src={imgPause} alt="pause" />
+      <div className="player__buttons-play">
+        <button className="player__button-prev">
+          <img
+            className="player__img-prev-next"
+            src={imgPrevSong}
+            alt="previous"
+          />
         </button>
-      ) : (
-        <button className="player__button-pause-play" onClick={PlayPause}>
-          <img className="player__img-icon" src={imgPlay} alt="pause" />
-        </button>
-      )}
 
-      <button className="player__button-next">
-        <img className="player__img-prev-next" src={imgNextSong} alt="next" />
-      </button>
+        {isPlaying ? (
+          <button className="player__button-pause-play" onClick={PlayPause}>
+            <img className="player__img-icon" src={imgPause} alt="pause" />
+          </button>
+        ) : (
+          <button className="player__button-pause-play" onClick={PlayPause}>
+            <img className="player__img-icon" src={imgPlay} alt="pause" />
+          </button>
+        )}
+
+        <button className="player__button-next">
+          <img className="player__img-prev-next" src={imgNextSong} alt="next" />
+        </button>
+      </div>
 
       {loading ? (
         <img
@@ -294,7 +304,7 @@ const MusicPlayer = () => {
       ) : (
         <>
           <audio
-            src={currentSong.url}
+            src={state.trackUrl}
             ref={audioElem}
             onTimeUpdate={onPlaying}
           />
@@ -321,7 +331,7 @@ const MusicPlayer = () => {
                 <div className="player__track">
                   <div
                     className="player__seek-bar"
-                    style={{ width: `${currentSong.progress}%` }}
+                    style={{ width: `${progressSong.progress}%` }}
                   ></div>
                 </div>
               </div>
@@ -363,7 +373,7 @@ const MusicPlayer = () => {
                   <div className="player__track-volume--area">
                     <div
                       className="player__change-volume"
-                      style={{ width: `${volume.currentVolume}%` }}
+                      style={{ width: `${state.trackVolume}%` }}
                     ></div>
                   </div>
                 </div>

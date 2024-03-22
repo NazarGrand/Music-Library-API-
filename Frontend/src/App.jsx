@@ -4,10 +4,11 @@ import AppRoutes from "./routes/AppRoutes";
 import "./App.scss";
 import Footer from "./components/Footer/Footer";
 import MusicPlayer from "./components/MusicPlayer/MusicPlayer";
-import { useMusicContext } from "./context/MusicContext";
+import { useContext } from "react";
+import { StateTrackContext } from "./context/MusicContext";
 
 function App() {
-  const { currentSong, setCurrentSong } = useMusicContext();
+  const { trackName } = useContext(StateTrackContext);
 
   return (
     <>
@@ -21,7 +22,7 @@ function App() {
           <Footer />
         </div>
       </div>
-      {currentSong && <MusicPlayer />}
+      {trackName && <MusicPlayer />}
     </>
   );
 }

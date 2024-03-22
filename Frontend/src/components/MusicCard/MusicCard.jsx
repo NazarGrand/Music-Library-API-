@@ -1,19 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./MusicCard.scss";
 import { Link } from "react-router-dom";
-import { useMusicContext } from "../../context/MusicContext";
+import { DispatchTrackContext } from "../../context/MusicContext";
 
 import imgNotes from "../../assets/images/Notes.svg";
 
 const MusicCard = ({ image, titleSong, titleAuthor }) => {
-  const { setCurrentSong } = useMusicContext();
+  const dispatch = useContext(DispatchTrackContext);
+
+  const action = {
+    type: "SET_TRACK",
+    payload: {
+      trackName: titleSong,
+      trackAuthor: titleAuthor,
+      trackImage: image,
+    },
+  };
 
   const handleClick = () => {
-    setCurrentSong({
-      titleSong: titleSong,
-      titleAuthor: titleAuthor,
-      imgSong: image,
-    });
+    dispatch(action);
   };
 
   return (
