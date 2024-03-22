@@ -1,7 +1,7 @@
 import React from "react";
 import "./MusicCard.scss";
 import { Link } from "react-router-dom";
-import { useMusicContext } from "../../context/MusicProvider";
+import { useMusicContext } from "../../context/MusicContext";
 
 import imgNotes from "../../assets/images/Notes.svg";
 

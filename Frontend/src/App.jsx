@@ -4,8 +4,7 @@ import AppRoutes from "./routes/AppRoutes";
 import "./App.scss";
 import Footer from "./components/Footer/Footer";
 import MusicPlayer from "./components/MusicPlayer/MusicPlayer";
-import { MusicProvider, useMusicContext } from "./context/MusicProvider";
-import { useEffect, useState } from "react";
+import { useMusicContext } from "./context/MusicContext";
 
 function App() {
   const { currentSong, setCurrentSong } = useMusicContext();

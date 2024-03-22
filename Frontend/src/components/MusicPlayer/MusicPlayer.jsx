@@ -12,7 +12,7 @@ import imgRepeat from "../../assets/images/Repeat.svg";
 import imgVolumeOn from "../../assets/images/Volume.svg";
 import imgVolumeOff from "../../assets/images/VolumeOff.svg";
 import imgRepeatOnce from "../../assets/images/Repeat-once.svg";
-import { useMusicContext } from "../../context/MusicProvider";
+import { useMusicContext } from "../../context/MusicContext";
 
 const MusicPlayer = () => {
   const { currentSong, setCurrentSong } = useMusicContext();
@@ -42,6 +42,7 @@ const MusicPlayer = () => {
 
   const fetchData = async () => {
     setLoading(true);
+    setIsPlaying(true);
     try {
       const track = await trackService.getTrackUrl(
         currentSong.titleSong,
@@ -50,7 +51,6 @@ const MusicPlayer = () => {
 
       const trackUrl = track !== null ? track.url : null;
 
-      console.log(trackUrl);
       setCurrentSong({ ...currentSong, url: trackUrl });
 
       setCurrentTime(null);
@@ -63,7 +63,6 @@ const MusicPlayer = () => {
   };
 
   useEffect(() => {
-    console.log("suka");
     if (currentSong !== null) fetchData();
   }, [currentSong?.titleSong, currentSong?.titleAuthor]);
 
