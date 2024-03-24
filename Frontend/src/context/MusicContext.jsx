@@ -1,4 +1,5 @@
 import React, { createContext, useReducer } from "react";
+import { musicContextActions } from "../constants/MusicContextActions";
 
 const initialState = {
   trackName: null,
@@ -15,25 +16,25 @@ export const DispatchTrackContext = createContext(() => {});
 export const MusicProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
     switch (action.type) {
-      case "SET_TRACK":
+      case musicContextActions.setTrack:
         return {
           ...state,
           trackName: action.payload.trackName,
           trackAuthor: action.payload.trackAuthor,
           trackImage: action.payload.trackImage,
         };
-      case "SET_TRACK_URL":
+      case musicContextActions.setTrackUrl:
         return {
           ...state,
           trackUrl: action.payload.trackUrl,
         };
-      case "SET_VOLUME":
+      case musicContextActions.setVolume:
         return {
           ...state,
           trackVolume: action.payload.trackVolume,
           trackPrevVolume: action.payload.trackPrevVolume,
         };
-      case "SET_NEW_VOLUME":
+      case musicContextActions.setNewVolume:
         return {
           ...state,
           trackVolume: action.payload.trackVolume,

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import "./MusicPlayer.scss";
 
 import * as trackService from "../../services/TrackService";
+import { musicContextActions } from "../../constants/MusicContextActions";
 
 import imgLoading from "../../assets/images/LoadingTrack.svg";
 import imgPrevSong from "../../assets/images/PreviousSong.svg";
@@ -12,13 +13,21 @@ import imgRepeat from "../../assets/images/Repeat.svg";
 import imgVolumeOn from "../../assets/images/Volume.svg";
 import imgVolumeOff from "../../assets/images/VolumeOff.svg";
 import imgRepeatOnce from "../../assets/images/Repeat-once.svg";
+
 import {
   DispatchTrackContext,
   StateTrackContext,
 } from "../../context/MusicContext";
 
 const MusicPlayer = () => {
-  const state = useContext(StateTrackContext);
+  const {
+    trackName,
+    trackAuthor,
+    trackUrl,
+    trackImage,
+    trackVolume,
+    trackPrevVolume,
+  } = useContext(StateTrackContext);
   const dispatch = useContext(DispatchTrackContext);
 
   const [progressSong, setProgressSong] = useState({ progress: 0 });
@@ -47,15 +56,12 @@ const MusicPlayer = () => {
     setLoading(true);
     setIsPlaying(true);
     try {
-      const track = await trackService.getTrackUrl(
-        state.trackName,
-        state.trackAuthor
-      );
+      const track = await trackService.getTrackUrl(trackName, trackAuthor);
 
       const trackUrl = track !== null ? track.url : null;
 
       const action = {
-        type: "SET_TRACK_URL",
+        type: musicContextActions.setTrackUrl,
         payload: {
           trackUrl: trackUrl,
         },
@@ -72,8 +78,8 @@ const MusicPlayer = () => {
   };
 
   useEffect(() => {
-    if (state.trackName !== null) fetchData();
-  }, [state.trackName]);
+    if (trackName !== null) fetchData();
+  }, [trackName]);
 
   useEffect(() => {
     if (!loading) {
@@ -92,12 +98,12 @@ const MusicPlayer = () => {
   useEffect(() => {
     if (!loading) {
       if (isVolume) {
-        audioElem.current.volume = state.trackVolume / 100;
+        audioElem.current.volume = trackVolume / 100;
       } else {
         audioElem.current.volume = 0;
       }
     }
-  }, [state.trackVolume, isVolume, loading]);
+  }, [trackVolume, isVolume, loading]);
 
   const PlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -195,15 +201,15 @@ const MusicPlayer = () => {
   const handleClickVolume = () => {
     setIsVolume((prevIsVolume) => {
       const newIsVolume = !prevIsVolume;
-      if (!newIsVolume && state.trackVolume !== 0) {
+      if (!newIsVolume && trackVolume !== 0) {
         dispatch({
-          type: "SET_VOLUME",
-          payload: { trackPrevVolume: state.trackVolume, trackVolume: 0 },
+          type: musicContextActions.setVolume,
+          payload: { trackPrevVolume: trackVolume, trackVolume: 0 },
         });
       } else {
         dispatch({
-          type: "SET_NEW_VOLUME",
-          payload: { trackVolume: state.trackPrevVolume },
+          type: musicContextActions.setNewVolume,
+          payload: { trackVolume: trackPrevVolume },
         });
         return newIsVolume;
       }
@@ -230,7 +236,7 @@ const MusicPlayer = () => {
     }
 
     dispatch({
-      type: "SET_NEW_VOLUME",
+      type: musicContextActions.setNewVolume,
       payload: {
         trackVolume: newVolume,
       },
@@ -259,16 +265,12 @@ const MusicPlayer = () => {
 
   return (
     <div className="player">
-      <img
-        className="player__image-song"
-        src={state.trackImage}
-        alt="imgTrack"
-      />
+      <img className="player__image-song" src={trackImage} alt="imgTrack" />
 
       <div className="player__title">
-        <p className="player__title-song">{state.trackName}</p>
+        <p className="player__title-song">{trackName}</p>
 
-        <p className="player__title-author">{state.trackAuthor}</p>
+        <p className="player__title-author">{trackAuthor}</p>
       </div>
 
       <div className="player__buttons-play">
@@ -303,11 +305,7 @@ const MusicPlayer = () => {
         ></img>
       ) : (
         <>
-          <audio
-            src={state.trackUrl}
-            ref={audioElem}
-            onTimeUpdate={onPlaying}
-          />
+          <audio src={trackUrl} ref={audioElem} onTimeUpdate={onPlaying} />
           <div className="player__track-song">
             {currentTime && (
               <div className="player__current-time">
@@ -373,7 +371,7 @@ const MusicPlayer = () => {
                   <div className="player__track-volume--area">
                     <div
                       className="player__change-volume"
-                      style={{ width: `${state.trackVolume}%` }}
+                      style={{ width: `${trackVolume}%` }}
                     ></div>
                   </div>
                 </div>

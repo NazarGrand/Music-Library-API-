@@ -3,13 +3,15 @@ import "./MusicCard.scss";
 import { Link } from "react-router-dom";
 import { DispatchTrackContext } from "../../context/MusicContext";
 
+import { musicContextActions } from "../../constants/MusicContextActions";
+
 import imgNotes from "../../assets/images/Notes.svg";
 
 const MusicCard = ({ image, titleSong, titleAuthor }) => {
   const dispatch = useContext(DispatchTrackContext);
 
   const action = {
-    type: "SET_TRACK",
+    type: musicContextActions.setTrack,
     payload: {
       trackName: titleSong,
       trackAuthor: titleAuthor,
