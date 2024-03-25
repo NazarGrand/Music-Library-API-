@@ -10,7 +10,7 @@ const Slider = () => {
   const [activeId, setActiveId] = useState(3);
 
   useEffect(() => {
-    let slider = setInterval(
+    const slider = setInterval(
       () =>
         setActiveId((prevState) => {
           const newState = prevState + 1;
@@ -104,10 +104,7 @@ const Slider = () => {
             position = "activeSlide";
           }
 
-          if (
-            index === activeId - 1 ||
-            (activeId === 0 && index === SlideItems.length - 1)
-          ) {
+          if (index < activeId) {
             position = "lastSlide";
           }
 
