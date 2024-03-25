@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import MusicCardsList from "../../components/MusicCardsList/MusicCardsList";
 import Loader from "../../components/Loader/Loader";
 import * as musicService from "../../services/MusicService";
+import ArtistsList from "../../components/ArtistsList/ArtistsList";
+import { ArtistItems } from "../../data/InformationArtists";
 // import { MusicItems } from "../../data/InformationMusic";
 
 const HomePage = () => {
@@ -30,12 +32,13 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    //fetchData();
   }, []);
 
   return (
     <>
-      {loading ? (
+      <ArtistsList title="Popular" artistItems={ArtistItems ?? []} />
+      {/* {loading ? (
         <Loader />
       ) : (
         <div>
@@ -45,7 +48,7 @@ const HomePage = () => {
             cardItems={topSongs.slice(0, 5) ?? []}
           />
         </div>
-      )}
+      )} */}
     </>
   );
 };
