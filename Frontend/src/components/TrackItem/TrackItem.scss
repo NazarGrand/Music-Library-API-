@@ -89,6 +89,12 @@
     text-overflow: ellipsis;
   }
 
+  &__button-like {
+    background-color: transparent;
+    border: none;
+    padding: 3px;
+  }
+
   &__heart {
     margin-left: 40px;
     margin-top: 5px;

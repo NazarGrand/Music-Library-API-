@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import dayjs from "dayjs";
 import "./TrackItem.scss";
 
 import imgHeart from "../../assets/images/Heart.svg";
@@ -7,26 +8,8 @@ import { musicContextActions } from "../../constants/MusicContextActions";
 import { Link } from "react-router-dom";
 
 function formatDate(inputDate) {
-  const dateObj = new Date(inputDate);
-  const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-  const monthIndex = dateObj.getMonth();
-  const day = dateObj.getDate();
-  const year = dateObj.getFullYear();
-
-  const formattedDate = monthNames[monthIndex] + " " + day + ", " + year;
+  const dateObj = dayjs(inputDate);
+  const formattedDate = dateObj.format("MMM D, YYYY");
   return formattedDate;
 }
 
@@ -40,17 +23,15 @@ const TrackItem = ({
 }) => {
   const dispatch = useContext(DispatchTrackContext);
 
-  const action = {
-    type: musicContextActions.setTrack,
-    payload: {
-      trackName: titleSong,
-      trackAuthor: titleAuthor,
-      trackImage: image,
-    },
-  };
-
   const handleClick = () => {
-    dispatch(action);
+    dispatch({
+      type: musicContextActions.setTrack,
+      payload: {
+        trackName: titleSong,
+        trackAuthor: titleAuthor,
+        trackImage: image,
+      },
+    });
   };
   return (
     <div className="track-item">
@@ -69,9 +50,9 @@ const TrackItem = ({
         <p className="track-item__label">{label}</p>
 
         <div className="track-item__heart">
-          <Link to="/likes">
+          <button className="track-item__button-like">
             <img src={imgHeart} alt="heart" />
-          </Link>
+          </button>
         </div>
       </button>
     </div>

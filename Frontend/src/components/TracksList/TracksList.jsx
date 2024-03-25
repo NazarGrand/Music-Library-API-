@@ -5,7 +5,6 @@ import TrackItem from "../TrackItem/TrackItem";
 import imgPlus from "../../assets/images/Plus.svg";
 
 const TracksList = ({ title, trackItems, label }) => {
-  console.log(title);
   return (
     <div className="tracks">
       <div className="tracks__title">
