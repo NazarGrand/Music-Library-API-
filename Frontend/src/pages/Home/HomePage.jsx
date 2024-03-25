@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import MusicCardsList from "../../components/MusicCardsList/MusicCardsList";
 import Loader from "../../components/Loader/Loader";
 import * as musicService from "../../services/MusicService";
-// import { MusicItems } from "../../data/InformationMusic";
+import TracksList from "../../components/TracksList/TracksList";
+import { MusicItems } from "../../data/InformationMusic";
 
 const HomePage = () => {
   const [topSongs, setTopSongs] = useState([]);
@@ -19,6 +20,8 @@ const HomePage = () => {
         titleAuthor: item.trackMetadata.artists
           .map((artist) => artist.name)
           .join(", "),
+        releaseDate: item.trackMetadata.releaseDate,
+        label: item.trackMetadata.labels[0].name,
       }));
 
       setTopSongs(newTopSongs);
@@ -43,6 +46,10 @@ const HomePage = () => {
           <MusicCardsList
             title="Weekly Top"
             cardItems={topSongs.slice(0, 5) ?? []}
+          />
+          <TracksList
+            title="Trending"
+            trackItems={topSongs.slice(5, 12) ?? []}
           />
         </div>
       )}

@@ -1,0 +1,98 @@
+@import "../../styles/variables.scss";
+
+@mixin customText($weight, $size) {
+  font-weight: $weight;
+  font-size: $size;
+}
+
+.track-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+
+  &__index-track {
+    padding-top: 6px;
+    @include customText(600, 24px);
+  }
+
+  &__container {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    padding: 0;
+
+    width: 1070px;
+    height: 60px;
+
+    background-color: $login-button-color;
+    border-radius: 5px;
+
+    border: none;
+    cursor: pointer;
+
+    color: $white-text-color;
+  }
+
+  &__image {
+    object-fit: cover;
+
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+  }
+
+  &__title {
+    margin-left: 15px;
+    width: 200px;
+    text-align: start;
+
+    &-song {
+      margin: 0;
+      margin-top: -3px;
+      @include customText(600, 20px);
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &-author {
+      margin-top: 2px;
+      margin-bottom: 0;
+      @include customText(300, 12px);
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__relase-date {
+    margin-left: 59px;
+    width: 145px;
+    text-align: center;
+
+    white-space: nowrap;
+
+    @include customText(400, 16px);
+  }
+
+  &__label {
+    margin-left: 97px;
+
+    width: 320px;
+    text-align: center;
+
+    @include customText(400, 16px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__heart {
+    margin-left: 40px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+  }
+}
