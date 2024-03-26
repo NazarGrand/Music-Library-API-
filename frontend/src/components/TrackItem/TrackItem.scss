@@ -23,20 +23,24 @@
     width: 1075px;
   }
 
-  &__button {
+  &__block-title {
     display: flex;
     align-items: center;
-    padding: 0;
+    width: 300px;
+    border-radius: 5px;
+  }
 
-    width: 260px;
-    height: 60px;
+  &__button {
+    display: flex;
+    padding: 0;
 
     border: none;
     cursor: pointer;
 
     background-color: $login-button-color;
-    border-radius: 5px;
     color: $white-text-color;
+    border-radius: 5px;
+    text-align: start;
   }
 
   &__image {
@@ -49,29 +53,23 @@
 
   &__title {
     margin-left: 15px;
-    width: 200px;
-    text-align: start;
 
-    &-song-area {
-      margin: 0;
-      margin-top: -3px;
-      @include customText(600, 20px);
+    &-song {
+      margin-top: 8px;
+      max-width: 250px;
 
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-
-      cursor: auto;
-    }
-
-    &-song {
-      cursor: pointer;
+      @include customText(600, 20px);
     }
 
     &-author {
-      margin-top: 4px;
-      margin-bottom: 0;
       @include customText(300, 12px);
+      display: inline-block;
+      max-width: 250px;
+
+      margin-top: 1px;
 
       white-space: nowrap;
       overflow: hidden;
@@ -85,9 +83,8 @@
   }
 
   &__relase-date {
-    margin-left: 75px;
     padding-top: 2px;
-    width: 145px;
+    width: 200px;
     text-align: center;
 
     white-space: nowrap;
@@ -96,10 +93,9 @@
   }
 
   &__label {
-    margin-left: 97px;
     padding-top: 2px;
 
-    width: 320px;
+    width: 400px;
     text-align: center;
 
     @include customText(400, 16px);
