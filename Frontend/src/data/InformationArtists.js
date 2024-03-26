@@ -6,10 +6,10 @@ import imgHarryStyles from "../assets/images/HarryStyles.png";
 import imgBillieEilish from "../assets/images/BillieEilishArtist.png";
 
 export const ArtistItems = [
-  { image: imgEminem, titleAuthor: "Eminem" },
-  { image: imgImagineDragons, titleAuthor: "Imagine Dragons" },
-  { image: imgAdele, titleAuthor: "Adele" },
-  { image: imgLanaDelRay, titleAuthor: "Lana Del Ray" },
-  { image: imgHarryStyles, titleAuthor: "Harry Styles" },
-  { image: imgBillieEilish, titleAuthor: "Billie Eilish" },
+  { image: imgEminem, artistName: "Eminem" },
+  { image: imgImagineDragons, artistName: "Imagine Dragons" },
+  { image: imgAdele, artistName: "Adele" },
+  { image: imgLanaDelRay, artistName: "Lana Del Ray" },
+  { image: imgHarryStyles, artistName: "Harry Styles" },
+  { image: imgBillieEilish, artistName: "Billie Eilish" },
 ];

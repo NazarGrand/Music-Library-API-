@@ -1,13 +1,13 @@
 import React from "react";
 import "./ArtistItem.scss";
 
-const ArtistItem = ({ image, titleAuthor }) => {
+const ArtistItem = ({ image, artistName }) => {
   return (
     <div className="artist">
       <button className="artist__button">
-        <img className="artist__image" src={image} alt="musicimg" />
+        <img className="artist__image" src={image} alt="Artistimg" />
 
-        <p className="artist__title-author">{titleAuthor}</p>
+        <p className="artist__title-author">{artistName}</p>
       </button>
     </div>
   );
