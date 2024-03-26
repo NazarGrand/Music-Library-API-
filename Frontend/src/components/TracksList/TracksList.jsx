@@ -3,6 +3,8 @@ import "./TracksList.scss";
 import TrackItem from "../TrackItem/TrackItem";
 
 import imgPlus from "../../assets/images/Plus.svg";
+import { Link } from "react-router-dom";
+import { ROUTES } from "../../utils/routes";
 
 const TracksList = ({ title, trackItems, label }) => {
   return (
@@ -32,13 +34,15 @@ const TracksList = ({ title, trackItems, label }) => {
                 />
               </li>
             ))}
-            <li className="tracks__view-all">
-              <button className="tracks__button-view">
-                {" "}
-                <img src={imgPlus} alt="plus" /> View All
-              </button>
-            </li>
           </ul>
+
+          <div className="tracks__view-all">
+            <Link className="tracks__link-view" to={ROUTES.ALBUMS}>
+              {" "}
+              <img src={imgPlus} alt="plus" />{" "}
+              <span className="tracks__view-all-text">View All</span>
+            </Link>
+          </div>
         </>
       ) : (
         <p className="tracks__subtitle">No music found</p>

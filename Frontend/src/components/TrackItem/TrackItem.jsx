@@ -23,27 +23,36 @@ const TrackItem = ({
 }) => {
   const dispatch = useContext(DispatchTrackContext);
 
-  const handleClick = () => {
-    dispatch({
-      type: musicContextActions.setTrack,
-      payload: {
-        trackName: titleSong,
-        trackAuthor: titleAuthor,
-        trackImage: image,
-      },
-    });
+  const handleClick = (event) => {
+    if (event.target.tagName !== "P") {
+      dispatch({
+        type: musicContextActions.setTrack,
+        payload: {
+          trackName: titleSong,
+          trackAuthor: titleAuthor,
+          trackImage: image,
+        },
+      });
+    }
   };
   return (
     <div className="track-item">
       <span className="track-item__index-track">#{indexTrack}</span>
 
-      <button className="track-item__container" onClick={handleClick}>
-        <img className="track-item__image" src={image} alt="imgTrack" />
+      <div className="track-item__container">
+        <button className="track-item__button" onClick={handleClick}>
+          <img className="track-item__image" src={image} alt="imgTrack" />
 
-        <div className="track-item__title">
-          <p className="track-item__title-song">{titleSong}</p>
-          <p className="track-item__title-author">{titleAuthor}</p>
-        </div>
+          <div className="track-item__title">
+            <p className="track-item__title-song-area">
+              <span className="track-item__title-song">{titleSong}</span>
+            </p>
+
+            <Link className="track-item__link-author" to="/author">
+              <span className="track-item__title-author">{titleAuthor}</span>
+            </Link>
+          </div>
+        </button>
 
         <p className="track-item__relase-date">{formatDate(releaseDate)}</p>
 
@@ -54,7 +63,7 @@ const TrackItem = ({
             <img src={imgHeart} alt="heart" />
           </button>
         </div>
-      </button>
+      </div>
     </div>
   );
 };
