@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import MusicCardsList from "../../components/MusicCardsList/MusicCardsList";
 import Loader from "../../components/Loader/Loader";
 import * as musicService from "../../services/MusicService";
+import Slider from "../../components/Slider/Slider";
 // import { MusicItems } from "../../data/InformationMusic";
 
 const HomePage = () => {
@@ -30,12 +31,22 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    //fetchData();
   }, []);
 
   return (
     <>
-      {loading ? (
+      <div
+      // style={{
+      //   maxWidth: "1200px",
+      //   width: "100%",
+      //   height: "500px",
+      //   margin: "0 auto",
+      // }}
+      >
+        <Slider />
+      </div>
+      {/* {loading ? (
         <Loader />
       ) : (
         <div>
@@ -45,7 +56,7 @@ const HomePage = () => {
             cardItems={topSongs.slice(0, 5) ?? []}
           />
         </div>
-      )}
+      )} */}
     </>
   );
 };
