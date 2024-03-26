@@ -5,6 +5,7 @@ import Loader from "../../components/Loader/Loader";
 import * as musicService from "../../services/MusicService";
 import ArtistsList from "../../components/ArtistsList/ArtistsList";
 import { ArtistItems } from "../../data/InformationArtists";
+import Slider from "../../components/Slider/Slider";
 // import { MusicItems } from "../../data/InformationMusic";
 
 const HomePage = () => {
@@ -32,23 +33,25 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    //fetchData();
+    fetchData();
   }, []);
 
   return (
     <>
-      <ArtistsList title="Popular" artistItems={ArtistItems ?? []} />
-      {/* {loading ? (
+      {loading ? (
         <Loader />
       ) : (
         <div>
-          <h1>Home Page</h1>
+          <Slider />
+
           <MusicCardsList
             title="Weekly Top"
             cardItems={topSongs.slice(0, 5) ?? []}
           />
+
+          <ArtistsList title="Popular" artistItems={ArtistItems ?? []} />
         </div>
-      )} */}
+      )}
     </>
   );
 };
