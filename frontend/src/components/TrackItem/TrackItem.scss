@@ -1,0 +1,120 @@
+@import "../../styles/variables.scss";
+
+@mixin customText($weight, $size) {
+  font-weight: $weight;
+  font-size: $size;
+}
+
+.track-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+
+  &__index-track {
+    padding-top: 6px;
+    @include customText(600, 24px);
+  }
+
+  &__container {
+    display: flex;
+    margin-left: 20px;
+    background-color: $login-button-color;
+    border-radius: 5px;
+    width: 1075px;
+  }
+
+  &__block-title {
+    display: flex;
+    align-items: center;
+    width: 300px;
+    border-radius: 5px;
+  }
+
+  &__button {
+    display: flex;
+    padding: 0;
+
+    border: none;
+    cursor: pointer;
+
+    background-color: $login-button-color;
+    color: $white-text-color;
+    border-radius: 5px;
+    text-align: start;
+  }
+
+  &__image {
+    object-fit: cover;
+
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+  }
+
+  &__title {
+    margin-left: 15px;
+
+    &-song {
+      margin-top: 8px;
+      max-width: 250px;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      @include customText(600, 20px);
+    }
+
+    &-author {
+      @include customText(300, 12px);
+      display: inline-block;
+      max-width: 250px;
+
+      margin-top: 1px;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__link-author {
+    text-decoration: none;
+    color: $white-text-color;
+  }
+
+  &__relase-date {
+    padding-top: 2px;
+    width: 200px;
+    text-align: center;
+
+    white-space: nowrap;
+
+    @include customText(400, 16px);
+  }
+
+  &__label {
+    padding-top: 2px;
+
+    width: 400px;
+    text-align: center;
+
+    @include customText(400, 16px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__button-like {
+    background-color: transparent;
+    border: none;
+    padding: 3px;
+    cursor: pointer;
+  }
+
+  &__heart {
+    margin-left: 40px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+  }
+}
