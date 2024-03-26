@@ -1,8 +1,14 @@
 @import "../../styles/variables.scss";
 
-.music-catalog {
+.artists {
   padding-left: 20px;
   margin-top: 40px;
+
+  &__block {
+    display: flex;
+    align-items: center;
+  }
+
   &__title {
     margin: 0;
     font-weight: 700;
@@ -11,19 +17,26 @@
       color: $pink-text-color;
     }
   }
+
   &__list {
     display: flex;
-    gap: 30px;
     padding: 0;
+    margin: 0;
     list-style-type: none;
   }
+
   &__view-all {
-    padding-top: 65px;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: $white-text-color;
   }
-  &__button {
+
+  &__plus {
     width: 62px;
     height: 62px;
     margin-left: 5px;
+    margin-top: 25px;
     background-color: $login-button-color;
     border-radius: 50%;
     padding-top: 1px;
@@ -31,11 +44,13 @@
     font-weight: 800;
     font-size: 40px;
   }
-  &__btn-text {
+
+  &__view-all-text {
     font-weight: 600;
     font-size: 20px;
     margin-top: 5px;
   }
+
   &__subtitle {
     color: $pink-text-color;
     font-style: italic;
