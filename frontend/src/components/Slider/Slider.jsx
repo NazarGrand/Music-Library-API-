@@ -108,6 +108,14 @@ const Slider = () => {
             position = "lastSlide";
           }
 
+          if (activeId === slideLength - 1 && index === 0) {
+            position = "nextSlide";
+          }
+
+          if (activeId === 0 && index === slideLength - 1) {
+            position = "lastSlide";
+          }
+
           return (
             <div key={index} className={`slider__block-img-${position}`}>
               <div className="slider__image-area">
