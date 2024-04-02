@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./MusicCardsList.scss";
 import MusicCard from "../MusicCard/MusicCard";
+import { StateTrackContext } from "../../context/MusicContext";
 
 const MusicCardsList = ({ title, cardItems }) => {
+  const { trackName, trackAuthor, isPlaying } = useContext(StateTrackContext);
+
   return (
     <div className="music-catalog">
       <p className="music-catalog__title">
@@ -16,6 +19,11 @@ const MusicCardsList = ({ title, cardItems }) => {
                 image={item.image}
                 titleSong={item.titleSong}
                 titleAuthor={item.titleAuthor}
+                isPlayingSong={
+                  trackName === item.titleSong &&
+                  trackAuthor === item.titleAuthor
+                }
+                isPlaying={isPlaying}
               />
             </li>
           ))}

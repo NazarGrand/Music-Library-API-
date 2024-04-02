@@ -8,6 +8,8 @@
   background-color: $login-button-color;
   border-radius: 10px;
 
+  position: relative;
+
   &__button {
     background-color: transparent;
     border: none;
@@ -20,6 +22,7 @@
   &__image {
     width: 150px;
     height: 150px;
+    border-radius: 10px;
     margin-top: 12px;
   }
 
@@ -58,5 +61,42 @@
   &__notes {
     height: 17px;
     margin-left: auto;
+  }
+
+  &__gif-play-track {
+    position: absolute;
+    left: 15px;
+    top: 12px;
+
+    width: 150px;
+    height: 150px;
+
+    z-index: 2;
+  }
+
+  &__darken-layer {
+    position: absolute;
+    left: 15px;
+    top: 12px;
+
+    width: 150px;
+    height: 150px;
+
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    z-index: 1;
+  }
+
+  &__img-play-track {
+    position: absolute;
+    left: 40px;
+    top: 37px;
+
+    width: 100px;
+    height: 100px;
+
+    // opacity: 0.9;
+
+    z-index: 2;
   }
 }

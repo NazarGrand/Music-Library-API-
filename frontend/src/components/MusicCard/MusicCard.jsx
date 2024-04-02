@@ -6,8 +6,16 @@ import { DispatchTrackContext } from "../../context/MusicContext";
 import { musicContextActions } from "../../constants/MusicContextActions";
 
 import imgNotes from "../../assets/images/Notes.svg";
+import gifPlayTrack from "../../assets/images/TrackPlay.gif";
+import imgPlayTrack from "../../assets/images/PlayMusic.svg";
 
-const MusicCard = ({ image, titleSong, titleAuthor }) => {
+const MusicCard = ({
+  image,
+  titleSong,
+  titleAuthor,
+  isPlayingSong,
+  isPlaying,
+}) => {
   const dispatch = useContext(DispatchTrackContext);
 
   const action = {
@@ -20,7 +28,14 @@ const MusicCard = ({ image, titleSong, titleAuthor }) => {
   };
 
   const handleClick = () => {
-    dispatch(action);
+    if (isPlayingSong) {
+      dispatch({
+        type: musicContextActions.setIsPlaying,
+        payload: { isPlaying: !isPlaying },
+      });
+    } else {
+      dispatch(action);
+    }
   };
 
   return (
@@ -37,6 +52,26 @@ const MusicCard = ({ image, titleSong, titleAuthor }) => {
 
           <img className="music-card__notes" src={imgNotes} alt="notes" />
         </div>
+
+        {isPlayingSong && (
+          <>
+            {isPlaying ? (
+              <img
+                className="music-card__gif-play-track"
+                src={gifPlayTrack}
+                alt="trackplay"
+              />
+            ) : (
+              <img
+                className="music-card__img-play-track"
+                src={imgPlayTrack}
+                alt="trackplay"
+              />
+            )}
+
+            <div className="music-card__darken-layer" />
+          </>
+        )}
       </button>
     </div>
   );
