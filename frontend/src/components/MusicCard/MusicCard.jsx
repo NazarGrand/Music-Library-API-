@@ -6,8 +6,8 @@ import { DispatchTrackContext } from "../../context/MusicContext";
 import { musicContextActions } from "../../constants/MusicContextActions";
 
 import imgNotes from "../../assets/images/Notes.svg";
-import gifPlayTrack from "../../assets/images/TrackPlay.gif";
-import imgPlayTrack from "../../assets/images/PlayMusic.svg";
+import gifPlayTrack from "../../assets/images/TrackPlayNew.gif";
+import imgPlayTrack from "../../assets/images/PlayMusicCard.svg";
 
 const MusicCard = ({
   image,
@@ -39,9 +39,35 @@ const MusicCard = ({
   };
 
   return (
-    <div className="music-card">
-      <button className="music-card__button" onClick={handleClick}>
-        <img className="music-card__image" src={image} alt="musicimg" />
+    <button className="music-card__button" onClick={handleClick}>
+      <div className="music-card">
+        <div className="music-card__block-image">
+          <img className="music-card__image" src={image} alt="musicimg" />
+
+          {isPlayingSong && (
+            <>
+              {isPlaying ? (
+                <div className="music-card__gif-play">
+                  <img
+                    className="music-card__gif-play-track"
+                    src={gifPlayTrack}
+                    alt="trackplay"
+                  />
+                </div>
+              ) : (
+                <div className="music-card__img-play">
+                  <img
+                    className="music-card__img-play-track"
+                    src={imgPlayTrack}
+                    alt="trackplay"
+                  />
+                </div>
+              )}
+
+              <div className="music-card__darken-layer" />
+            </>
+          )}
+        </div>
 
         <p className="music-card__title-song">{titleSong}</p>
 
@@ -52,28 +78,8 @@ const MusicCard = ({
 
           <img className="music-card__notes" src={imgNotes} alt="notes" />
         </div>
-
-        {isPlayingSong && (
-          <>
-            {isPlaying ? (
-              <img
-                className="music-card__gif-play-track"
-                src={gifPlayTrack}
-                alt="trackplay"
-              />
-            ) : (
-              <img
-                className="music-card__img-play-track"
-                src={imgPlayTrack}
-                alt="trackplay"
-              />
-            )}
-
-            <div className="music-card__darken-layer" />
-          </>
-        )}
-      </button>
-    </div>
+      </div>
+    </button>
   );
 };
 

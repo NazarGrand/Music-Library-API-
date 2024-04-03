@@ -8,8 +8,6 @@
   background-color: $login-button-color;
   border-radius: 10px;
 
-  position: relative;
-
   &__button {
     background-color: transparent;
     border: none;
@@ -19,11 +17,20 @@
     text-align: start;
   }
 
+  &__block-image {
+    position: relative;
+    padding-top: 12px;
+    z-index: 1;
+  }
+
   &__image {
+    position: absolute;
+    top: 0;
     width: 150px;
     height: 150px;
     border-radius: 10px;
     margin-top: 12px;
+    z-index: -2;
   }
 
   &__title-song {
@@ -63,20 +70,12 @@
     margin-left: auto;
   }
 
-  &__gif-play-track {
-    position: absolute;
-    left: 15px;
-    top: 12px;
-
-    width: 150px;
-    height: 150px;
-
-    z-index: 2;
+  &__gif-play {
+    margin-top: 30px;
   }
 
   &__darken-layer {
     position: absolute;
-    left: 15px;
     top: 12px;
 
     width: 150px;
@@ -84,19 +83,11 @@
 
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 10px;
-    z-index: 1;
+    z-index: -1;
   }
 
-  &__img-play-track {
-    position: absolute;
-    left: 40px;
-    top: 37px;
-
-    width: 100px;
-    height: 100px;
-
-    // opacity: 0.9;
-
-    z-index: 2;
+  &__img-play {
+    margin-top: 35px;
+    margin-left: 37px;
   }
 }
