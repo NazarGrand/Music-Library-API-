@@ -96,7 +96,7 @@ const MusicPlayer = () => {
         audioElem.current.pause();
       }
     }
-  }, [isPlaying, loading, isEndingSong, isInfinite, trackUrl]);
+  }, [isPlaying, loading, isEndingSong, isInfinite]);
 
   useEffect(() => {
     if (!loading) {

@@ -39,15 +39,15 @@ const MusicCard = ({
   };
 
   return (
-    <div className="music-card">
-      <button className="music-card__button" onClick={handleClick}>
+    <button className="music-card__button" onClick={handleClick}>
+      <div className="music-card">
         <img className="music-card__image" src={image} alt="musicimg" />
 
         <p className="music-card__title-song">{titleSong}</p>
 
         <div className="music-card__block">
           <Link className="music-card__link-author" to="/author">
-            <p className="music-card__title-author">{titleAuthor}</p>
+            <span>{titleAuthor}</span>
           </Link>
 
           <img className="music-card__notes" src={imgNotes} alt="notes" />
@@ -72,8 +72,8 @@ const MusicCard = ({
             <div className="music-card__darken-layer" />
           </>
         )}
-      </button>
-    </div>
+      </div>
+    </button>
   );
 };
 
