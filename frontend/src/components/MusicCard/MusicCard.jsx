@@ -6,8 +6,8 @@ import { DispatchTrackContext } from "../../context/MusicContext";
 import { musicContextActions } from "../../constants/MusicContextActions";
 
 import imgNotes from "../../assets/images/Notes.svg";
-import gifPlayTrack from "../../assets/images/TrackPlayNew.gif";
-import imgPlayTrack from "../../assets/images/PlayMusicCard.svg";
+import gifPlayTrack from "../../assets/images/TrackPlay.gif";
+import imgPlayTrack from "../../assets/images/PlayMusic.svg";
 
 const MusicCard = ({
   image,
