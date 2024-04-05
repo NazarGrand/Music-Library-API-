@@ -6,7 +6,8 @@ import imgPlus from "../../assets/images/Plus.svg";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../utils/routes";
 
-const TracksList = ({ title, trackItems, label }) => {
+const TracksList = ({ title, trackItems }) => {
+  const album = "trending-songs";
   return (
     <div className="tracks">
       <div className="tracks__title">
@@ -37,7 +38,7 @@ const TracksList = ({ title, trackItems, label }) => {
           </ul>
 
           <div className="tracks__view-all">
-            <Link className="tracks__link-view" to={ROUTES.ALBUMS}>
+            <Link className="tracks__link-view" to={`albums/${album}`}>
               {" "}
               <img src={imgPlus} alt="plus" />{" "}
               <span className="tracks__view-all-text">View All</span>

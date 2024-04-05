@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import MusicCardsList from "../../components/MusicCardsList/MusicCardsList";
 import Loader from "../../components/Loader/Loader";
@@ -7,6 +7,7 @@ import TracksList from "../../components/TracksList/TracksList";
 import ArtistsList from "../../components/ArtistsList/ArtistsList";
 import { ArtistItems } from "../../data/InformationArtists";
 import Slider from "../../components/Slider/Slider";
+import Header from "../../components/Header/Header";
 // import { MusicItems } from "../../data/InformationMusic";
 
 const HomePage = () => {
@@ -41,6 +42,7 @@ const HomePage = () => {
 
   return (
     <>
+      <Header />
       {loading ? (
         <Loader />
       ) : (

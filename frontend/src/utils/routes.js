@@ -1,7 +1,7 @@
 export const ROUTES = {
   HOME: "/",
   DISCOVER: "/discover",
-  ALBUMS: "/albums",
+  ALBUMS: "/albums/:album",
   ARTISTS: "/artists",
   ARTIST: "/artist/:id",
 };
