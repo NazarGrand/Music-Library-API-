@@ -27,12 +27,12 @@ const MusicPlayer = () => {
     trackImage,
     trackVolume,
     trackPrevVolume,
+    isPlaying,
   } = useContext(StateTrackContext);
   const dispatch = useContext(DispatchTrackContext);
 
   const [progressSong, setProgressSong] = useState({ progress: 0 });
 
-  const [isPlaying, setIsPlaying] = useState(true);
   const [isMoving, setIsMoving] = useState(false);
 
   const [isEndingSong, setIsEndingSong] = useState(false);
@@ -42,7 +42,7 @@ const MusicPlayer = () => {
   const [isVolume, setIsVolume] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
-  const audioElem = useRef();
+  const audioElem = useRef(null);
   const clickMusicTrack = useRef();
   const clickVolume = useRef();
 
@@ -54,7 +54,10 @@ const MusicPlayer = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    setIsPlaying(true);
+    dispatch({
+      type: musicContextActions.setIsPlaying,
+      payload: { isPlaying: true },
+    });
     try {
       const track = await trackService.getTrackUrl(trackName, trackAuthor);
 
@@ -106,7 +109,10 @@ const MusicPlayer = () => {
   }, [trackVolume, isVolume, loading]);
 
   const PlayPause = () => {
-    setIsPlaying(!isPlaying);
+    dispatch({
+      type: musicContextActions.setIsPlaying,
+      payload: { isPlaying: !isPlaying },
+    });
     if (isEndingSong) {
       setIsEndingSong(false);
       setProgressSong({ ...progressSong, progress: 0 });
@@ -133,13 +139,16 @@ const MusicPlayer = () => {
     }
 
     if (currentTime === duration) {
-      setIsEndingSong((prevIsEndingSong) => {
-        const newIsEndingSong = !prevIsEndingSong;
+      const newIsEndingSong = !isEndingSong;
 
-        if (newIsEndingSong && !isInfinite) setIsPlaying(false);
+      setIsEndingSong(newIsEndingSong);
 
-        return newIsEndingSong;
-      });
+      if (newIsEndingSong && !isInfinite) {
+        dispatch({
+          type: musicContextActions.setIsPlaying,
+          payload: { isPlaying: false },
+        });
+      }
     }
   };
 
@@ -199,21 +208,19 @@ const MusicPlayer = () => {
   const imgVolume = isVolume ? imgVolumeOn : imgVolumeOff;
 
   const handleClickVolume = () => {
-    setIsVolume((prevIsVolume) => {
-      const newIsVolume = !prevIsVolume;
-      if (!newIsVolume && trackVolume !== 0) {
-        dispatch({
-          type: musicContextActions.setVolume,
-          payload: { trackPrevVolume: trackVolume, trackVolume: 0 },
-        });
-      } else {
-        dispatch({
-          type: musicContextActions.setNewVolume,
-          payload: { trackVolume: trackPrevVolume },
-        });
-        return newIsVolume;
-      }
-    });
+    const newIsVolume = !isVolume;
+    if (!newIsVolume && trackVolume !== 0) {
+      dispatch({
+        type: musicContextActions.setVolume,
+        payload: { trackPrevVolume: trackVolume, trackVolume: 0 },
+      });
+    } else {
+      dispatch({
+        type: musicContextActions.setNewVolume,
+        payload: { trackVolume: trackPrevVolume },
+      });
+    }
+    setIsVolume(newIsVolume);
   };
 
   const clickVolumeTrack = (e) => {

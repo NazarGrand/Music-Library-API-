@@ -21,6 +21,8 @@
     background-color: $login-button-color;
     border-radius: 5px;
     width: 1075px;
+
+    position: relative;
   }
 
   &__block-title {
@@ -116,5 +118,37 @@
     margin-top: 5px;
     display: flex;
     align-items: center;
+  }
+
+  &__gif-play-track {
+    position: absolute;
+    left: 0;
+
+    width: 60px;
+    height: 60px;
+
+    z-index: 2;
+  }
+
+  &__darken-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+    z-index: 1;
+  }
+
+  &__img-play-track {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+
+    width: 40px;
+    height: 40px;
+
+    z-index: 2;
   }
 }

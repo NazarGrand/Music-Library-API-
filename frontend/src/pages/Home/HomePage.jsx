@@ -7,7 +7,7 @@ import TracksList from "../../components/TracksList/TracksList";
 import ArtistsList from "../../components/ArtistsList/ArtistsList";
 import { ArtistItems } from "../../data/InformationArtists";
 import Slider from "../../components/Slider/Slider";
-// import { MusicItems } from "../../data/InformationMusic";
+import { MusicItems } from "../../data/InformationMusic";
 
 const HomePage = () => {
   const [topSongs, setTopSongs] = useState([]);
@@ -49,7 +49,8 @@ const HomePage = () => {
 
           <MusicCardsList
             title="Weekly Top"
-            cardItems={topSongs.slice(0, 5) ?? []}
+            // cardItems={topSongs.slice(0, 5) ?? []}
+            cardItems={MusicItems}
           />
 
           <TracksList
