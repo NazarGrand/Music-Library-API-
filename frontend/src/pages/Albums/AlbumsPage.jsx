@@ -3,6 +3,7 @@ import Album from "../../components/Album/Album";
 import { useParams } from "react-router-dom";
 import * as musicService from "../../services/MusicService.js";
 import Loader from "../../components/Loader/Loader.jsx";
+import HeaderAlbum from "../../components/HeaderAlbum/HeaderAlbum.jsx";
 
 const AlbumsPage = () => {
   let { album } = useParams();
@@ -41,7 +42,18 @@ const AlbumsPage = () => {
     fetchData();
   }, []);
 
-  return <>{loading ? <Loader /> : <Album tracks={songs} />}</>;
+  return (
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          {" "}
+          <HeaderAlbum tracks={songs} /> <Album tracks={songs} />{" "}
+        </>
+      )}
+    </>
+  );
 };
 
 export default AlbumsPage;

@@ -4,11 +4,11 @@ import TrackItem from "../TrackItem/TrackItem";
 import imgPlus from "../../assets/images/Plus.svg";
 
 const AlbumList = ({ tracks }) => {
-  const [currentStartIndex, setCurrentStartIndex] = useState(0);
+  const [numberTracks, setNumberTracks] = useState(20);
   const tracksPerPage = 20;
 
   const handleClick = () => {
-    setCurrentStartIndex(currentStartIndex + tracksPerPage);
+    setNumberTracks(numberTracks + tracksPerPage);
   };
 
   return (
@@ -23,21 +23,20 @@ const AlbumList = ({ tracks }) => {
             </div>
 
             <ul className="album-list__list">
-              {tracks
-                .slice(currentStartIndex, currentStartIndex + tracksPerPage)
-                .map((item, index) => (
-                  <li key={index}>
-                    <TrackItem
-                      indexTrack={currentStartIndex + index + 1}
-                      image={item.image}
-                      titleSong={item.titleSong}
-                      titleAuthor={item.titleAuthor}
-                      releaseDate={item.releaseDate}
-                      label={item.label}
-                    />
-                  </li>
-                ))}
+              {tracks.slice(0, numberTracks).map((item, index) => (
+                <li key={index}>
+                  <TrackItem
+                    indexTrack={index + 1}
+                    image={item.image}
+                    titleSong={item.titleSong}
+                    titleAuthor={item.titleAuthor}
+                    releaseDate={item.releaseDate}
+                    label={item.label}
+                  />
+                </li>
+              ))}
             </ul>
+
             <div className="album-list__view-all">
               <button className="album-list__button-view" onClick={handleClick}>
                 {" "}

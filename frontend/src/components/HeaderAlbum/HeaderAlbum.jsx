@@ -10,7 +10,7 @@ import { musicContextActions } from "../../constants/MusicContextActions";
 const HeaderAlbum = ({ tracks }) => {
   const dispatch = useContext(DispatchTrackContext);
 
-  const handleClick = () => {
+  const handlePlayAllClick = () => {
     if (tracks.length !== 0) {
       dispatch({
         type: musicContextActions.setTrack,
@@ -54,7 +54,10 @@ const HeaderAlbum = ({ tracks }) => {
           )}
         </div>
 
-        <button className="header-album__button-play" onClick={handleClick}>
+        <button
+          className="header-album__button-play"
+          onClick={handlePlayAllClick}
+        >
           <p className="header-album__title-play">Play All</p>
 
           <img src={imgPlayAll} alt="playall" />
