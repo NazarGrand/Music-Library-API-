@@ -8,6 +8,7 @@ const initialState = {
   trackUrl: null,
   trackVolume: 70,
   trackPrevVolume: 70,
+  isPlaying: true,
 };
 
 export const StateTrackContext = createContext(initialState);
@@ -38,6 +39,11 @@ export const MusicProvider = ({ children }) => {
         return {
           ...state,
           trackVolume: action.payload.trackVolume,
+        };
+      case musicContextActions.setIsPlaying:
+        return {
+          ...state,
+          isPlaying: action.payload.isPlaying,
         };
       default:
         return state;

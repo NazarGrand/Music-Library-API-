@@ -3,6 +3,9 @@ import dayjs from "dayjs";
 import "./TrackItem.scss";
 
 import imgHeart from "../../assets/images/Heart.svg";
+import gifPlayTrack from "../../assets/images/TrackPlay.gif";
+import imgPlayTrack from "../../assets/images/PlayMusic.svg";
+
 import { DispatchTrackContext } from "../../context/MusicContext";
 import { musicContextActions } from "../../constants/MusicContextActions";
 import { Link } from "react-router-dom";
@@ -20,18 +23,27 @@ const TrackItem = ({
   titleAuthor,
   releaseDate,
   label,
+  isPlayingSong,
+  isPlaying,
 }) => {
   const dispatch = useContext(DispatchTrackContext);
 
   const handleClick = () => {
-    dispatch({
-      type: musicContextActions.setTrack,
-      payload: {
-        trackName: titleSong,
-        trackAuthor: titleAuthor,
-        trackImage: image,
-      },
-    });
+    if (isPlayingSong) {
+      dispatch({
+        type: musicContextActions.setIsPlaying,
+        payload: { isPlaying: !isPlaying },
+      });
+    } else {
+      dispatch({
+        type: musicContextActions.setTrack,
+        payload: {
+          trackName: titleSong,
+          trackAuthor: titleAuthor,
+          trackImage: image,
+        },
+      });
+    }
   };
 
   return (
@@ -64,6 +76,27 @@ const TrackItem = ({
             <img src={imgHeart} alt="heart" />
           </button>
         </div>
+
+        <button className="track-item__button" onClick={handleClick}>
+          {isPlayingSong && (
+            <>
+              {isPlaying ? (
+                <img
+                  className="track-item__gif-play-track"
+                  src={gifPlayTrack}
+                  alt="trackplay"
+                />
+              ) : (
+                <img
+                  className="track-item__img-play-track"
+                  src={imgPlayTrack}
+                  alt="trackplay"
+                />
+              )}
+              <div className="track-item__darken-layer" />
+            </>
+          )}
+        </button>
       </div>
     </div>
   );

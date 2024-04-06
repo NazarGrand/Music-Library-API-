@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./TracksList.scss";
 import TrackItem from "../TrackItem/TrackItem";
 
 import imgPlus from "../../assets/images/Plus.svg";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../utils/routes";
+import { StateTrackContext } from "../../context/MusicContext";
 
 const TracksList = ({ title, trackItems }) => {
+  const { trackName, trackAuthor, isPlaying } = useContext(StateTrackContext);
   const album = "trending-songs";
+
   return (
     <div className="tracks">
       <div className="tracks__title">
@@ -32,6 +35,11 @@ const TracksList = ({ title, trackItems }) => {
                   titleAuthor={item.titleAuthor}
                   releaseDate={item.releaseDate}
                   label={item.label}
+                  isPlayingSong={
+                    trackName === item.titleSong &&
+                    trackAuthor === item.titleAuthor
+                  }
+                  isPlaying={isPlaying}
                 />
               </li>
             ))}
