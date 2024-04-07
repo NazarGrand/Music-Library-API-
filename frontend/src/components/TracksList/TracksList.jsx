@@ -4,7 +4,6 @@ import TrackItem from "../TrackItem/TrackItem";
 
 import imgPlus from "../../assets/images/Plus.svg";
 import { Link } from "react-router-dom";
-import { ROUTES } from "../../utils/routes";
 import { StateTrackContext } from "../../context/MusicContext";
 
 const TracksList = ({ title, trackItems }) => {

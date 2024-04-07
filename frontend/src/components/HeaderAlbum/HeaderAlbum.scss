@@ -3,7 +3,14 @@
 .header-album {
   margin-left: 30px;
   margin-top: 20px;
-  background-image: linear-gradient(to right, #0e9eef, #3f3f53);
+  // background-image: linear-gradient(to right, #0e9eef, #3f3f53);
+  background: linear-gradient(
+    90.22deg,
+    #1171e2 12.99%,
+    rgba(83, 173, 214, 0.0230101) 112.49%,
+    rgba(139, 203, 231, 0) 114.84%
+  );
+  filter: drop-shadow(3px 12px 4px rgba(0, 0, 0, 0.3));
   width: 1170px;
   height: 320px;
   border-radius: 10px;
@@ -22,7 +29,7 @@
   &__block-title {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 43px;
     margin-left: 40px;
   }
 
@@ -35,12 +42,19 @@
 
   &__title-author {
     width: 388px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
     font-weight: 600;
     font-size: 20px;
     margin: 0;
   }
 
   &__title-count {
+    display: flex;
+    gap: 20px;
     font-weight: 600;
     font-size: 20px;
     margin: 0;

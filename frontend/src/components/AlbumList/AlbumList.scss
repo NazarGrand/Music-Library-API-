@@ -76,4 +76,16 @@
     margin-bottom: 15px;
     text-align: center;
   }
+
+  &__time {
+    display: flex;
+    width: 1125px;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+  }
+
+  &__title-time {
+    @include customText(400, 20px);
+    letter-spacing: 0.3px;
+  }
 }

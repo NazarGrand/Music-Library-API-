@@ -2,12 +2,39 @@ import React, { useContext } from "react";
 import "./HeaderAlbum.scss";
 import NavAlbums from "../NavAlbums/NavAlbums";
 
-import imgTrendingMusic from "../../assets/images/TrendingMusic.png";
+import dayjs from "dayjs";
+import moment from "moment";
+
 import imgPlayAll from "../../assets/images/PlayAll.svg";
+import imgDot from "../../assets/images/Dot.svg";
+import imgTrendingSongs from "../../assets/images/TrendingMusic.png";
+
 import { DispatchTrackContext } from "../../context/MusicContext";
 import { musicContextActions } from "../../constants/MusicContextActions";
 
-const HeaderAlbum = ({ tracks }) => {
+function formatDate(inputDate) {
+  const dateObj = dayjs(inputDate);
+  const formattedDate = dateObj.format("MMM D, YYYY");
+  return formattedDate;
+}
+
+function formatMilliseconds(milliseconds) {
+  const duration = moment.duration(milliseconds);
+
+  let formattedTime = "";
+  if (duration.hours() > 0) {
+    formattedTime += `${duration.hours()}h `;
+  }
+  if (duration.minutes() > 0) {
+    formattedTime += `${duration.minutes()}m `;
+  }
+  if (duration.seconds() > 0) {
+    formattedTime += `${duration.seconds()}s`;
+  }
+  return formattedTime;
+}
+
+const HeaderAlbum = ({ albumData, tracks, album }) => {
   const dispatch = useContext(DispatchTrackContext);
 
   const handlePlayAllClick = () => {
@@ -30,30 +57,31 @@ const HeaderAlbum = ({ tracks }) => {
       <div className="header-album__block">
         <img
           className="header-album__image"
-          src={imgTrendingMusic}
-          alt="trendMusic"
+          src={albumData.imageAlbum}
+          alt="imageAlbum"
         />
 
         <div className="header-album__block-title">
-          <p className="header-album__title">Trending songs</p>
+          <p className="header-album__title">{albumData.nameAlbum}</p>
 
-          <p className="header-album__title-author">
-            {tracks.length !== 0 && (
+          <p className="header-album__title-author">{albumData.artistsAlbum}</p>
+
+          <p className="header-album__title-count">
+            {album !== "weekly-top" && album !== "trending-songs" && (
               <>
-                {tracks
-                  .slice(0, 4)
-                  .map((item, index) => item.titleAuthor)
-                  .join(", ")}{" "}
-                {"and ..."}
+                {formatDate(albumData.releaseDate)}
+                <img src={imgDot} alt="dot" />{" "}
+              </>
+            )}
+            {albumData.countSongs} songs
+            {album !== "weekly-top" && album !== "trending-songs" && (
+              <>
+                <img src={imgDot} alt="dot" />
+                {formatMilliseconds(albumData.durationSongs)}
               </>
             )}
           </p>
-
-          {tracks.length !== 0 && (
-            <p className="header-album__title-count">{tracks.length} songs</p>
-          )}
         </div>
-
         <button
           className="header-album__button-play"
           onClick={handlePlayAllClick}

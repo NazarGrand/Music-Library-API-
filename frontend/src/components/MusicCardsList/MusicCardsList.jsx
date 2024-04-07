@@ -8,6 +8,8 @@ import { ROUTES } from "../../utils/routes";
 const MusicCardsList = ({ title, cardItems }) => {
   const { trackName, trackAuthor, isPlaying } = useContext(StateTrackContext);
 
+  const album = "weekly-top";
+
   return (
     <div className="music-catalog">
       <p className="music-catalog__title">
@@ -32,7 +34,7 @@ const MusicCardsList = ({ title, cardItems }) => {
             ))}
           </ul>
 
-          <Link className="music-catalog__view-all" to={ROUTES.ALBUMS}>
+          <Link className="music-catalog__view-all" to={`albums/${album}`}>
             <div className="music-catalog__button">+</div>
 
             <p className="music-catalog__btn-text">View All</p>
