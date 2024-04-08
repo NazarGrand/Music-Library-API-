@@ -51,11 +51,9 @@ const MusicPlayer = () => {
   const [durationSong, setDurationSong] = useState(null);
 
   const [loading, setLoading] = useState(true);
-  const [isLoadedAudio, setIsLoadedAudio] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
-    setIsLoadedAudio(false);
     dispatch({
       type: musicContextActions.setIsPlaying,
       payload: { isPlaying: true },
@@ -131,7 +129,6 @@ const MusicPlayer = () => {
   };
 
   const handleLoadedData = () => {
-    setIsLoadedAudio(true);
     if (audioElem.current && isPlaying) {
       audioElem.current.play();
     } else {
