@@ -11,6 +11,8 @@ import imgTrendingSongs from "../../assets/images/TrendingMusic.png";
 
 import { DispatchTrackContext } from "../../context/MusicContext";
 import { musicContextActions } from "../../constants/MusicContextActions";
+import { DispatchPlaylistContext } from "../../context/PlayListContext";
+import { playlistContextActions } from "../../constants/PlaylistContextActions";
 
 function formatDate(inputDate) {
   const dateObj = dayjs(inputDate);
@@ -37,7 +39,10 @@ function formatMilliseconds(milliseconds) {
 const HeaderAlbum = ({ albumData, tracks, album }) => {
   const dispatch = useContext(DispatchTrackContext);
 
+  const dispatchPlaylist = useContext(DispatchPlaylistContext);
+
   const handlePlayAllClick = () => {
+    console.log(tracks[0]);
     if (tracks.length !== 0) {
       dispatch({
         type: musicContextActions.setTrack,
@@ -45,6 +50,18 @@ const HeaderAlbum = ({ albumData, tracks, album }) => {
           trackName: tracks[0].titleSong,
           trackAuthor: tracks[0].titleAuthor,
           trackImage: tracks[0].image,
+        },
+      });
+
+      dispatch({
+        type: musicContextActions.setIsPlaying,
+        payload: { isPlaying: true },
+      });
+
+      dispatchPlaylist({
+        type: playlistContextActions.setCurrentIndexTrackPlaying,
+        payload: {
+          currentIndexTrackPlaying: 0,
         },
       });
     }

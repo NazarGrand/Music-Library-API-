@@ -17,11 +17,27 @@ export const PlaylistProvider = ({ children }) => {
           ...state,
           playlistTracks: action.payload.playlistTracks,
         };
+
       case playlistContextActions.setCurrentIndexTrackPlaying:
         return {
           ...state,
           currentIndexTrackPlaying: action.payload.currentIndexTrackPlaying,
         };
+
+      case playlistContextActions.setTrackPlayingUrl:
+        return {
+          ...state,
+          playlistTracks: state.playlistTracks.map((track, index) => {
+            if (index === state.currentIndexTrackPlaying) {
+              return {
+                ...track,
+                trackPlayingUrl: action.payload.trackPlayingUrl,
+              };
+            }
+            return track;
+          }),
+        };
+
       default:
         return state;
     }

@@ -9,6 +9,11 @@ import imgPlayTrack from "../../assets/images/PlayMusic.svg";
 import { DispatchTrackContext } from "../../context/MusicContext";
 import { musicContextActions } from "../../constants/MusicContextActions";
 import { Link } from "react-router-dom";
+import {
+  DispatchPlaylistContext,
+  StatePlaylistContext,
+} from "../../context/PlayListContext";
+import { playlistContextActions } from "../../constants/PlaylistContextActions";
 
 function formatMilliseconds(milliseconds) {
   const duration = moment.duration(milliseconds);
@@ -45,30 +50,39 @@ const AlbumTrack = ({
   image,
   titleSong,
   titleAuthor,
-  releaseDate,
-  label,
   durationSong,
   isPlayingSong,
   isPlaying,
 }) => {
   const dispatch = useContext(DispatchTrackContext);
 
+  const { currentIndexTrackPlaying } = useContext(StatePlaylistContext);
+  const dispatchPlaylist = useContext(DispatchPlaylistContext);
+
   const handleClick = () => {
-    if (isPlayingSong) {
-      dispatch({
-        type: musicContextActions.setIsPlaying,
-        payload: { isPlaying: !isPlaying },
-      });
-    } else {
-      dispatch({
-        type: musicContextActions.setTrack,
-        payload: {
-          trackName: titleSong,
-          trackAuthor: titleAuthor,
-          trackImage: image,
-        },
-      });
-    }
+    const playing =
+      currentIndexTrackPlaying === indexTrack - 1 ? !isPlaying : true;
+
+    dispatch({
+      type: musicContextActions.setIsPlaying,
+      payload: { isPlaying: playing },
+    });
+
+    dispatch({
+      type: musicContextActions.setTrack,
+      payload: {
+        trackName: titleSong,
+        trackAuthor: titleAuthor,
+        trackImage: image,
+      },
+    });
+
+    dispatchPlaylist({
+      type: playlistContextActions.setCurrentIndexTrackPlaying,
+      payload: {
+        currentIndexTrackPlaying: indexTrack - 1,
+      },
+    });
   };
 
   return (
