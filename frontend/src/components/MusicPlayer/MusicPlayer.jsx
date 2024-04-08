@@ -51,9 +51,11 @@ const MusicPlayer = () => {
   const [durationSong, setDurationSong] = useState(null);
 
   const [loading, setLoading] = useState(true);
+  const [isLoadedAudio, setIsLoadedAudio] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
+    setIsLoadedAudio(false);
     dispatch({
       type: musicContextActions.setIsPlaying,
       payload: { isPlaying: true },
@@ -85,18 +87,14 @@ const MusicPlayer = () => {
   }, [trackName]);
 
   useEffect(() => {
-    if (!loading) {
-      if (isPlaying) {
-        if (isEndingSong && isInfinite) {
-          setProgressSong({ ...progressSong, progress: 0 });
-          audioElem.current.currentTime = 0;
-        }
+    if (isPlaying) {
+      if (isEndingSong && isInfinite) {
+        setProgressSong({ ...progressSong, progress: 0 });
+        audioElem.current.currentTime = 0;
         audioElem.current.play();
-      } else {
-        audioElem.current.pause();
       }
     }
-  }, [isPlaying, loading, isEndingSong, isInfinite]);
+  }, [isPlaying, isEndingSong, isInfinite]);
 
   useEffect(() => {
     if (!loading) {
@@ -113,10 +111,32 @@ const MusicPlayer = () => {
       type: musicContextActions.setIsPlaying,
       payload: { isPlaying: !isPlaying },
     });
+
+    const newIsPlaying = !isPlaying;
+    if (!loading) {
+      if (newIsPlaying) {
+        audioElem.current.play();
+      } else {
+        audioElem.current.pause();
+      }
+    }
+
     if (isEndingSong) {
       setIsEndingSong(false);
       setProgressSong({ ...progressSong, progress: 0 });
-      audioElem.current.currentTime = 0;
+      if (audioElem.current) {
+        audioElem.current.currentTime = 0;
+      }
+    }
+  };
+
+  const handleLoadedData = () => {
+    setIsLoadedAudio(true);
+    if (audioElem.current && isPlaying) {
+      audioElem.current.play();
+    } else {
+      audioElem.current.play();
+      audioElem.current.pause();
     }
   };
 
@@ -312,7 +332,12 @@ const MusicPlayer = () => {
         ></img>
       ) : (
         <>
-          <audio src={trackUrl} ref={audioElem} onTimeUpdate={onPlaying} />
+          <audio
+            src={trackUrl}
+            ref={audioElem}
+            onTimeUpdate={onPlaying}
+            onLoadedData={handleLoadedData}
+          />
           <div className="player__track-song">
             {currentTime && (
               <div className="player__current-time">
@@ -342,7 +367,7 @@ const MusicPlayer = () => {
               </div>
             )}
 
-            {durationSong && (
+            {durationSong && !isNaN(durationSong.minutes) && (
               <div className="player__current-time">
                 <p className="player__current-time-title">
                   {durationSong.minutes}:
