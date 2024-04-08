@@ -51,7 +51,6 @@ const AlbumTrack = ({
   isPlayingSong,
   isPlaying,
 }) => {
-  console.log(isPlayingSong);
   const dispatch = useContext(DispatchTrackContext);
 
   const handleClick = () => {

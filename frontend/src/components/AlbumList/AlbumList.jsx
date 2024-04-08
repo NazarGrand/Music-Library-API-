@@ -4,17 +4,19 @@ import TrackItem from "../TrackItem/TrackItem";
 import imgPlus from "../../assets/images/Plus.svg";
 import AlbumTrack from "../AlbumTrack/AlbumTrack";
 import { StateTrackContext } from "../../context/MusicContext";
+import { StatePlaylistContext } from "../../context/PlayListContext";
 
 const AlbumList = ({ tracks, album }) => {
   const { trackName, trackAuthor, isPlaying } = useContext(StateTrackContext);
   const [numberTracks, setNumberTracks] = useState(20);
   const tracksPerPage = 20;
 
-  console.log(album);
-
   const handleClick = () => {
     setNumberTracks(numberTracks + tracksPerPage);
   };
+
+  const { playlistTracks } = useContext(StatePlaylistContext);
+  console.log(playlistTracks);
 
   return (
     <>

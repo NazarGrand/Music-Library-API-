@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import _ from "lodash";
 import * as musicService from "../../services/MusicService.js";
@@ -9,6 +9,8 @@ import HeaderAlbum from "../../components/HeaderAlbum/HeaderAlbum.jsx";
 import AlbumList from "../../components/AlbumList/AlbumList.jsx";
 
 import imgTrendingMusic from "../../assets/images/TrendingMusic.png";
+import { DispatchPlaylistContext } from "../../context/PlayListContext.jsx";
+import { playlistContextActions } from "../../constants/PlaylistContextActions.js";
 
 const AlbumsPage = () => {
   let { album } = useParams();
@@ -16,6 +18,8 @@ const AlbumsPage = () => {
   const [songs, setSongs] = useState([]);
   const [albumData, setAlbumData] = useState({});
   const [loading, setLoading] = useState(true);
+
+  const dispatch = useContext(DispatchPlaylistContext);
 
   const fetchData = async () => {
     try {
@@ -35,6 +39,13 @@ const AlbumsPage = () => {
         }));
 
         setSongs(newTopSongs);
+
+        dispatch({
+          type: playlistContextActions.setPlaylist,
+          payload: {
+            playlistTracks: newTopSongs,
+          },
+        });
 
         const albumInfo = {
           nameAlbum: _.startCase(album),
@@ -88,6 +99,13 @@ const AlbumsPage = () => {
         }));
 
         setSongs(albumSongs);
+
+        dispatch({
+          type: playlistContextActions.setPlaylist,
+          payload: {
+            playlistTracks: albumSongs,
+          },
+        });
       }
     } catch (error) {
       console.error("Error getting data:", error);
