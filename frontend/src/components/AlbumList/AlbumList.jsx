@@ -4,14 +4,28 @@ import TrackItem from "../TrackItem/TrackItem";
 import imgPlus from "../../assets/images/Plus.svg";
 import AlbumTrack from "../AlbumTrack/AlbumTrack";
 import { StateTrackContext } from "../../context/MusicContext";
+import { DispatchPlaylistContext } from "../../context/PlayListContext";
+import { playlistContextActions } from "../../constants/PlaylistContextActions";
 
 const AlbumList = ({ tracks, album }) => {
   const { trackName, trackAuthor, isPlaying } = useContext(StateTrackContext);
   const [numberTracks, setNumberTracks] = useState(20);
   const tracksPerPage = 20;
 
+  const dispatch = useContext(DispatchPlaylistContext);
+
   const handleClick = () => {
     setNumberTracks(numberTracks + tracksPerPage);
+
+    dispatch({
+      type: playlistContextActions.setNextSongsInPlaylist,
+      payload: {
+        nextPlaylistTracks: tracks.slice(
+          numberTracks,
+          numberTracks + tracksPerPage
+        ),
+      },
+    });
   };
 
   return (
@@ -74,21 +88,21 @@ const AlbumList = ({ tracks, album }) => {
               </ul>
             )}
 
-            {tracks.length > 20 && (
-              <div className="album-list__view-all">
+            {numberTracks < tracks.length && (
+              <div className="album-list__load-more">
                 <button
-                  className="album-list__button-view"
+                  className="album-list__button-load-more"
                   onClick={handleClick}
                 >
                   {" "}
                   <img src={imgPlus} alt="plus" />{" "}
-                  <span className="album-list__view-all-text">Load More</span>
+                  <span className="album-list__load-more-text">Load More</span>
                 </button>
               </div>
             )}
           </>
         ) : (
-          <p className="album-list__subtitle">No music found</p>
+          <p className="album-list__no-results">No music found</p>
         )}
       </div>
     </>

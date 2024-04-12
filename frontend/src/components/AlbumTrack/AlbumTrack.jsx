@@ -5,8 +5,12 @@ import "./AlbumTrack.scss";
 import imgHeart from "../../assets/images/Heart.svg";
 import gifPlayTrack from "../../assets/images/TrackPlay.gif";
 import imgPlayTrack from "../../assets/images/PlayMusic.svg";
+import imgLoadingTrack from "../../assets/images/LoadingTrack.svg";
 
-import { DispatchTrackContext } from "../../context/MusicContext";
+import {
+  DispatchTrackContext,
+  StateTrackContext,
+} from "../../context/MusicContext";
 import { musicContextActions } from "../../constants/MusicContextActions";
 import { Link } from "react-router-dom";
 import {
@@ -54,6 +58,7 @@ const AlbumTrack = ({
   isPlayingSong,
   isPlaying,
 }) => {
+  const { isLoading } = useContext(StateTrackContext);
   const dispatch = useContext(DispatchTrackContext);
 
   const { currentIndexTrackPlaying } = useContext(StatePlaylistContext);
@@ -121,20 +126,33 @@ const AlbumTrack = ({
         <button className="album-track__button" onClick={handleClick}>
           {isPlayingSong && (
             <>
-              {isPlaying ? (
-                <img
-                  className="album-track__gif-play-track"
-                  src={gifPlayTrack}
-                  alt="trackplay"
-                />
+              {isLoading ? (
+                <>
+                  <img
+                    className="album-track__gif-play-track"
+                    src={imgLoadingTrack}
+                    alt="loading"
+                  />
+                  <div className="album-track__darken-layer" />
+                </>
               ) : (
-                <img
-                  className="album-track__img-play-track"
-                  src={imgPlayTrack}
-                  alt="trackplay"
-                />
+                <>
+                  {isPlaying ? (
+                    <img
+                      className="album-track__gif-play-track"
+                      src={gifPlayTrack}
+                      alt="trackplay"
+                    />
+                  ) : (
+                    <img
+                      className="album-track__img-play-track"
+                      src={imgPlayTrack}
+                      alt="trackplay"
+                    />
+                  )}
+                  <div className="album-track__darken-layer" />
+                </>
               )}
-              <div className="album-track__darken-layer" />
             </>
           )}
         </button>

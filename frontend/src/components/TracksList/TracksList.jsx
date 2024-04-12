@@ -5,10 +5,21 @@ import TrackItem from "../TrackItem/TrackItem";
 import imgPlus from "../../assets/images/Plus.svg";
 import { Link } from "react-router-dom";
 import { StateTrackContext } from "../../context/MusicContext";
+import { DispatchPlaylistContext } from "../../context/PlayListContext";
+import { playlistContextActions } from "../../constants/PlaylistContextActions";
 
 const TracksList = ({ title, trackItems }) => {
   const { trackName, trackAuthor, isPlaying } = useContext(StateTrackContext);
   const album = "trending-songs";
+
+  const dispatch = useContext(DispatchPlaylistContext);
+
+  const initializePlaylistContext = () => {
+    dispatch({
+      type: playlistContextActions.setPlaylist,
+      payload: { playlistTracks: trackItems },
+    });
+  };
 
   return (
     <div className="tracks">
@@ -39,6 +50,7 @@ const TracksList = ({ title, trackItems }) => {
                     trackAuthor === item.titleAuthor
                   }
                   isPlaying={isPlaying}
+                  initializePlaylistContext={initializePlaylistContext}
                 />
               </li>
             ))}

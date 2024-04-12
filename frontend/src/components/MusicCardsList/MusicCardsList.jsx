@@ -4,11 +4,22 @@ import MusicCard from "../MusicCard/MusicCard";
 import { StateTrackContext } from "../../context/MusicContext";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../utils/routes";
+import { DispatchPlaylistContext } from "../../context/PlayListContext";
+import { playlistContextActions } from "../../constants/PlaylistContextActions";
 
 const MusicCardsList = ({ title, cardItems }) => {
   const { trackName, trackAuthor, isPlaying } = useContext(StateTrackContext);
 
+  const dispatch = useContext(DispatchPlaylistContext);
+
   const album = "weekly-top";
+
+  const initializePlaylistContext = () => {
+    dispatch({
+      type: playlistContextActions.setPlaylist,
+      payload: { playlistTracks: cardItems },
+    });
+  };
 
   return (
     <div className="music-catalog">
@@ -21,6 +32,7 @@ const MusicCardsList = ({ title, cardItems }) => {
             {cardItems.map((item, index) => (
               <li key={index}>
                 <MusicCard
+                  indexTrack={index}
                   image={item.image}
                   titleSong={item.titleSong}
                   titleAuthor={item.titleAuthor}
@@ -29,6 +41,7 @@ const MusicCardsList = ({ title, cardItems }) => {
                     trackAuthor === item.titleAuthor
                   }
                   isPlaying={isPlaying}
+                  initializePlaylistContext={initializePlaylistContext}
                 />
               </li>
             ))}

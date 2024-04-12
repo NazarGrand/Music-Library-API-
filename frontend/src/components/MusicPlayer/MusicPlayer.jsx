@@ -33,6 +33,7 @@ const MusicPlayer = () => {
     trackVolume,
     trackPrevVolume,
     isPlaying,
+    isLoading,
   } = useContext(StateTrackContext);
   const dispatch = useContext(DispatchTrackContext);
 
@@ -59,16 +60,18 @@ const MusicPlayer = () => {
 
   const [durationSong, setDurationSong] = useState(null);
 
-  const [loading, setLoading] = useState(true);
+  const [loadingUrlTrack, setLoadingUrlTrack] = useState(true);
 
   const fetchData = async () => {
+    dispatch({
+      type: musicContextActions.setIsLoading,
+      payload: { isLoading: true },
+    });
+
     try {
-      if (
-        !playlistTracks[currentIndexTrackPlaying].hasOwnProperty(
-          "trackPlayingUrl"
-        )
-      ) {
-        setLoading(true);
+      if (!playlistTracks[currentIndexTrackPlaying].trackPlayingUrl) {
+        setLoadingUrlTrack(true);
+
         const track = await trackService.getTrackUrl(trackName, trackAuthor);
 
         const trackUrl = track !== null ? track.url : null;
@@ -102,7 +105,7 @@ const MusicPlayer = () => {
     } catch (error) {
       console.error("Error getting data:", error);
     } finally {
-      setLoading(false);
+      setLoadingUrlTrack(false);
     }
   };
 
@@ -124,14 +127,14 @@ const MusicPlayer = () => {
   }, [isPlaying, isEndingSong, isInfinite, currentTime]);
 
   useEffect(() => {
-    if (!loading) {
+    if (!isLoading) {
       if (isVolume) {
         audioElem.current.volume = trackVolume / 100;
       } else {
         audioElem.current.volume = 0;
       }
     }
-  }, [trackVolume, isVolume, loading]);
+  }, [trackVolume, isVolume, isLoading]);
 
   const PlayPause = () => {
     dispatch({
@@ -140,7 +143,7 @@ const MusicPlayer = () => {
     });
 
     const newIsPlaying = !isPlaying;
-    if (!loading) {
+    if (!isLoading) {
       if (newIsPlaying) {
         audioElem.current.play();
       } else {
@@ -158,6 +161,11 @@ const MusicPlayer = () => {
   };
 
   const handleLoadedData = () => {
+    dispatch({
+      type: musicContextActions.setIsLoading,
+      payload: { isLoading: false },
+    });
+
     if (audioElem.current && isPlaying) {
       audioElem.current.play();
     } else {
@@ -318,7 +326,6 @@ const MusicPlayer = () => {
 
   const handleClickPreviousTrack = () => {
     const newCurrentIndexTrackPlaying = currentIndexTrackPlaying - 1;
-    console.log(currentIndexTrackPlaying);
 
     if (newCurrentIndexTrackPlaying < 0) {
       setProgressSong({ ...progressSong, progress: 0 });
@@ -347,7 +354,6 @@ const MusicPlayer = () => {
       newCurrentIndex === playlistTracks.length ? 0 : newCurrentIndex;
 
     if (newCurrentIndexTrackPlaying === 0) {
-      console.log("here");
       dispatch({
         type: musicContextActions.setIsPlaying,
         payload: { isPlaying: false },
@@ -405,12 +411,8 @@ const MusicPlayer = () => {
         </button>
       </div>
 
-      {loading ? (
-        <img
-          className="player__loading-img"
-          src={imgLoading}
-          alt="loading"
-        ></img>
+      {loadingUrlTrack ? (
+        <img className="player__loading-img" src={imgLoading} alt="loading" />
       ) : (
         <>
           <audio
@@ -419,50 +421,59 @@ const MusicPlayer = () => {
             onTimeUpdate={onPlaying}
             onLoadedData={handleLoadedData}
           />
-          <div className="player__track-song">
-            {currentTime && (
-              <div className="player__current-time">
-                <p className="player__current-time-title">
-                  {currentTime.minutes}:
-                  {currentTime.seconds < 10
-                    ? `0${currentTime.seconds}`
-                    : currentTime.seconds}
-                </p>
-              </div>
-            )}
 
-            {currentTime && (
-              <div
-                className="player__block-track"
-                ref={clickMusicTrack}
-                onMouseDown={mouseDownTrack}
-                onMouseMove={mouseMoveTrack}
-                onMouseUp={mouseUpTrack}
-              >
-                <div className="player__track">
-                  <div
-                    className="player__seek-bar"
-                    style={{ width: `${progressSong.progress}%` }}
-                  ></div>
+          {isLoading ? (
+            <img
+              className="player__loading-img"
+              src={imgLoading}
+              alt="loading"
+            />
+          ) : (
+            <div className="player__track-song">
+              {currentTime && (
+                <div className="player__current-time">
+                  <p className="player__current-time-title">
+                    {currentTime.minutes}:
+                    {currentTime.seconds < 10
+                      ? `0${currentTime.seconds}`
+                      : currentTime.seconds}
+                  </p>
                 </div>
-              </div>
-            )}
+              )}
 
-            {durationSong && !isNaN(durationSong.minutes) && (
-              <div className="player__current-time">
-                <p className="player__current-time-title">
-                  {durationSong.minutes}:
-                  {durationSong.seconds < 10
-                    ? `0${durationSong.seconds}`
-                    : durationSong.seconds}
-                </p>
-              </div>
-            )}
-          </div>
+              {currentTime && (
+                <div
+                  className="player__block-track"
+                  ref={clickMusicTrack}
+                  onMouseDown={mouseDownTrack}
+                  onMouseMove={mouseMoveTrack}
+                  onMouseUp={mouseUpTrack}
+                >
+                  <div className="player__track">
+                    <div
+                      className="player__seek-bar"
+                      style={{ width: `${progressSong.progress}%` }}
+                    ></div>
+                  </div>
+                </div>
+              )}
+
+              {durationSong && !isNaN(durationSong.minutes) && (
+                <div className="player__current-time">
+                  <p className="player__current-time-title">
+                    {durationSong.minutes}:
+                    {durationSong.seconds < 10
+                      ? `0${durationSong.seconds}`
+                      : durationSong.seconds}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </>
       )}
 
-      {!loading && currentTime && (
+      {!isLoading && currentTime && (
         <>
           <div className="player__block-track-volume">
             {isHovered && (
@@ -508,7 +519,7 @@ const MusicPlayer = () => {
         </>
       )}
 
-      {!loading && currentTime && (
+      {!isLoading && currentTime && (
         <button
           className="player__button-repeat"
           onClick={() => setIsInfinite(!isInfinite)}

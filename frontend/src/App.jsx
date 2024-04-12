@@ -5,13 +5,12 @@ import Footer from "./components/Footer/Footer";
 import MusicPlayer from "./components/MusicPlayer/MusicPlayer";
 import { useContext } from "react";
 import { StateTrackContext } from "./context/MusicContext";
-import { PlaylistProvider } from "./context/PlayListContext";
 
 function App() {
   const { trackName } = useContext(StateTrackContext);
 
   return (
-    <PlaylistProvider>
+    <>
       <div className="app">
         <Sidebar />
         <div className="app__page">
@@ -22,7 +21,7 @@ function App() {
         </div>
       </div>
       {trackName && <MusicPlayer />}
-    </PlaylistProvider>
+    </>
   );
 }
 

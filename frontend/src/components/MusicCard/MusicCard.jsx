@@ -1,41 +1,65 @@
 import React, { useContext } from "react";
 import "./MusicCard.scss";
 import { Link } from "react-router-dom";
-import { DispatchTrackContext } from "../../context/MusicContext";
+import {
+  DispatchTrackContext,
+  StateTrackContext,
+} from "../../context/MusicContext";
 
 import { musicContextActions } from "../../constants/MusicContextActions";
 
 import imgNotes from "../../assets/images/Notes.svg";
 import gifPlayTrack from "../../assets/images/TrackPlay.gif";
 import imgPlayTrack from "../../assets/images/PlayMusic.svg";
+import imgLoadingTrack from "../../assets/images/LoadingTrack.svg";
+
+import {
+  DispatchPlaylistContext,
+  StatePlaylistContext,
+} from "../../context/PlayListContext";
+import { playlistContextActions } from "../../constants/PlaylistContextActions";
 
 const MusicCard = ({
+  indexTrack,
   image,
   titleSong,
   titleAuthor,
   isPlayingSong,
   isPlaying,
+  initializePlaylistContext,
 }) => {
+  const { isLoading } = useContext(StateTrackContext);
   const dispatch = useContext(DispatchTrackContext);
 
-  const action = {
-    type: musicContextActions.setTrack,
-    payload: {
-      trackName: titleSong,
-      trackAuthor: titleAuthor,
-      trackImage: image,
-    },
-  };
+  const { currentIndexTrackPlaying } = useContext(StatePlaylistContext);
+  const dispatchPlaylist = useContext(DispatchPlaylistContext);
 
   const handleClick = () => {
-    if (isPlayingSong) {
-      dispatch({
-        type: musicContextActions.setIsPlaying,
-        payload: { isPlaying: !isPlaying },
-      });
-    } else {
-      dispatch(action);
-    }
+    initializePlaylistContext();
+
+    const playing =
+      currentIndexTrackPlaying === indexTrack - 1 ? !isPlaying : true;
+
+    dispatch({
+      type: musicContextActions.setIsPlaying,
+      payload: { isPlaying: playing },
+    });
+
+    dispatch({
+      type: musicContextActions.setTrack,
+      payload: {
+        trackName: titleSong,
+        trackAuthor: titleAuthor,
+        trackImage: image,
+      },
+    });
+
+    dispatchPlaylist({
+      type: playlistContextActions.setCurrentIndexTrackPlaying,
+      payload: {
+        currentIndexTrackPlaying: indexTrack,
+      },
+    });
   };
 
   return (
@@ -55,21 +79,33 @@ const MusicCard = ({
 
         {isPlayingSong && (
           <>
-            {isPlaying ? (
-              <img
-                className="music-card__gif-play-track"
-                src={gifPlayTrack}
-                alt="trackplay"
-              />
+            {isLoading ? (
+              <>
+                <img
+                  className="music-card__gif-play-track"
+                  src={imgLoadingTrack}
+                  alt="loading"
+                />
+                <div className="music-card__darken-layer" />
+              </>
             ) : (
-              <img
-                className="music-card__img-play-track"
-                src={imgPlayTrack}
-                alt="trackplay"
-              />
+              <>
+                {isPlaying ? (
+                  <img
+                    className="music-card__gif-play-track"
+                    src={gifPlayTrack}
+                    alt="trackplay"
+                  />
+                ) : (
+                  <img
+                    className="music-card__img-play-track"
+                    src={imgPlayTrack}
+                    alt="trackplay"
+                  />
+                )}
+                <div className="music-card__darken-layer" />
+              </>
             )}
-
-            <div className="music-card__darken-layer" />
           </>
         )}
       </div>

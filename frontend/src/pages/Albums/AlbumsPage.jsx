@@ -43,7 +43,7 @@ const AlbumsPage = () => {
         dispatch({
           type: playlistContextActions.setPlaylist,
           payload: {
-            playlistTracks: newTopSongs,
+            playlistTracks: newTopSongs.slice(0, 20),
           },
         });
 
@@ -60,7 +60,9 @@ const AlbumsPage = () => {
 
         setAlbumData(albumInfo);
       } else {
-        const albumMetadata = await albumMetadataService.getAlbum(album);
+        const albumMetadata = await albumMetadataService.getAlbumMetadata(
+          album
+        );
 
         const durationSong = albumMetadata.tracks.items.map(
           (item) => item.track.duration.totalMilliseconds
@@ -103,7 +105,7 @@ const AlbumsPage = () => {
         dispatch({
           type: playlistContextActions.setPlaylist,
           payload: {
-            playlistTracks: albumSongs,
+            playlistTracks: albumSongs.slice(0, 20),
           },
         });
       }
@@ -116,6 +118,13 @@ const AlbumsPage = () => {
 
   useEffect(() => {
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }, []);
 
   return (

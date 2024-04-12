@@ -5,8 +5,12 @@ import "./TrackItem.scss";
 import imgHeart from "../../assets/images/Heart.svg";
 import gifPlayTrack from "../../assets/images/TrackPlay.gif";
 import imgPlayTrack from "../../assets/images/PlayMusic.svg";
+import imgLoadingTrack from "../../assets/images/LoadingTrack.svg";
 
-import { DispatchTrackContext } from "../../context/MusicContext";
+import {
+  DispatchTrackContext,
+  StateTrackContext,
+} from "../../context/MusicContext";
 import { musicContextActions } from "../../constants/MusicContextActions";
 import { Link } from "react-router-dom";
 import {
@@ -30,13 +34,19 @@ const TrackItem = ({
   label,
   isPlayingSong,
   isPlaying,
+  initializePlaylistContext,
 }) => {
+  const { isLoading } = useContext(StateTrackContext);
   const dispatch = useContext(DispatchTrackContext);
 
   const { currentIndexTrackPlaying } = useContext(StatePlaylistContext);
   const dispatchPlaylist = useContext(DispatchPlaylistContext);
 
   const handleClick = () => {
+    if (typeof initializePlaylistContext === "function") {
+      initializePlaylistContext();
+    }
+
     const playing =
       currentIndexTrackPlaying === indexTrack - 1 ? !isPlaying : true;
 
@@ -96,20 +106,33 @@ const TrackItem = ({
         <button className="track-item__button" onClick={handleClick}>
           {isPlayingSong && (
             <>
-              {isPlaying ? (
-                <img
-                  className="track-item__gif-play-track"
-                  src={gifPlayTrack}
-                  alt="trackplay"
-                />
+              {isLoading ? (
+                <>
+                  <img
+                    className="track-item__gif-play-track"
+                    src={imgLoadingTrack}
+                    alt="trackplay"
+                  />
+                  <div className="track-item__darken-layer" />{" "}
+                </>
               ) : (
-                <img
-                  className="track-item__img-play-track"
-                  src={imgPlayTrack}
-                  alt="trackplay"
-                />
+                <>
+                  {isPlaying ? (
+                    <img
+                      className="track-item__gif-play-track"
+                      src={gifPlayTrack}
+                      alt="trackplay"
+                    />
+                  ) : (
+                    <img
+                      className="track-item__img-play-track"
+                      src={imgPlayTrack}
+                      alt="trackplay"
+                    />
+                  )}
+                  <div className="track-item__darken-layer" />
+                </>
               )}
-              <div className="track-item__darken-layer" />
             </>
           )}
         </button>

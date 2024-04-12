@@ -38,7 +38,7 @@
     list-style-type: none;
   }
 
-  &__view-all {
+  &__load-more {
     display: flex;
     width: 1170px;
     justify-content: center;
@@ -48,7 +48,7 @@
     }
   }
 
-  &__button-view {
+  &__button-load-more {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -68,7 +68,7 @@
     cursor: pointer;
   }
 
-  &__subtitle {
+  &__no-results {
     color: $pink-text-color;
     font-style: italic;
     font-size: 35px;

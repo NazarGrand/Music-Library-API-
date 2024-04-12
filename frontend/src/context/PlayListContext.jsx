@@ -15,7 +15,22 @@ export const PlaylistProvider = ({ children }) => {
       case playlistContextActions.setPlaylist:
         return {
           ...state,
-          playlistTracks: action.payload.playlistTracks,
+          playlistTracks: action.payload.playlistTracks.map((track) => ({
+            ...track,
+            trackPlayingUrl: null,
+          })),
+        };
+
+      case playlistContextActions.setNextSongsInPlaylist:
+        return {
+          ...state,
+          playlistTracks: [
+            ...state.playlistTracks,
+            ...action.payload.nextPlaylistTracks.map((track) => ({
+              ...track,
+              trackPlayingUrl: null,
+            })),
+          ],
         };
 
       case playlistContextActions.setCurrentIndexTrackPlaying:

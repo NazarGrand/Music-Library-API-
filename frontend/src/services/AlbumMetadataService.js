@@ -12,7 +12,7 @@ const options = {
   },
 };
 
-export const getAlbum = async (idAlbum) => {
+export const getAlbumMetadata = async (idAlbum) => {
   const response = await axios.request({
     ...options,
     params: {

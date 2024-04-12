@@ -4,4 +4,5 @@ export const musicContextActions = {
   setVolume: "SET_VOLUME",
   setNewVolume: "SET_NEW_VOLUME",
   setIsPlaying: "SET_PLAYING",
+  setIsLoading: "SET_LOADING",
 };
