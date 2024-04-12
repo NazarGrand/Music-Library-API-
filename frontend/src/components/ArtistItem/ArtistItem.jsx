@@ -3,11 +3,11 @@ import "./ArtistItem.scss";
 
 const ArtistItem = ({ image, artistName }) => {
   return (
-    <div className="artist">
-      <button className="artist__button">
-        <img className="artist__image" src={image} alt="Artistimg" />
+    <div className="artist-item">
+      <button className="artist-item__button">
+        <img className="artist-item__image" src={image} alt="Artistimg" />
 
-        <p className="artist__title-author">{artistName}</p>
+        <p className="artist-item__title-author">{artistName}</p>
       </button>
     </div>
   );

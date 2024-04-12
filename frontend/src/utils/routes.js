@@ -3,5 +3,5 @@ export const ROUTES = {
   DISCOVER: "/discover",
   ALBUMS: "/albums",
   ARTISTS: "/artists",
-  ARTIST: "/artist/:id",
+  ARTIST: "/artist/:artistId",
 };

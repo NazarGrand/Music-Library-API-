@@ -12,7 +12,7 @@ const HeaderArtist = ({ artist, htmlContent }) => {
 
       <p className="header-artist__name">{artist.nameArtist}</p>
 
-      <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+      {/* <div dangerouslySetInnerHTML={{ __html: htmlContent }} /> */}
     </div>
   );
 };
