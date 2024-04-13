@@ -11,23 +11,29 @@
   background-position: center;
   background-repeat: no-repeat;
   margin: 0;
+  margin-left: 30px;
+  margin-top: 20px;
+
   &__image-melodies {
     margin-top: 80px;
     width: 700px;
     height: 420px;
     animation: pulse 2s infinite;
   }
+
   &__block-load {
     padding-top: 20px;
     display: flex;
     flex-direction: row;
     gap: 20px;
   }
+
   &__title {
     padding-top: 4px;
     font-size: 40px;
     font-weight: 500;
   }
+
   &__image-loading {
     animation: spin 2s linear infinite;
   }

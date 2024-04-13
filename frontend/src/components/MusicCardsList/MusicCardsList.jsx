@@ -47,7 +47,7 @@ const MusicCardsList = ({ title, cardItems }) => {
             ))}
           </ul>
 
-          <Link className="music-catalog__view-all" to={`albums/${album}`}>
+          <Link className="music-catalog__view-all" to={`/albums/${album}`}>
             <div className="music-catalog__button">+</div>
 
             <p className="music-catalog__btn-text">View All</p>

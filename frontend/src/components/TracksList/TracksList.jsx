@@ -57,7 +57,7 @@ const TracksList = ({ title, trackItems }) => {
           </ul>
 
           <div className="tracks__view-all">
-            <Link className="tracks__link-view" to={`albums/${album}`}>
+            <Link className="tracks__link-view" to={`/albums/${album}`}>
               {" "}
               <img src={imgPlus} alt="plus" />{" "}
               <span className="tracks__view-all-text">View All</span>
