@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import dayjs from "dayjs";
-import "./TrackItem.scss";
+import moment from "moment";
+import "./AlbumTrack.scss";
 
 import imgHeart from "../../assets/images/Heart.svg";
 import gifPlayTrack from "../../assets/images/TrackPlay.gif";
@@ -19,22 +19,44 @@ import {
 } from "../../context/PlayListContext";
 import { playlistContextActions } from "../../constants/PlaylistContextActions";
 
-function formatDate(inputDate) {
-  const dateObj = dayjs(inputDate);
-  const formattedDate = dateObj.format("MMM D, YYYY");
-  return formattedDate;
+function formatMilliseconds(milliseconds) {
+  const duration = moment.duration(milliseconds);
+
+  let formattedTime = "";
+
+  if (duration.hours() > 0) {
+    formattedTime += `${duration.hours()}:`;
+
+    if (duration.minutes() > 0 && duration.minutes() < 10) {
+      formattedTime += `0${duration.minutes()}:`;
+    } else {
+      formattedTime += `${duration.minutes()}:`;
+    }
+
+    if (duration.seconds() > 0 && duration.seconds() < 10) {
+      formattedTime += `0${duration.seconds()}`;
+    } else {
+      formattedTime += `${duration.seconds()}`;
+    }
+  } else {
+    formattedTime += `${duration.minutes()}:`;
+    if (duration.seconds() > 0 && duration.seconds() < 10) {
+      formattedTime += `0${duration.seconds()}`;
+    } else {
+      formattedTime += `${duration.seconds()}`;
+    }
+  }
+  return formattedTime;
 }
 
-const TrackItem = ({
+const AlbumTrack = ({
   indexTrack,
   image,
   titleSong,
   titleAuthor,
-  releaseDate,
-  label,
+  durationSong,
   isPlayingSong,
   isPlaying,
-  initializePlaylistContext,
 }) => {
   const { isLoading } = useContext(StateTrackContext);
   const dispatch = useContext(DispatchTrackContext);
@@ -43,10 +65,6 @@ const TrackItem = ({
   const dispatchPlaylist = useContext(DispatchPlaylistContext);
 
   const handleClick = () => {
-    if (initializePlaylistContext) {
-      initializePlaylistContext();
-    }
-
     const playing =
       currentIndexTrackPlaying === indexTrack - 1 ? !isPlaying : true;
 
@@ -73,64 +91,66 @@ const TrackItem = ({
   };
 
   return (
-    <div className="track-item">
-      <span className="track-item__index-track">#{indexTrack}</span>
+    <div className="album-track">
+      <span className="album-track__index-track">#{indexTrack}</span>
 
-      <div className="track-item__container">
-        <div className="track-item__block-title">
-          <button className="track-item__button" onClick={handleClick}>
-            <img className="track-item__image" src={image} alt="imgTrack" />
+      <div className="album-track__container">
+        <div className="album-track__block-title">
+          <button className="album-track__button" onClick={handleClick}>
+            <img className="album-track__image" src={image} alt="imgTrack" />
           </button>
 
-          <div className="track-item__title">
-            <button className="track-item__button" onClick={handleClick}>
-              <span className="track-item__title-song">{titleSong}</span>
+          <div className="album-track__title">
+            <button className="album-track__button" onClick={handleClick}>
+              <span className="album-track__title-song">{titleSong}</span>
             </button>
 
-            <Link className="track-item__link-author" to="/author">
-              <span className="track-item__title-author">{titleAuthor}</span>
+            <Link className="album-track__link-author" to="/author">
+              <span className="album-track__title-author">{titleAuthor}</span>
             </Link>
           </div>
         </div>
 
-        <p className="track-item__relase-date">{formatDate(releaseDate)}</p>
+        <div className="album-track__block-time-song">
+          <div className="album-track__heart">
+            <button className="album-track__button-like">
+              <img src={imgHeart} alt="heart" />
+            </button>
+          </div>
 
-        <p className="track-item__label">{label}</p>
-
-        <div className="track-item__heart">
-          <button className="track-item__button-like">
-            <img src={imgHeart} alt="heart" />
-          </button>
+          <p className="album-track__duration-song">
+            {formatMilliseconds(durationSong)}
+          </p>
         </div>
 
-        <button className="track-item__button" onClick={handleClick}>
+        <button className="album-track__button" onClick={handleClick}>
           {isPlayingSong && (
             <>
               {isLoading ? (
                 <>
                   <img
-                    className="track-item__gif-play-track"
+                    className="album-track__gif-play-track"
                     src={imgLoadingTrack}
-                    alt="trackplay"
+                    alt="loading"
                   />
-                  <div className="track-item__darken-layer" />{" "}
+                  <div className="album-track__darken-layer" />
                 </>
               ) : (
                 <>
                   {isPlaying ? (
                     <img
-                      className="track-item__gif-play-track"
+                      className="album-track__gif-play-track"
                       src={gifPlayTrack}
                       alt="trackplay"
                     />
                   ) : (
                     <img
-                      className="track-item__img-play-track"
+                      className="album-track__img-play-track"
                       src={imgPlayTrack}
                       alt="trackplay"
                     />
                   )}
-                  <div className="track-item__darken-layer" />
+                  <div className="album-track__darken-layer" />
                 </>
               )}
             </>
@@ -141,4 +161,4 @@ const TrackItem = ({
   );
 };
 
-export default TrackItem;
+export default AlbumTrack;

@@ -1,12 +1,16 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import classnames from "classnames";
 import "./SidebarNav.scss";
 
 const SidebarNav = ({ menuTitle, menuItems }) => {
-  const handleIsActive = ({ isActive }) =>
+  const location = useLocation();
+
+  const handleIsActive = (title) =>
     classnames("sidebar-nav__item-link", {
-      "sidebar-nav__item-link--active-link": isActive,
+      "sidebar-nav__item-link--active-link": location.pathname.includes(
+        title.toLowerCase()
+      ),
     });
 
   return (
@@ -17,7 +21,10 @@ const SidebarNav = ({ menuTitle, menuItems }) => {
         <ul className="sidebar-nav__list">
           {menuItems.map((item, index) => (
             <li key={index} className="sidebar-nav__item">
-              <NavLink className={handleIsActive} to={item.link}>
+              <NavLink
+                className={() => handleIsActive(item.title)}
+                to={item.link}
+              >
                 <div className="sidebar-nav__item-block">
                   <img
                     className="sidebar-nav__item-icon"

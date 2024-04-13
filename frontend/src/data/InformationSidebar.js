@@ -2,6 +2,7 @@ import { ROUTES } from "../utils/routes";
 
 import iconHome from "../assets/images/Home.svg";
 import iconDiscover from "../assets/images/Discover.svg";
+import iconAlbum from "../assets/images/Album.svg";
 import iconArtists from "../assets/images/Artists.svg";
 import iconRecentlyAdded from "../assets/images/RecentlyAdded.svg";
 import iconMostPlayed from "../assets/images/MostPlayed.svg";
@@ -21,6 +22,11 @@ export const MenuItems = [
     link: ROUTES.DISCOVER,
     icon: iconDiscover,
     title: "Discover",
+  },
+  {
+    link: ROUTES.ALBUMS,
+    icon: iconAlbum,
+    title: "Albums",
   },
   {
     link: ROUTES.ARTISTS,

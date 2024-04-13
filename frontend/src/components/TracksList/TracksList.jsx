@@ -4,11 +4,22 @@ import TrackItem from "../TrackItem/TrackItem";
 
 import imgPlus from "../../assets/images/Plus.svg";
 import { Link } from "react-router-dom";
-import { ROUTES } from "../../utils/routes";
 import { StateTrackContext } from "../../context/MusicContext";
+import { DispatchPlaylistContext } from "../../context/PlayListContext";
+import { playlistContextActions } from "../../constants/PlaylistContextActions";
 
-const TracksList = ({ title, trackItems, label }) => {
+const TracksList = ({ title, trackItems }) => {
   const { trackName, trackAuthor, isPlaying } = useContext(StateTrackContext);
+  const album = "trending-songs";
+
+  const dispatch = useContext(DispatchPlaylistContext);
+
+  const initializePlaylistContext = () => {
+    dispatch({
+      type: playlistContextActions.setPlaylist,
+      payload: { playlistTracks: trackItems },
+    });
+  };
 
   return (
     <div className="tracks">
@@ -39,13 +50,14 @@ const TracksList = ({ title, trackItems, label }) => {
                     trackAuthor === item.titleAuthor
                   }
                   isPlaying={isPlaying}
+                  initializePlaylistContext={initializePlaylistContext}
                 />
               </li>
             ))}
           </ul>
 
           <div className="tracks__view-all">
-            <Link className="tracks__link-view" to={ROUTES.ALBUMS}>
+            <Link className="tracks__link-view" to={`/albums/${album}`}>
               {" "}
               <img src={imgPlus} alt="plus" />{" "}
               <span className="tracks__view-all-text">View All</span>

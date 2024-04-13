@@ -4,12 +4,15 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.scss";
 import App from "./App";
 import { MusicProvider } from "./context/MusicContext";
+import { PlaylistProvider } from "./context/PlayListContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <MusicProvider>
-      <App />
+      <PlaylistProvider>
+        <App />
+      </PlaylistProvider>
     </MusicProvider>
   </BrowserRouter>
 );
