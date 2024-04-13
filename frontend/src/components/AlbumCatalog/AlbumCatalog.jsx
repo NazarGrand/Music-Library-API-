@@ -2,7 +2,7 @@ import React from "react";
 import "./AlbumCatalog.scss";
 import AlbumItem from "../AlbumItem/AlbumItem";
 
-const AlbumCatalog = ({ albumItems }) => {
+const AlbumCatalog = ({ albumItems, type }) => {
   return (
     <div className="album-catalog">
       <p className="album-catalog__title">
@@ -14,8 +14,10 @@ const AlbumCatalog = ({ albumItems }) => {
             <li key={index}>
               <AlbumItem
                 image={item.image}
-                titleAlbum={item.titleAlbum}
+                title={item.title}
                 yearAlbum={item.yearAlbum}
+                albumId={item.albumId}
+                type={type}
               />
             </li>
           ))}

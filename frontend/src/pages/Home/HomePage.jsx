@@ -7,7 +7,7 @@ import TracksList from "../../components/TracksList/TracksList";
 import ArtistsList from "../../components/ArtistsList/ArtistsList";
 import { ArtistItems } from "../../data/InformationArtists";
 import Slider from "../../components/Slider/Slider";
-// import { MusicItems } from "../../data/InformationMusic";
+import Header from "../../components/Header/Header";
 
 const HomePage = () => {
   const [topSongs, setTopSongs] = useState([]);
@@ -20,9 +20,10 @@ const HomePage = () => {
       const newTopSongs = weeklyTopSongs.map((item) => ({
         image: item.trackMetadata.displayImageUri,
         titleSong: item.trackMetadata.trackName,
-        titleAuthor: item.trackMetadata.artists
-          .map((artist) => artist.name)
-          .join(", "),
+        artists: item.trackMetadata.artists.map((artist) => ({
+          name: artist.name,
+          artistId: artist.spotifyUri.split(":")[2],
+        })),
         releaseDate: item.trackMetadata.releaseDate,
         label: item.trackMetadata.labels[0].name,
       }));
@@ -41,6 +42,7 @@ const HomePage = () => {
 
   return (
     <>
+      <Header />
       {loading ? (
         <Loader />
       ) : (
@@ -49,7 +51,8 @@ const HomePage = () => {
 
           <MusicCardsList
             title="Weekly Top"
-            cardItems={topSongs.slice(0, 5) ?? []}
+            cardItems={topSongs ?? []}
+            type="weekly-top"
           />
 
           <TracksList

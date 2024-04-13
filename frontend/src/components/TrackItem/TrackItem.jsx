@@ -3,9 +3,21 @@ import dayjs from "dayjs";
 import "./TrackItem.scss";
 
 import imgHeart from "../../assets/images/Heart.svg";
-import { DispatchTrackContext } from "../../context/MusicContext";
+import gifPlayTrack from "../../assets/images/TrackPlay.gif";
+import imgPlayTrack from "../../assets/images/PlayMusic.svg";
+import imgLoadingTrack from "../../assets/images/LoadingTrack.svg";
+
+import {
+  DispatchTrackContext,
+  StateTrackContext,
+} from "../../context/MusicContext";
 import { musicContextActions } from "../../constants/MusicContextActions";
 import { Link } from "react-router-dom";
+import {
+  DispatchPlaylistContext,
+  StatePlaylistContext,
+} from "../../context/PlayListContext";
+import { playlistContextActions } from "../../constants/PlaylistContextActions";
 
 function formatDate(inputDate) {
   const dateObj = dayjs(inputDate);
@@ -17,19 +29,45 @@ const TrackItem = ({
   indexTrack,
   image,
   titleSong,
-  titleAuthor,
+  artists,
   releaseDate,
   label,
+  isPlayingSong,
+  isPlaying,
+  initializePlaylistContext,
 }) => {
+  const { isLoading } = useContext(StateTrackContext);
   const dispatch = useContext(DispatchTrackContext);
 
+  const { currentIndexTrackPlaying } = useContext(StatePlaylistContext);
+  const dispatchPlaylist = useContext(DispatchPlaylistContext);
+
   const handleClick = () => {
+    if (initializePlaylistContext) {
+      initializePlaylistContext();
+    }
+
+    const playing =
+      currentIndexTrackPlaying === indexTrack - 1 ? !isPlaying : true;
+
+    dispatch({
+      type: musicContextActions.setIsPlaying,
+      payload: { isPlaying: playing },
+    });
+
     dispatch({
       type: musicContextActions.setTrack,
       payload: {
         trackName: titleSong,
-        trackAuthor: titleAuthor,
+        trackAuthor: artists.map((item) => item.name).join(", "),
         trackImage: image,
+      },
+    });
+
+    dispatchPlaylist({
+      type: playlistContextActions.setCurrentIndexTrackPlaying,
+      payload: {
+        currentIndexTrackPlaying: indexTrack - 1,
       },
     });
   };
@@ -49,9 +87,22 @@ const TrackItem = ({
               <span className="track-item__title-song">{titleSong}</span>
             </button>
 
-            <Link className="track-item__link-author" to="/author">
-              <span className="track-item__title-author">{titleAuthor}</span>
-            </Link>
+            <span className="track-item__block-artists">
+              {artists.map((item, index) => (
+                <div key={index}>
+                  <Link
+                    className="track-item__link-author"
+                    to={`/artists/${item.artistId}`}
+                  >
+                    <span className="track-item__title-author">
+                      {item.name}
+                    </span>
+                  </Link>
+
+                  {index !== artists.length - 1 && ",\u00A0"}
+                </div>
+              ))}
+            </span>
           </div>
         </div>
 
@@ -64,6 +115,40 @@ const TrackItem = ({
             <img src={imgHeart} alt="heart" />
           </button>
         </div>
+
+        <button className="track-item__button" onClick={handleClick}>
+          {isPlayingSong && (
+            <>
+              {isLoading ? (
+                <>
+                  <img
+                    className="track-item__gif-play-track"
+                    src={imgLoadingTrack}
+                    alt="trackplay"
+                  />
+                  <div className="track-item__darken-layer" />{" "}
+                </>
+              ) : (
+                <>
+                  {isPlaying ? (
+                    <img
+                      className="track-item__gif-play-track"
+                      src={gifPlayTrack}
+                      alt="trackplay"
+                    />
+                  ) : (
+                    <img
+                      className="track-item__img-play-track"
+                      src={imgPlayTrack}
+                      alt="trackplay"
+                    />
+                  )}
+                  <div className="track-item__darken-layer" />
+                </>
+              )}
+            </>
+          )}
+        </button>
       </div>
     </div>
   );

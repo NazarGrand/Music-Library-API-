@@ -14,8 +14,10 @@ const ArtistsPage = () => {
   const [albums, setAlbums] = useState([]);
   const [loading, setLoading] = useState(true);
   const [songs, setSongs] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
 
   const fetchData = async () => {
+    setLoading(true);
     try {
       const getArtist = await artistService.getArtist(artistId);
 
@@ -28,30 +30,41 @@ const ArtistsPage = () => {
       const tracks = getArtist.discography.topTracks.items.map((item) => ({
         image: item.track.album.coverArt.sources[0].url,
         titleSong: item.track.name,
-        titleAuthor: item.track.artists.items
-          .map((artist) => artist.profile.name)
-          .join(", "),
+        artists: item.track.artists.items.map((artist) => ({
+          name: artist.profile.name,
+          artistId: artist.uri.split(":")[2],
+        })),
         duration: item.track.duration.totalMilliseconds,
       }));
 
       const albumsArtist = getArtist.discography.popularReleases.items.map(
         (item) => ({
           image: item.releases.items[0].coverArt.sources[0].url,
-          titleAlbum: item.releases.items[0].name,
+          title: item.releases.items[0].name,
           yearAlbum: item.releases.items[0].date.year,
+          albumId: item.releases.items[0].uri.split(":")[2],
         })
       );
 
       const songsArtist = getArtist.discography.singles.items.map((item) => ({
         image: item.releases.items[0].coverArt.sources[0].url,
         titleSong: item.releases.items[0].name,
-        titleAuthor: item.releases.items[0].date.year,
+        artists: [{ name: artist.nameArtist }],
+        yearSong: item.releases.items[0].date.year,
       }));
+
+      const playlistsArtist = getArtist.relatedContent.discoveredOn.items.map(
+        (item) => ({
+          image: item.images.items[0].sources[0].url,
+          title: item.name,
+        })
+      );
 
       setArtist(artist);
       setPopularTracks(tracks);
       setAlbums(albumsArtist);
       setSongs(songsArtist);
+      setPlaylists(playlistsArtist);
     } catch (error) {
       console.error("Error getting data:", error);
     } finally {
@@ -61,6 +74,12 @@ const ArtistsPage = () => {
 
   useEffect(() => {
     fetchData();
+  }, [artistId]);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+    });
   }, []);
 
   return (
@@ -75,7 +94,8 @@ const ArtistsPage = () => {
           <Artist
             popularTracks={popularTracks ?? []}
             albums={albums ?? []}
-            songs={songs.slice(0, 5) ?? []}
+            songs={songs ?? []}
+            playlists={playlists ?? []}
           />
         </>
       )}

@@ -5,9 +5,19 @@ import { ROUTES } from "../../utils/routes";
 
 import AlbumTrack from "../AlbumTrack/AlbumTrack";
 import { StateTrackContext } from "../../context/MusicContext";
+import { DispatchPlaylistContext } from "../../context/PlayListContext";
+import { playlistContextActions } from "../../constants/PlaylistContextActions";
 
 const PopularArtistListTracks = ({ popularTracks }) => {
   const { trackName, trackAuthor, isPlaying } = useContext(StateTrackContext);
+  const dispatch = useContext(DispatchPlaylistContext);
+
+  const initializePlaylistContext = () => {
+    dispatch({
+      type: playlistContextActions.setPlaylist,
+      payload: { playlistTracks: popularTracks },
+    });
+  };
 
   return (
     <div className="popular-tracks">
@@ -23,31 +33,25 @@ const PopularArtistListTracks = ({ popularTracks }) => {
           </div>
 
           <ul className="popular-tracks__list">
-            {popularTracks.slice(0, 5).map((item, index) => (
+            {popularTracks.map((item, index) => (
               <li key={index}>
                 <AlbumTrack
                   indexTrack={index + 1}
                   image={item.image}
                   titleSong={item.titleSong}
-                  titleAuthor={item.titleAuthor}
+                  artists={item.artists}
                   durationSong={item.duration}
                   isPlayingSong={
                     trackName === item.titleSong &&
-                    trackAuthor === item.titleAuthor
+                    trackAuthor ===
+                      item.artists.map((item) => item.name).join(", ")
                   }
                   isPlaying={isPlaying}
+                  initializePlaylistContext={initializePlaylistContext}
                 />
               </li>
             ))}
           </ul>
-
-          {popularTracks.length > 5 && (
-            <div className="popular-tracks__view-all">
-              <Link className="popular-tracks__link-view" to={ROUTES.ALBUMS}>
-                <span className="popular-tracks__view-all-text">Show All</span>
-              </Link>
-            </div>
-          )}
         </>
       ) : (
         <p className="popular-tracks__subtitle">No music found</p>

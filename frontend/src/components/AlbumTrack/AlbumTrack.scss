@@ -71,15 +71,16 @@
 
     &-author {
       @include customText(300, 12px);
-      display: inline-block;
-      max-width: 400px;
-
-      margin-top: 1px;
-
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
+  }
+
+  &__block-artists {
+    display: flex;
+    max-width: 400px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__link-author {
