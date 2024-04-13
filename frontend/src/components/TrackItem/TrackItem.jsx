@@ -43,7 +43,7 @@ const TrackItem = ({
   const dispatchPlaylist = useContext(DispatchPlaylistContext);
 
   const handleClick = () => {
-    if (typeof initializePlaylistContext === "function") {
+    if (initializePlaylistContext) {
       initializePlaylistContext();
     }
 

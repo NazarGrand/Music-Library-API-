@@ -41,17 +41,17 @@ const MusicCard = ({
       currentIndexTrackPlaying === indexTrack - 1 ? !isPlaying : true;
 
     dispatch({
-      type: musicContextActions.setIsPlaying,
-      payload: { isPlaying: playing },
-    });
-
-    dispatch({
       type: musicContextActions.setTrack,
       payload: {
         trackName: titleSong,
         trackAuthor: titleAuthor,
         trackImage: image,
       },
+    });
+
+    dispatch({
+      type: musicContextActions.setIsPlaying,
+      payload: { isPlaying: playing },
     });
 
     dispatchPlaylist({
