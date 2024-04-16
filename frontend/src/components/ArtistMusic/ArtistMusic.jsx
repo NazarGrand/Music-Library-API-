@@ -1,10 +1,10 @@
 import React from "react";
-import "./Artist.scss";
+import "./ArtistMusic.scss";
 import PopularArtistListTracks from "../PopularArtistListTracks/PopularArtistListTracks";
 import AlbumCatalog from "../AlbumCatalog/AlbumCatalog";
 import MusicCardsList from "../MusicCardsList/MusicCardsList";
 
-const Artist = ({ popularTracks, albums, songs, playlists }) => {
+const ArtistMusic = ({ popularTracks, albums, songs, playlists }) => {
   return (
     <div className="artist">
       <PopularArtistListTracks popularTracks={popularTracks} />
@@ -18,4 +18,4 @@ const Artist = ({ popularTracks, albums, songs, playlists }) => {
   );
 };
 
-export default Artist;
+export default ArtistMusic;

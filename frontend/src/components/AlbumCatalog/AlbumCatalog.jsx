@@ -3,22 +3,18 @@ import "./AlbumCatalog.scss";
 import AlbumItem from "../AlbumItem/AlbumItem";
 
 const AlbumCatalog = ({ albumItems, type }) => {
+  const typeName = type === "album" ? "Albums" : "Playlist";
+
   return (
     <div className="album-catalog">
       <p className="album-catalog__title">
-        Artist's <span className="album-catalog__title--blue">Albums</span>
+        Artist's <span className="album-catalog__title--blue">{typeName}</span>
       </p>
       {albumItems.length !== 0 ? (
         <ul className="album-catalog__list">
           {albumItems.slice(0, 5).map((item, index) => (
             <li key={index}>
-              <AlbumItem
-                image={item.image}
-                title={item.title}
-                yearAlbum={item.yearAlbum}
-                albumId={item.albumId}
-                type={type}
-              />
+              <AlbumItem albumItem={item} type={type} />
             </li>
           ))}
           {albumItems.length > 5 && (

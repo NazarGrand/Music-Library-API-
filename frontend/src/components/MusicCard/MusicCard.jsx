@@ -21,15 +21,14 @@ import { playlistContextActions } from "../../constants/PlaylistContextActions";
 
 const MusicCard = ({
   indexTrack,
-  image,
-  titleSong,
-  artists,
-  yearSong,
+  musicCard,
   isPlayingSong,
   isPlaying,
   initializePlaylistContext,
   type,
 }) => {
+  const { image, titleSong, artists, yearSong } = musicCard;
+
   const { isLoading } = useContext(StateTrackContext);
   const dispatch = useContext(DispatchTrackContext);
 

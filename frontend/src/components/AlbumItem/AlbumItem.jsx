@@ -3,14 +3,26 @@ import "./AlbumItem.scss";
 
 import iconAlbum from "../../assets/images/AlbumIcon.svg";
 import iconPlaylist from "../../assets/images/PlaylistIcon.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-const AlbumItem = ({ image, title, yearAlbum, albumId, type }) => {
+const AlbumItem = ({ albumItem, type }) => {
+  const { image, title, yearAlbum, albumId } = albumItem;
   const icon = type === "album" ? iconAlbum : iconPlaylist;
+
+  const location = useLocation();
 
   return (
     <div className="album-item">
-      <Link className="album-item__link" to={`/albums/${albumId}`}>
+      <Link
+        className="album-item__link"
+        to={`/albums/${albumId}`}
+        onClick={() =>
+          sessionStorage.setItem(
+            `scrollPosition_${location.pathname}`,
+            window.pageYOffset
+          )
+        }
+      >
         <img className="album-item__image" src={image} alt="musicimg" />
 
         <p className="album-item__title">{title}</p>

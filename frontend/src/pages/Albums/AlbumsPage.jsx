@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import _ from "lodash";
 import * as musicService from "../../services/MusicService.js";
 import * as albumTracksService from "../../services/AlbumTracksService.js";
@@ -20,6 +20,9 @@ const AlbumsPage = () => {
   const [loading, setLoading] = useState(true);
 
   const dispatch = useContext(DispatchPlaylistContext);
+  const location = useLocation();
+
+  const pageKey = `scrollPosition_${location.pathname}`;
 
   const fetchData = async () => {
     try {
@@ -122,11 +125,39 @@ const AlbumsPage = () => {
     fetchData();
   }, []);
 
+  const intervalRef = useRef(null);
+
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-    });
-  }, []);
+    if (loading) {
+      intervalRef.current = setInterval(
+        () =>
+          window.scrollTo({
+            top: 0,
+          }),
+        10
+      );
+    } else {
+      clearInterval(intervalRef.current);
+    }
+
+    return () => {
+      clearInterval(intervalRef.current);
+    };
+  }, [loading]);
+
+  useEffect(() => {
+    if (songs.length) {
+      const scrollPosition = sessionStorage.getItem(pageKey);
+      if (scrollPosition) {
+        window.scrollTo(0, parseInt(scrollPosition, 10));
+        sessionStorage.removeItem(pageKey);
+      } else {
+        window.scrollTo({
+          top: 0,
+        });
+      }
+    }
+  }, [songs]);
 
   return (
     <>

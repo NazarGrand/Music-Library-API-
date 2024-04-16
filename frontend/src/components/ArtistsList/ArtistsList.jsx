@@ -15,11 +15,7 @@ const ArtistsList = ({ title, artistItems }) => {
           <ul className="artists__list">
             {artistItems.map((item, index) => (
               <li key={index}>
-                <ArtistItem
-                  image={item.image}
-                  artistName={item.artistName}
-                  artistId={item.artistId}
-                />
+                <ArtistItem artistItem={item} />
               </li>
             ))}
           </ul>

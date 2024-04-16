@@ -12,7 +12,7 @@ import {
   StateTrackContext,
 } from "../../context/MusicContext";
 import { musicContextActions } from "../../constants/MusicContextActions";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   DispatchPlaylistContext,
   StatePlaylistContext,
@@ -65,6 +65,8 @@ const AlbumTrack = ({
   const { currentIndexTrackPlaying } = useContext(StatePlaylistContext);
   const dispatchPlaylist = useContext(DispatchPlaylistContext);
 
+  const location = useLocation();
+
   const handleClick = () => {
     if (initializePlaylistContext) initializePlaylistContext();
 
@@ -114,6 +116,12 @@ const AlbumTrack = ({
                   <Link
                     className="album-track__link-author"
                     to={`/artists/${item.artistId}`}
+                    onClick={() =>
+                      sessionStorage.setItem(
+                        `scrollPosition_${location.pathname}`,
+                        window.pageYOffset
+                      )
+                    }
                   >
                     <span className="album-track__title-author">
                       {item.name}

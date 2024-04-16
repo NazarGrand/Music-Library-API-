@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import "./MusicCardsList.scss";
 import MusicCard from "../MusicCard/MusicCard";
 import { StateTrackContext } from "../../context/MusicContext";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { DispatchPlaylistContext } from "../../context/PlayListContext";
 import { playlistContextActions } from "../../constants/PlaylistContextActions";
 
@@ -12,6 +12,8 @@ const MusicCardsList = ({ title, cardItems, type }) => {
   const dispatch = useContext(DispatchPlaylistContext);
 
   const album = "weekly-top";
+
+  const location = useLocation();
 
   const initializePlaylistContext = () => {
     dispatch({
@@ -34,10 +36,7 @@ const MusicCardsList = ({ title, cardItems, type }) => {
               <li key={index}>
                 <MusicCard
                   indexTrack={index}
-                  image={item.image}
-                  titleSong={item.titleSong}
-                  artists={item.artists}
-                  yearSong={item.yearSong}
+                  musicCard={item}
                   isPlayingSong={
                     trackName === item.titleSong &&
                     trackAuthor ===
@@ -51,7 +50,16 @@ const MusicCardsList = ({ title, cardItems, type }) => {
             ))}
           </ul>
           {cardItems.length > 5 && (
-            <Link className="music-catalog__view-all" to={`/albums/${album}`}>
+            <Link
+              className="music-catalog__view-all"
+              to={`/albums/${album}`}
+              onClick={() =>
+                sessionStorage.setItem(
+                  `scrollPosition_${location.pathname}`,
+                  window.pageYOffset
+                )
+              }
+            >
               <div className="music-catalog__button">+</div>
 
               <p className="music-catalog__btn-text">View All</p>

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import HeaderArtist from "../../components/HeaderArtist/HeaderArtist";
 
 import * as artistService from "../../services/ArtistService";
 import Loader from "../../components/Loader/Loader";
-import { useParams } from "react-router-dom";
-import Artist from "../../components/Artist/Artist";
+import { useLocation, useParams } from "react-router-dom";
+import ArtistMusic from "../../components/ArtistMusic/ArtistMusic";
 
 const ArtistsPage = () => {
-  let { artistId } = useParams();
+  const { artistId } = useParams();
 
   const [artist, setArtist] = useState({});
   const [popularTracks, setPopularTracks] = useState([]);
@@ -15,6 +15,10 @@ const ArtistsPage = () => {
   const [loading, setLoading] = useState(true);
   const [songs, setSongs] = useState([]);
   const [playlists, setPlaylists] = useState([]);
+
+  const location = useLocation();
+
+  const pageKey = `scrollPosition_${location.pathname}`;
 
   const fetchData = async () => {
     setLoading(true);
@@ -76,22 +80,49 @@ const ArtistsPage = () => {
     fetchData();
   }, [artistId]);
 
+  const intervalRef = useRef(null);
+
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-    });
-  }, []);
+    if (loading) {
+      intervalRef.current = setInterval(
+        () =>
+          window.scrollTo({
+            top: 0,
+          }),
+        10
+      );
+    } else {
+      clearInterval(intervalRef.current);
+    }
+
+    return () => {
+      clearInterval(intervalRef.current);
+    };
+  }, [loading]);
+
+  useEffect(() => {
+    if (popularTracks.length) {
+      const scrollPosition = sessionStorage.getItem(pageKey);
+      if (scrollPosition) {
+        window.scrollTo(0, parseInt(scrollPosition, 10));
+        sessionStorage.removeItem(pageKey);
+      } else {
+        window.scrollTo({
+          top: 0,
+        });
+      }
+    }
+  }, [popularTracks]);
 
   return (
     <>
-      {" "}
       {loading ? (
         <Loader />
       ) : (
         <>
           <HeaderArtist artist={artist} htmlContent={artist.biographyArtist} />
 
-          <Artist
+          <ArtistMusic
             popularTracks={popularTracks ?? []}
             albums={albums ?? []}
             songs={songs ?? []}
