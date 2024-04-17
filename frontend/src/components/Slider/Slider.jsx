@@ -5,9 +5,12 @@ import imgNotSelectedSlide from "../../assets/images/NotSelectedSlide.svg";
 import imgSelectedSlide from "../../assets/images/SelectedSlide.svg";
 
 import { SlideItems, slideLength } from "../../data/InformationSlider";
+import { Link, useLocation } from "react-router-dom";
 
 const Slider = () => {
   const [activeId, setActiveId] = useState(3);
+
+  const location = useLocation();
 
   useEffect(() => {
     const slider = setInterval(
@@ -131,18 +134,51 @@ const Slider = () => {
         })}
 
         <div className="slider__about">
-          <p className="slider__title">{SlideItems[activeId].artistName}</p>
+          <Link
+            className="slider__link-title"
+            to={`/artists/${SlideItems[activeId].idArtist}`}
+            onClick={() =>
+              sessionStorage.setItem(
+                `scrollPosition_${location.pathname}`,
+                window.pageYOffset
+              )
+            }
+          >
+            <span className="slider__title">
+              {SlideItems[activeId].artistName}
+            </span>{" "}
+          </Link>
 
           <p className="slider__description">
             You can have easy access to every song of{" "}
             {SlideItems[activeId].artistName} by just clicking on the{" "}
-            <span className="slider__description--pink">Listen now</span>{" "}
+            <Link
+              className="slider__link-description"
+              to={`/artists/${SlideItems[activeId].idArtist}`}
+              onClick={() =>
+                sessionStorage.setItem(
+                  `scrollPosition_${location.pathname}`,
+                  window.pageYOffset
+                )
+              }
+            >
+              <span className="slider__description--pink">Listen now</span>
+            </Link>{" "}
             button.
           </p>
 
-          <button className="slider__button-listen-now">
+          <Link
+            className="slider__link-listen-now"
+            to={`/artists/${SlideItems[activeId].idArtist}`}
+            onClick={() =>
+              sessionStorage.setItem(
+                `scrollPosition_${location.pathname}`,
+                window.pageYOffset
+              )
+            }
+          >
             <span className="slider__text-listen-now">Listen Now</span>
-          </button>
+          </Link>
 
           <div className="slider__area-selected">
             {SlideItems.map((item, index) => (
