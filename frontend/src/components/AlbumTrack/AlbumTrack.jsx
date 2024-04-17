@@ -150,33 +150,28 @@ const AlbumTrack = ({
         <button className="album-track__button" onClick={handleClick}>
           {isPlayingSong && (
             <>
-              {isLoading ? (
-                <>
-                  <img
-                    className="album-track__gif-play-track"
-                    src={imgLoadingTrack}
-                    alt="loading"
-                  />
-                  <div className="album-track__darken-layer" />
-                </>
-              ) : (
-                <>
-                  {isPlaying ? (
-                    <img
-                      className="album-track__gif-play-track"
-                      src={gifPlayTrack}
-                      alt="trackplay"
-                    />
-                  ) : (
-                    <img
-                      className="album-track__img-play-track"
-                      src={imgPlayTrack}
-                      alt="trackplay"
-                    />
-                  )}
-                  <div className="album-track__darken-layer" />
-                </>
-              )}
+              <img
+                className="album-track__gif-play-track"
+                src={imgLoadingTrack}
+                alt="loading"
+                style={{ display: isLoading ? "block" : "none" }}
+              />
+
+              <img
+                className="album-track__gif-play-track"
+                src={gifPlayTrack}
+                alt="trackplay"
+                style={{ display: !isLoading && isPlaying ? "block" : "none" }}
+              />
+
+              <img
+                className="album-track__img-play-track"
+                src={imgPlayTrack}
+                alt="trackplay"
+                style={{ display: !isLoading && !isPlaying ? "block" : "none" }}
+              />
+
+              <div className="album-track__darken-layer" />
             </>
           )}
         </button>

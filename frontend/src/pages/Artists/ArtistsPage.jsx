@@ -77,6 +77,9 @@ const ArtistsPage = () => {
   };
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+    });
     fetchData();
   }, [artistId]);
 
@@ -104,11 +107,15 @@ const ArtistsPage = () => {
     if (popularTracks.length) {
       const scrollPosition = sessionStorage.getItem(pageKey);
       if (scrollPosition) {
-        window.scrollTo(0, parseInt(scrollPosition, 10));
+        window.scrollTo({
+          top: parseInt(scrollPosition, 10),
+          behavior: "smooth",
+        });
         sessionStorage.removeItem(pageKey);
       } else {
         window.scrollTo({
           top: 0,
+          behavior: "smooth",
         });
       }
     }
@@ -120,7 +127,7 @@ const ArtistsPage = () => {
         <Loader />
       ) : (
         <>
-          <HeaderArtist artist={artist} htmlContent={artist.biographyArtist} />
+          <HeaderArtist artist={artist} />
 
           <ArtistMusic
             popularTracks={popularTracks ?? []}

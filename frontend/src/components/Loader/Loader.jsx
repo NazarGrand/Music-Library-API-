@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./Loader.scss";
 
 import imgMelodies from "../../assets/images/MelodiesLoading.svg";

@@ -127,33 +127,28 @@ const TrackItem = ({
         <button className="track-item__button" onClick={handleClick}>
           {isPlayingSong && (
             <>
-              {isLoading ? (
-                <>
-                  <img
-                    className="track-item__gif-play-track"
-                    src={imgLoadingTrack}
-                    alt="trackplay"
-                  />
-                  <div className="track-item__darken-layer" />{" "}
-                </>
-              ) : (
-                <>
-                  {isPlaying ? (
-                    <img
-                      className="track-item__gif-play-track"
-                      src={gifPlayTrack}
-                      alt="trackplay"
-                    />
-                  ) : (
-                    <img
-                      className="track-item__img-play-track"
-                      src={imgPlayTrack}
-                      alt="trackplay"
-                    />
-                  )}
-                  <div className="track-item__darken-layer" />
-                </>
-              )}
+              <img
+                className="track-item__gif-play-track"
+                src={imgLoadingTrack}
+                alt="trackplay"
+                style={{ display: isLoading ? "block" : "none" }}
+              />
+
+              <img
+                className="track-item__gif-play-track"
+                src={gifPlayTrack}
+                alt="trackplay"
+                style={{ display: !isLoading && isPlaying ? "block" : "none" }}
+              />
+
+              <img
+                className="track-item__img-play-track"
+                src={imgPlayTrack}
+                alt="trackplay"
+                style={{ display: !isLoading && !isPlaying ? "block" : "none" }}
+              />
+
+              <div className="track-item__darken-layer" />
             </>
           )}
         </button>

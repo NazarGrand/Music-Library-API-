@@ -38,8 +38,7 @@ const MusicCard = ({
   const handleClickButton = () => {
     initializePlaylistContext();
 
-    const playing =
-      currentIndexTrackPlaying === indexTrack - 1 ? !isPlaying : true;
+    const playing = currentIndexTrackPlaying !== indexTrack ? true : !isPlaying;
 
     dispatch({
       type: musicContextActions.setTrack,
@@ -104,33 +103,28 @@ const MusicCard = ({
 
         {isPlayingSong && (
           <>
-            {isLoading ? (
-              <>
-                <img
-                  className="music-card__gif-play-track"
-                  src={imgLoadingTrack}
-                  alt="loading"
-                />
-                <div className="music-card__darken-layer" />
-              </>
-            ) : (
-              <>
-                {isPlaying ? (
-                  <img
-                    className="music-card__gif-play-track"
-                    src={gifPlayTrack}
-                    alt="trackplay"
-                  />
-                ) : (
-                  <img
-                    className="music-card__img-play-track"
-                    src={imgPlayTrack}
-                    alt="trackplay"
-                  />
-                )}
-                <div className="music-card__darken-layer" />
-              </>
-            )}
+            <img
+              className="music-card__gif-play-track"
+              src={imgLoadingTrack}
+              alt="loading"
+              style={{ display: isLoading ? "block" : "none" }}
+            />
+
+            <img
+              className="music-card__gif-play-track"
+              src={gifPlayTrack}
+              alt="trackplay"
+              style={{ display: !isLoading && isPlaying ? "block" : "none" }}
+            />
+
+            <img
+              className="music-card__img-play-track"
+              src={imgPlayTrack}
+              alt="trackplay"
+              style={{ display: !isLoading && !isPlaying ? "block" : "none" }}
+            />
+
+            <div className="music-card__darken-layer" />
           </>
         )}
       </div>

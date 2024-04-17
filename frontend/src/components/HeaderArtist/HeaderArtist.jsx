@@ -2,7 +2,7 @@ import React from "react";
 import "./HeaderArtist.scss";
 import NavAlbums from "../NavAlbums/NavAlbums";
 
-const HeaderArtist = ({ artist, htmlContent }) => {
+const HeaderArtist = ({ artist }) => {
   return (
     <div className="header-artist">
       <NavAlbums />
@@ -14,8 +14,6 @@ const HeaderArtist = ({ artist, htmlContent }) => {
       />
 
       <p className="header-artist__name">{artist.nameArtist}</p>
-
-      {/* <div dangerouslySetInnerHTML={{ __html: htmlContent }} /> */}
     </div>
   );
 };
