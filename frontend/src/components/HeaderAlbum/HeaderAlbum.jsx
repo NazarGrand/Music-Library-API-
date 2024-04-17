@@ -7,7 +7,6 @@ import moment from "moment";
 
 import imgPlayAll from "../../assets/images/PlayAll.svg";
 import imgDot from "../../assets/images/Dot.svg";
-import imgTrendingSongs from "../../assets/images/TrendingMusic.png";
 
 import { DispatchTrackContext } from "../../context/MusicContext";
 import { musicContextActions } from "../../constants/MusicContextActions";
@@ -47,7 +46,7 @@ const HeaderAlbum = ({ albumData, tracks, album }) => {
         type: musicContextActions.setTrack,
         payload: {
           trackName: tracks[0].titleSong,
-          trackAuthor: tracks[0].titleAuthor,
+          trackAuthor: tracks[0].artists.map((item) => item.name).join(", "),
           trackImage: tracks[0].image,
         },
       });
@@ -83,21 +82,26 @@ const HeaderAlbum = ({ albumData, tracks, album }) => {
           <p className="header-album__title-author">{albumData.artistsAlbum}</p>
 
           <p className="header-album__title-count">
-            {album !== "weekly-top" && album !== "trending-songs" && (
-              <>
-                {formatDate(albumData.releaseDate)}
-                <img src={imgDot} alt="dot" />{" "}
-              </>
-            )}
+            {album !== "weekly-top" &&
+              album !== "trending-songs" &&
+              album !== "favourites" && (
+                <>
+                  {formatDate(albumData.releaseDate)}
+                  <img src={imgDot} alt="dot" />{" "}
+                </>
+              )}
             {albumData.countSongs} songs
-            {album !== "weekly-top" && album !== "trending-songs" && (
-              <>
-                <img src={imgDot} alt="dot" />
-                {formatMilliseconds(albumData.durationSongs)}
-              </>
-            )}
+            {album !== "weekly-top" &&
+              album !== "trending-songs" &&
+              album !== "favourites" && (
+                <>
+                  <img src={imgDot} alt="dot" />
+                  {formatMilliseconds(albumData.durationSongs)}
+                </>
+              )}
           </p>
         </div>
+
         <button
           className="header-album__button-play"
           onClick={handlePlayAllClick}

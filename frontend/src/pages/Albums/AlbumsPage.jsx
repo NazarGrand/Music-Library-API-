@@ -40,6 +40,7 @@ const AlbumsPage = () => {
           })),
           releaseDate: item.trackMetadata.releaseDate,
           label: item.trackMetadata.labels[0].name,
+          idTrack: item.trackMetadata.trackUri.split(":")[2],
         }));
 
         setSongs(newTopSongs);
@@ -103,6 +104,7 @@ const AlbumsPage = () => {
           releaseDate: albumInfo.releaseDate,
           label: albumInfo.label,
           duration: item.track.duration.totalMilliseconds,
+          idTrack: item.track.uri.split(":")[2],
         }));
 
         setSongs(albumSongs);

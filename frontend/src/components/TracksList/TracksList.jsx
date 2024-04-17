@@ -7,6 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 import { StateTrackContext } from "../../context/MusicContext";
 import { DispatchPlaylistContext } from "../../context/PlayListContext";
 import { playlistContextActions } from "../../constants/PlaylistContextActions";
+import { StateFavouriteTracksContext } from "../../context/FavouriteTracksContext";
 
 const TracksList = ({ title, trackItems }) => {
   const { trackName, trackAuthor, isPlaying } = useContext(StateTrackContext);
@@ -15,6 +16,10 @@ const TracksList = ({ title, trackItems }) => {
   const dispatch = useContext(DispatchPlaylistContext);
 
   const location = useLocation();
+
+  const { favouriteTracks } = useContext(StateFavouriteTracksContext);
+
+  console.log(favouriteTracks);
 
   const initializePlaylistContext = () => {
     dispatch({
@@ -42,6 +47,7 @@ const TracksList = ({ title, trackItems }) => {
               <li key={index}>
                 <TrackItem
                   indexTrack={index + 1}
+                  idTrack={item.idTrack}
                   image={item.image}
                   titleSong={item.titleSong}
                   artists={item.artists}
@@ -54,6 +60,9 @@ const TracksList = ({ title, trackItems }) => {
                   }
                   isPlaying={isPlaying}
                   initializePlaylistContext={initializePlaylistContext}
+                  isFavouriteTrack={favouriteTracks.find(
+                    (elem) => elem.idTrack === item.idTrack
+                  )}
                 />
               </li>
             ))}

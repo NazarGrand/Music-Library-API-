@@ -39,6 +39,7 @@ const ArtistsPage = () => {
           artistId: artist.uri.split(":")[2],
         })),
         duration: item.track.duration.totalMilliseconds,
+        idTrack: item.track.uri.split(":")[2],
       }));
 
       const albumsArtist = getArtist.discography.popularReleases.items.map(

@@ -3,6 +3,8 @@ import moment from "moment";
 import "./AlbumTrack.scss";
 
 import imgHeart from "../../assets/images/Heart.svg";
+import imgHeartFill from "../../assets/images/HeartFill.svg";
+
 import gifPlayTrack from "../../assets/images/TrackPlay.gif";
 import imgPlayTrack from "../../assets/images/PlayMusic.svg";
 import imgLoadingTrack from "../../assets/images/LoadingTrack.svg";
@@ -18,6 +20,8 @@ import {
   StatePlaylistContext,
 } from "../../context/PlayListContext";
 import { playlistContextActions } from "../../constants/PlaylistContextActions";
+import { DispatchFavouriteTracksContext } from "../../context/FavouriteTracksContext";
+import { favouriteTracksContextActions } from "../../constants/FavouriteTracksContextActions";
 
 function formatMilliseconds(milliseconds) {
   const duration = moment.duration(milliseconds);
@@ -51,6 +55,7 @@ function formatMilliseconds(milliseconds) {
 
 const AlbumTrack = ({
   indexTrack,
+  idTrack,
   image,
   titleSong,
   artists,
@@ -58,12 +63,18 @@ const AlbumTrack = ({
   isPlayingSong,
   isPlaying,
   initializePlaylistContext,
+  isFavouriteTrack,
+  album,
 }) => {
   const { isLoading } = useContext(StateTrackContext);
   const dispatch = useContext(DispatchTrackContext);
 
   const { currentIndexTrackPlaying } = useContext(StatePlaylistContext);
   const dispatchPlaylist = useContext(DispatchPlaylistContext);
+
+  const dispatchFavouriteTracks = useContext(DispatchFavouriteTracksContext);
+
+  const imageHeart = isFavouriteTrack ? imgHeartFill : imgHeart;
 
   const location = useLocation();
 
@@ -93,6 +104,25 @@ const AlbumTrack = ({
         currentIndexTrackPlaying: indexTrack - 1,
       },
     });
+  };
+
+  const handleClickFavourite = () => {
+    if (!isFavouriteTrack) {
+      dispatchFavouriteTracks({
+        type: favouriteTracksContextActions.addFavouriteTrack,
+        payload: {
+          idTrack,
+          image,
+          titleSong,
+          artists,
+        },
+      });
+    } else {
+      dispatchFavouriteTracks({
+        type: favouriteTracksContextActions.deleteFavouriteTrack,
+        payload: idTrack,
+      });
+    }
   };
 
   return (
@@ -135,16 +165,24 @@ const AlbumTrack = ({
           </div>
         </div>
 
-        <div className="album-track__block-time-song">
+        <div
+          className="album-track__block-time-song"
+          style={{ marginRight: album === "favourites" ? "50px" : "0px" }}
+        >
           <div className="album-track__heart">
-            <button className="album-track__button-like">
-              <img src={imgHeart} alt="heart" />
+            <button
+              className="album-track__button-like"
+              onClick={handleClickFavourite}
+            >
+              <img src={imageHeart} alt="heart" />
             </button>
           </div>
 
-          <p className="album-track__duration-song">
-            {formatMilliseconds(durationSong)}
-          </p>
+          {album !== "favourites" && (
+            <p className="album-track__duration-song">
+              {formatMilliseconds(durationSong)}
+            </p>
+          )}
         </div>
 
         <button className="album-track__button" onClick={handleClick}>

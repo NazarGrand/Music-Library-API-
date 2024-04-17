@@ -3,6 +3,8 @@ import dayjs from "dayjs";
 import "./TrackItem.scss";
 
 import imgHeart from "../../assets/images/Heart.svg";
+import imgHeartFill from "../../assets/images/HeartFill.svg";
+
 import gifPlayTrack from "../../assets/images/TrackPlay.gif";
 import imgPlayTrack from "../../assets/images/PlayMusic.svg";
 import imgLoadingTrack from "../../assets/images/LoadingTrack.svg";
@@ -18,6 +20,8 @@ import {
   StatePlaylistContext,
 } from "../../context/PlayListContext";
 import { playlistContextActions } from "../../constants/PlaylistContextActions";
+import { DispatchFavouriteTracksContext } from "../../context/FavouriteTracksContext.jsx";
+import { favouriteTracksContextActions } from "../../constants/FavouriteTracksContextActions.js";
 
 function formatDate(inputDate) {
   const dateObj = dayjs(inputDate);
@@ -27,6 +31,7 @@ function formatDate(inputDate) {
 
 const TrackItem = ({
   indexTrack,
+  idTrack,
   image,
   titleSong,
   artists,
@@ -35,6 +40,7 @@ const TrackItem = ({
   isPlayingSong,
   isPlaying,
   initializePlaylistContext,
+  isFavouriteTrack,
 }) => {
   const { isLoading } = useContext(StateTrackContext);
   const dispatch = useContext(DispatchTrackContext);
@@ -43,6 +49,10 @@ const TrackItem = ({
   const dispatchPlaylist = useContext(DispatchPlaylistContext);
 
   const location = useLocation();
+
+  const dispatchFavouriteTracks = useContext(DispatchFavouriteTracksContext);
+
+  const imageHeart = isFavouriteTrack ? imgHeartFill : imgHeart;
 
   const handleClick = () => {
     if (initializePlaylistContext) {
@@ -72,6 +82,26 @@ const TrackItem = ({
         currentIndexTrackPlaying: indexTrack - 1,
       },
     });
+  };
+
+  const handleClickFavourite = () => {
+    if (!isFavouriteTrack) {
+      dispatchFavouriteTracks({
+        type: favouriteTracksContextActions.addFavouriteTrack,
+        payload: {
+          idTrack,
+          image,
+          titleSong,
+          artists,
+        },
+      });
+    } else {
+      console.log("here");
+      dispatchFavouriteTracks({
+        type: favouriteTracksContextActions.deleteFavouriteTrack,
+        payload: idTrack,
+      });
+    }
   };
 
   return (
@@ -119,8 +149,11 @@ const TrackItem = ({
         <p className="track-item__label">{label}</p>
 
         <div className="track-item__heart">
-          <button className="track-item__button-like">
-            <img src={imgHeart} alt="heart" />
+          <button
+            className="track-item__button-like"
+            onClick={handleClickFavourite}
+          >
+            <img src={imageHeart} alt="heart" />
           </button>
         </div>
 

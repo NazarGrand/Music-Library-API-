@@ -50,14 +50,14 @@ export const LibraryItems = [
 
 export const FavoriteItems = [
   {
-    link: "Your favorites",
+    link: ROUTES.FAVOURITES,
     icon: iconYourFavorites,
-    title: "Your favorites",
+    title: "Favorites",
   },
   {
     link: "Your playlist",
     icon: iconYourPlaylist,
-    title: "Your playlist",
+    title: "Playlist",
   },
   {
     link: "Add playlist",
