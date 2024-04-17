@@ -128,7 +128,13 @@
     top: 0;
   }
 
+  &__link-title {
+    cursor: pointer;
+    color: $white-text-color;
+  }
+
   &__title {
+    display: inline-block;
     margin-top: 30px;
     margin-bottom: 10px;
     @include customText(700, 32px);
@@ -152,11 +158,20 @@
     }
   }
 
-  &__button-listen-now {
-    background-color: transparent;
+  &__link-description {
+    text-decoration: none;
+  }
+
+  &__link-listen-now {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     width: 131px;
     height: 43px;
     margin-top: 30px;
+
+    text-decoration: none;
 
     border: 1px solid $pink-text-color;
     border-radius: 10px;
