@@ -20,10 +20,8 @@ import {
   StatePlaylistContext,
 } from "../../context/PlayListContext";
 import { playlistContextActions } from "../../constants/PlaylistContextActions";
-import {
-  FavouriteTracksContext,
-  useMyContext,
-} from "../../context/FavouriteTracksContext.jsx";
+import { DispatchFavouriteTracksContext } from "../../context/FavouriteTracksContext.jsx";
+import { favouriteTracksContextActions } from "../../constants/FavouriteTracksContextActions.js";
 
 function formatDate(inputDate) {
   const dateObj = dayjs(inputDate);
@@ -50,7 +48,7 @@ const TrackItem = ({
   const { currentIndexTrackPlaying } = useContext(StatePlaylistContext);
   const dispatchPlaylist = useContext(DispatchPlaylistContext);
 
-  const { data, setData } = useMyContext();
+  const dispatchFavouriteTracks = useContext(DispatchFavouriteTracksContext);
 
   const imageHeart = isFavouriteTrack ? imgHeartFill : imgHeart;
 
@@ -86,10 +84,15 @@ const TrackItem = ({
 
   const handleClickFavourite = () => {
     if (!isFavouriteTrack) {
-      setData([...data, trackUri]);
+      dispatchFavouriteTracks({
+        type: favouriteTracksContextActions.addFavouriteTrack,
+        payload: { id: trackUri, image, titleSong, titleAuthor },
+      });
     } else {
-      const newData = data.filter((item) => item !== trackUri);
-      setData(newData);
+      dispatchFavouriteTracks({
+        type: favouriteTracksContextActions.deleteFavouriteTrack,
+        payload: trackUri,
+      });
     }
   };
 

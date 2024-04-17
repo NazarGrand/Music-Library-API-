@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { StateTrackContext } from "../../context/MusicContext";
 import { DispatchPlaylistContext } from "../../context/PlayListContext";
 import { playlistContextActions } from "../../constants/PlaylistContextActions";
-import { useMyContext } from "../../context/FavouriteTracksContext";
+import { StateFavouriteTracksContext } from "../../context/FavouriteTracksContext";
 
 const TracksList = ({ title, trackItems }) => {
   const { trackName, trackAuthor, isPlaying } = useContext(StateTrackContext);
@@ -15,9 +15,7 @@ const TracksList = ({ title, trackItems }) => {
 
   const dispatch = useContext(DispatchPlaylistContext);
 
-  const { data } = useMyContext();
-
-  console.log(data);
+  const { favouriteTracks } = useContext(StateFavouriteTracksContext);
 
   const initializePlaylistContext = () => {
     dispatch({
@@ -57,7 +55,9 @@ const TracksList = ({ title, trackItems }) => {
                   }
                   isPlaying={isPlaying}
                   initializePlaylistContext={initializePlaylistContext}
-                  isFavouriteTrack={data.find((elem) => elem === item.trackUri)}
+                  isFavouriteTrack={favouriteTracks.find(
+                    (elem) => elem.id === item.trackUri
+                  )}
                 />
               </li>
             ))}

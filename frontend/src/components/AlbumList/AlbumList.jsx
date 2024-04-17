@@ -6,7 +6,7 @@ import AlbumTrack from "../AlbumTrack/AlbumTrack";
 import { StateTrackContext } from "../../context/MusicContext";
 import { DispatchPlaylistContext } from "../../context/PlayListContext";
 import { playlistContextActions } from "../../constants/PlaylistContextActions";
-import { useMyContext } from "../../context/FavouriteTracksContext";
+import { StateFavouriteTracksContext } from "../../context/FavouriteTracksContext";
 
 const AlbumList = ({ tracks, album }) => {
   const { trackName, trackAuthor, isPlaying } = useContext(StateTrackContext);
@@ -29,7 +29,7 @@ const AlbumList = ({ tracks, album }) => {
     });
   };
 
-  const { data } = useMyContext();
+  const { favouriteTracks } = useContext(StateFavouriteTracksContext);
 
   return (
     <>
@@ -65,8 +65,8 @@ const AlbumList = ({ tracks, album }) => {
                         trackAuthor === item.titleAuthor
                       }
                       isPlaying={isPlaying}
-                      isFavouriteTrack={data.find(
-                        (elem) => elem === item.trackUri
+                      isFavouriteTrack={favouriteTracks.find(
+                        (elem) => elem.id === item.trackUri
                       )}
                     />
                   </li>
@@ -90,8 +90,8 @@ const AlbumList = ({ tracks, album }) => {
                         trackAuthor === item.titleAuthor
                       }
                       isPlaying={isPlaying}
-                      isFavouriteTrack={data.find(
-                        (elem) => elem === item.trackUri
+                      isFavouriteTrack={favouriteTracks.find(
+                        (elem) => elem.id === item.trackUri
                       )}
                     />
                   </li>
