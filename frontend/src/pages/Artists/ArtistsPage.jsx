@@ -109,13 +109,11 @@ const ArtistsPage = () => {
       if (scrollPosition) {
         window.scrollTo({
           top: parseInt(scrollPosition, 10),
-          behavior: "smooth",
         });
         sessionStorage.removeItem(pageKey);
       } else {
         window.scrollTo({
           top: 0,
-          behavior: "smooth",
         });
       }
     }
