@@ -42,7 +42,6 @@ const HeaderAlbum = ({ albumData, tracks, album }) => {
   const dispatchPlaylist = useContext(DispatchPlaylistContext);
 
   const handlePlayAllClick = () => {
-    console.log(tracks[0]);
     if (tracks.length !== 0) {
       dispatch({
         type: musicContextActions.setTrack,

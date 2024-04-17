@@ -13,6 +13,10 @@ const SidebarNav = ({ menuTitle, menuItems }) => {
       ),
     });
 
+  const handleClick = (link) => {
+    sessionStorage.removeItem(`scrollPosition_${link}`);
+  };
+
   return (
     <div className="sidebar-nav">
       <p className="sidebar-nav__menu">{menuTitle}</p>
@@ -24,6 +28,7 @@ const SidebarNav = ({ menuTitle, menuItems }) => {
               <NavLink
                 className={() => handleIsActive(item.title)}
                 to={item.link}
+                onClick={() => handleClick(item.link)}
               >
                 <div className="sidebar-nav__item-block">
                   <img

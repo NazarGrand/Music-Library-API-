@@ -2,22 +2,25 @@ import React, { useContext } from "react";
 import "./MusicCardsList.scss";
 import MusicCard from "../MusicCard/MusicCard";
 import { StateTrackContext } from "../../context/MusicContext";
-import { Link } from "react-router-dom";
-import { ROUTES } from "../../utils/routes";
+import { Link, useLocation } from "react-router-dom";
 import { DispatchPlaylistContext } from "../../context/PlayListContext";
 import { playlistContextActions } from "../../constants/PlaylistContextActions";
 
-const MusicCardsList = ({ title, cardItems }) => {
+const MusicCardsList = ({ title, cardItems, type }) => {
   const { trackName, trackAuthor, isPlaying } = useContext(StateTrackContext);
 
   const dispatch = useContext(DispatchPlaylistContext);
 
   const album = "weekly-top";
 
+  const location = useLocation();
+
   const initializePlaylistContext = () => {
     dispatch({
       type: playlistContextActions.setPlaylist,
-      payload: { playlistTracks: cardItems },
+      payload: {
+        playlistTracks: cardItems.slice(0, 5),
+      },
     });
   };
 
@@ -29,29 +32,39 @@ const MusicCardsList = ({ title, cardItems }) => {
       {cardItems.length !== 0 ? (
         <div className="music-catalog__block">
           <ul className="music-catalog__list">
-            {cardItems.map((item, index) => (
+            {cardItems.slice(0, 5).map((item, index) => (
               <li key={index}>
                 <MusicCard
                   indexTrack={index}
-                  image={item.image}
-                  titleSong={item.titleSong}
-                  titleAuthor={item.titleAuthor}
+                  musicCard={item}
                   isPlayingSong={
                     trackName === item.titleSong &&
-                    trackAuthor === item.titleAuthor
+                    trackAuthor ===
+                      item.artists.map((item) => item.name).join(", ")
                   }
                   isPlaying={isPlaying}
                   initializePlaylistContext={initializePlaylistContext}
+                  type={type}
                 />
               </li>
             ))}
           </ul>
+          {cardItems.length > 5 && (
+            <Link
+              className="music-catalog__view-all"
+              to={`/albums/${album}`}
+              onClick={() =>
+                sessionStorage.setItem(
+                  `scrollPosition_${location.pathname}`,
+                  window.pageYOffset
+                )
+              }
+            >
+              <div className="music-catalog__button">+</div>
 
-          <Link className="music-catalog__view-all" to={`/albums/${album}`}>
-            <div className="music-catalog__button">+</div>
-
-            <p className="music-catalog__btn-text">View All</p>
-          </Link>
+              <p className="music-catalog__btn-text">View All</p>
+            </Link>
+          )}
         </div>
       ) : (
         <p className="music-catalog__subtitle">No music found</p>

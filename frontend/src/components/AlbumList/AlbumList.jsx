@@ -53,12 +53,13 @@ const AlbumList = ({ tracks, album }) => {
                       indexTrack={index + 1}
                       image={item.image}
                       titleSong={item.titleSong}
-                      titleAuthor={item.titleAuthor}
+                      artists={item.artists}
                       releaseDate={item.releaseDate}
                       label={item.label}
                       isPlayingSong={
                         trackName === item.titleSong &&
-                        trackAuthor === item.titleAuthor
+                        trackAuthor ===
+                          item.artists.map((item) => item.name).join(", ")
                       }
                       isPlaying={isPlaying}
                     />
@@ -73,13 +74,14 @@ const AlbumList = ({ tracks, album }) => {
                       indexTrack={index + 1}
                       image={item.image}
                       titleSong={item.titleSong}
-                      titleAuthor={item.titleAuthor}
+                      artists={item.artists}
                       releaseDate={item.releaseDate}
                       label={item.label}
                       durationSong={item.duration}
                       isPlayingSong={
                         trackName === item.titleSong &&
-                        trackAuthor === item.titleAuthor
+                        trackAuthor ===
+                          item.artists.map((item) => item.name).join(", ")
                       }
                       isPlaying={isPlaying}
                     />

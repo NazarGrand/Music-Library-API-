@@ -6,10 +6,30 @@ import imgHarryStyles from "../assets/images/HarryStyles.png";
 import imgBillieEilish from "../assets/images/BillieEilishArtist.png";
 
 export const ArtistItems = [
-  { image: imgEminem, artistName: "Eminem" },
-  { image: imgImagineDragons, artistName: "Imagine Dragons" },
-  { image: imgAdele, artistName: "Adele" },
-  { image: imgLanaDelRay, artistName: "Lana Del Ray" },
-  { image: imgHarryStyles, artistName: "Harry Styles" },
-  { image: imgBillieEilish, artistName: "Billie Eilish" },
+  {
+    image: imgEminem,
+    artistName: "Eminem",
+    artistId: "7dGJo4pcD2V6oG8kP0tJRR",
+  },
+  {
+    image: imgImagineDragons,
+    artistName: "Imagine Dragons",
+    artistId: "53XhwfbYqKCa1cC15pYq2q",
+  },
+  { image: imgAdele, artistName: "Adele", artistId: "4dpARuHxo51G3z768sgnrY" },
+  {
+    image: imgLanaDelRay,
+    artistName: "Lana Del Ray",
+    artistId: "00FQb4jTyendYWaN8pK0wa",
+  },
+  {
+    image: imgHarryStyles,
+    artistName: "Harry Styles",
+    artistId: "6KImCVD70vtIoJWnq6nGn3",
+  },
+  {
+    image: imgBillieEilish,
+    artistName: "Billie Eilish",
+    artistId: "6qqNVTkY8uBg9cP3Jd7DAH",
+  },
 ];

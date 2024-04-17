@@ -13,18 +13,13 @@ const options = {
 };
 
 export const getTrackUrl = async (titleSong, titleAuthor) => {
-  console.log("blin");
-
   const response = await axios.request({
     ...options,
     params: {
       ...options.params,
       q: `${titleSong} ${titleAuthor}`,
-      //   q: "Believer Imagine Dragons",
     },
   });
-
-  console.log(response.data);
 
   const dataArray = response.data;
 

@@ -12,7 +12,7 @@ import {
   StateTrackContext,
 } from "../../context/MusicContext";
 import { musicContextActions } from "../../constants/MusicContextActions";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   DispatchPlaylistContext,
   StatePlaylistContext,
@@ -29,7 +29,7 @@ const TrackItem = ({
   indexTrack,
   image,
   titleSong,
-  titleAuthor,
+  artists,
   releaseDate,
   label,
   isPlayingSong,
@@ -41,6 +41,8 @@ const TrackItem = ({
 
   const { currentIndexTrackPlaying } = useContext(StatePlaylistContext);
   const dispatchPlaylist = useContext(DispatchPlaylistContext);
+
+  const location = useLocation();
 
   const handleClick = () => {
     if (initializePlaylistContext) {
@@ -59,7 +61,7 @@ const TrackItem = ({
       type: musicContextActions.setTrack,
       payload: {
         trackName: titleSong,
-        trackAuthor: titleAuthor,
+        trackAuthor: artists.map((item) => item.name).join(", "),
         trackImage: image,
       },
     });
@@ -87,9 +89,28 @@ const TrackItem = ({
               <span className="track-item__title-song">{titleSong}</span>
             </button>
 
-            <Link className="track-item__link-author" to="/author">
-              <span className="track-item__title-author">{titleAuthor}</span>
-            </Link>
+            <span className="track-item__block-artists">
+              {artists.map((item, index) => (
+                <div key={index}>
+                  <Link
+                    className="track-item__link-author"
+                    to={`/artists/${item.artistId}`}
+                    onClick={() =>
+                      sessionStorage.setItem(
+                        `scrollPosition_${location.pathname}`,
+                        window.pageYOffset
+                      )
+                    }
+                  >
+                    <span className="track-item__title-author">
+                      {item.name}
+                    </span>
+                  </Link>
+
+                  {index !== artists.length - 1 && ",\u00A0"}
+                </div>
+              ))}
+            </span>
           </div>
         </div>
 
@@ -106,33 +127,28 @@ const TrackItem = ({
         <button className="track-item__button" onClick={handleClick}>
           {isPlayingSong && (
             <>
-              {isLoading ? (
-                <>
-                  <img
-                    className="track-item__gif-play-track"
-                    src={imgLoadingTrack}
-                    alt="trackplay"
-                  />
-                  <div className="track-item__darken-layer" />{" "}
-                </>
-              ) : (
-                <>
-                  {isPlaying ? (
-                    <img
-                      className="track-item__gif-play-track"
-                      src={gifPlayTrack}
-                      alt="trackplay"
-                    />
-                  ) : (
-                    <img
-                      className="track-item__img-play-track"
-                      src={imgPlayTrack}
-                      alt="trackplay"
-                    />
-                  )}
-                  <div className="track-item__darken-layer" />
-                </>
-              )}
+              <img
+                className="track-item__gif-play-track"
+                src={imgLoadingTrack}
+                alt="trackplay"
+                style={{ display: isLoading ? "block" : "none" }}
+              />
+
+              <img
+                className="track-item__gif-play-track"
+                src={gifPlayTrack}
+                alt="trackplay"
+                style={{ display: !isLoading && isPlaying ? "block" : "none" }}
+              />
+
+              <img
+                className="track-item__img-play-track"
+                src={imgPlayTrack}
+                alt="trackplay"
+                style={{ display: !isLoading && !isPlaying ? "block" : "none" }}
+              />
+
+              <div className="track-item__darken-layer" />
             </>
           )}
         </button>

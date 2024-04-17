@@ -2,6 +2,5 @@ export const ROUTES = {
   HOME: "/home",
   DISCOVER: "/discover",
   ALBUMS: "/albums/:album",
-  ARTISTS: "/artists",
-  ARTIST: "/artist/:id",
+  ARTISTS: "/artists/:artistId",
 };
