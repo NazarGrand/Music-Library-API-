@@ -14,7 +14,7 @@ import {
   StateTrackContext,
 } from "../../context/MusicContext";
 import { musicContextActions } from "../../constants/MusicContextActions";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   DispatchPlaylistContext,
   StatePlaylistContext,
@@ -55,14 +55,16 @@ function formatMilliseconds(milliseconds) {
 
 const AlbumTrack = ({
   indexTrack,
-  trackUri,
+  idTrack,
   image,
   titleSong,
-  titleAuthor,
+  artists,
   durationSong,
   isPlayingSong,
   isPlaying,
+  initializePlaylistContext,
   isFavouriteTrack,
+  album,
 }) => {
   const { isLoading } = useContext(StateTrackContext);
   const dispatch = useContext(DispatchTrackContext);
@@ -74,22 +76,26 @@ const AlbumTrack = ({
 
   const imageHeart = isFavouriteTrack ? imgHeartFill : imgHeart;
 
+  const location = useLocation();
+
   const handleClick = () => {
+    if (initializePlaylistContext) initializePlaylistContext();
+
     const playing =
       currentIndexTrackPlaying === indexTrack - 1 ? !isPlaying : true;
-
-    dispatch({
-      type: musicContextActions.setIsPlaying,
-      payload: { isPlaying: playing },
-    });
 
     dispatch({
       type: musicContextActions.setTrack,
       payload: {
         trackName: titleSong,
-        trackAuthor: titleAuthor,
+        trackAuthor: artists.map((item) => item.name).join(", "),
         trackImage: image,
       },
+    });
+
+    dispatch({
+      type: musicContextActions.setIsPlaying,
+      payload: { isPlaying: playing },
     });
 
     dispatchPlaylist({
@@ -104,12 +110,17 @@ const AlbumTrack = ({
     if (!isFavouriteTrack) {
       dispatchFavouriteTracks({
         type: favouriteTracksContextActions.addFavouriteTrack,
-        payload: { id: trackUri, image, titleSong, titleAuthor },
+        payload: {
+          idTrack,
+          image,
+          titleSong,
+          artists,
+        },
       });
     } else {
       dispatchFavouriteTracks({
         type: favouriteTracksContextActions.deleteFavouriteTrack,
-        payload: trackUri,
+        payload: idTrack,
       });
     }
   };
@@ -129,9 +140,28 @@ const AlbumTrack = ({
               <span className="album-track__title-song">{titleSong}</span>
             </button>
 
-            <Link className="album-track__link-author" to="/author">
-              <span className="album-track__title-author">{titleAuthor}</span>
-            </Link>
+            <span className="album-track__block-artists">
+              {artists.map((item, index) => (
+                <div key={index}>
+                  <Link
+                    className="album-track__link-author"
+                    to={`/artists/${item.artistId}`}
+                    onClick={() =>
+                      sessionStorage.setItem(
+                        `scrollPosition_${location.pathname}`,
+                        window.pageYOffset
+                      )
+                    }
+                  >
+                    <span className="album-track__title-author">
+                      {item.name}
+                    </span>
+                  </Link>
+
+                  {index !== artists.length - 1 && ",\u00A0"}
+                </div>
+              ))}
+            </span>
           </div>
         </div>
 
@@ -145,41 +175,38 @@ const AlbumTrack = ({
             </button>
           </div>
 
-          <p className="album-track__duration-song">
-            {formatMilliseconds(durationSong)}
-          </p>
+          {album !== "favourites" && (
+            <p className="album-track__duration-song">
+              {formatMilliseconds(durationSong)}
+            </p>
+          )}
         </div>
 
         <button className="album-track__button" onClick={handleClick}>
           {isPlayingSong && (
             <>
-              {isLoading ? (
-                <>
-                  <img
-                    className="album-track__gif-play-track"
-                    src={imgLoadingTrack}
-                    alt="loading"
-                  />
-                  <div className="album-track__darken-layer" />
-                </>
-              ) : (
-                <>
-                  {isPlaying ? (
-                    <img
-                      className="album-track__gif-play-track"
-                      src={gifPlayTrack}
-                      alt="trackplay"
-                    />
-                  ) : (
-                    <img
-                      className="album-track__img-play-track"
-                      src={imgPlayTrack}
-                      alt="trackplay"
-                    />
-                  )}
-                  <div className="album-track__darken-layer" />
-                </>
-              )}
+              <img
+                className="album-track__gif-play-track"
+                src={imgLoadingTrack}
+                alt="loading"
+                style={{ display: isLoading ? "block" : "none" }}
+              />
+
+              <img
+                className="album-track__gif-play-track"
+                src={gifPlayTrack}
+                alt="trackplay"
+                style={{ display: !isLoading && isPlaying ? "block" : "none" }}
+              />
+
+              <img
+                className="album-track__img-play-track"
+                src={imgPlayTrack}
+                alt="trackplay"
+                style={{ display: !isLoading && !isPlaying ? "block" : "none" }}
+              />
+
+              <div className="album-track__darken-layer" />
             </>
           )}
         </button>

@@ -43,9 +43,11 @@ const AlbumList = ({ tracks, album }) => {
                 <span className="album-list__labels">Label</span>
               </div>
             ) : (
-              <div className="album-list__time">
-                <span className="album-list__title-time">Time</span>
-              </div>
+              album !== "favourites" && (
+                <div className="album-list__time">
+                  <span className="album-list__title-time">Time</span>
+                </div>
+              )
             )}
 
             {album === "weekly-top" || album === "trending-songs" ? (
@@ -54,19 +56,20 @@ const AlbumList = ({ tracks, album }) => {
                   <li key={index}>
                     <TrackItem
                       indexTrack={index + 1}
-                      trackUri={item.trackUri}
+                      idTrack={item.idTrack}
                       image={item.image}
                       titleSong={item.titleSong}
-                      titleAuthor={item.titleAuthor}
+                      artists={item.artists}
                       releaseDate={item.releaseDate}
                       label={item.label}
                       isPlayingSong={
                         trackName === item.titleSong &&
-                        trackAuthor === item.titleAuthor
+                        trackAuthor ===
+                          item.artists.map((item) => item.name).join(", ")
                       }
                       isPlaying={isPlaying}
                       isFavouriteTrack={favouriteTracks.find(
-                        (elem) => elem.id === item.trackUri
+                        (elem) => elem.idTrack === item.idTrack
                       )}
                     />
                   </li>
@@ -78,21 +81,23 @@ const AlbumList = ({ tracks, album }) => {
                   <li key={index}>
                     <AlbumTrack
                       indexTrack={index + 1}
-                      trackUri={item.trackUri}
+                      idTrack={item.idTrack}
                       image={item.image}
                       titleSong={item.titleSong}
-                      titleAuthor={item.titleAuthor}
+                      artists={item.artists}
                       releaseDate={item.releaseDate}
                       label={item.label}
                       durationSong={item.duration}
                       isPlayingSong={
                         trackName === item.titleSong &&
-                        trackAuthor === item.titleAuthor
+                        trackAuthor ===
+                          item.artists.map((item) => item.name).join(", ")
                       }
                       isPlaying={isPlaying}
                       isFavouriteTrack={favouriteTracks.find(
-                        (elem) => elem.id === item.trackUri
+                        (elem) => elem.idTrack === item.idTrack
                       )}
+                      album={album}
                     />
                   </li>
                 ))}

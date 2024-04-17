@@ -43,12 +43,25 @@
     color: $white-text-color;
     font-weight: 300;
     font-size: 12px;
-    margin-top: 3px;
-    max-width: 125px;
+
     opacity: 0.8;
+  }
+
+  &__block-artists {
+    display: flex;
+    max-width: 125px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  &__title-artist {
+    display: inline-block;
+    padding-top: 3px;
+  }
+
+  &__year-song {
+    margin-top: 4px;
   }
 
   &__block {

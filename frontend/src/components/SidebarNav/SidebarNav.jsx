@@ -6,12 +6,17 @@ import "./SidebarNav.scss";
 const SidebarNav = ({ menuTitle, menuItems }) => {
   const location = useLocation();
 
-  const handleIsActive = (title) =>
-    classnames("sidebar-nav__item-link", {
+  const handleIsActive = (title) => {
+    return classnames("sidebar-nav__item-link", {
       "sidebar-nav__item-link--active-link": location.pathname.includes(
         title.toLowerCase()
       ),
     });
+  };
+
+  const handleClick = (link) => {
+    sessionStorage.removeItem(`scrollPosition_${link}`);
+  };
 
   return (
     <div className="sidebar-nav">
@@ -24,6 +29,7 @@ const SidebarNav = ({ menuTitle, menuItems }) => {
               <NavLink
                 className={() => handleIsActive(item.title)}
                 to={item.link}
+                onClick={() => handleClick(item.link)}
               >
                 <div className="sidebar-nav__item-block">
                   <img

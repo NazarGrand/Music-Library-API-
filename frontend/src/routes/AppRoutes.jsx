@@ -6,6 +6,7 @@ import DiscoverPage from "../pages/Discover/DiscoverPage";
 import ArtistsPage from "../pages/Artists/ArtistsPage";
 import ErrorPage from "../pages/Error/ErrorPage";
 import AlbumsPage from "../pages/Albums/AlbumsPage";
+import FavouriteTracksPage from "../pages/FavouriteTracksPage/FavouriteTracksPage";
 
 const AppRoutes = () => (
   <Routes>
@@ -14,6 +15,7 @@ const AppRoutes = () => (
     <Route path={ROUTES.DISCOVER} element={<DiscoverPage />} />
     <Route path={ROUTES.ARTISTS} element={<ArtistsPage />} />
     <Route path={ROUTES.ALBUMS} element={<AlbumsPage />} />
+    <Route path={ROUTES.FAVOURITES} element={<FavouriteTracksPage />} />
     <Route path="*" element={<ErrorPage />} />
   </Routes>
 );

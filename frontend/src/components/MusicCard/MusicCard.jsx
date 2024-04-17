@@ -21,30 +21,30 @@ import { playlistContextActions } from "../../constants/PlaylistContextActions";
 
 const MusicCard = ({
   indexTrack,
-  image,
-  titleSong,
-  titleAuthor,
+  musicCard,
   isPlayingSong,
   isPlaying,
   initializePlaylistContext,
+  type,
 }) => {
+  const { image, titleSong, artists, yearSong } = musicCard;
+
   const { isLoading } = useContext(StateTrackContext);
   const dispatch = useContext(DispatchTrackContext);
 
   const { currentIndexTrackPlaying } = useContext(StatePlaylistContext);
   const dispatchPlaylist = useContext(DispatchPlaylistContext);
 
-  const handleClick = () => {
+  const handleClickButton = () => {
     initializePlaylistContext();
 
-    const playing =
-      currentIndexTrackPlaying === indexTrack - 1 ? !isPlaying : true;
+    const playing = currentIndexTrackPlaying !== indexTrack ? true : !isPlaying;
 
     dispatch({
       type: musicContextActions.setTrack,
       payload: {
         trackName: titleSong,
-        trackAuthor: titleAuthor,
+        trackAuthor: artists.map((item) => item.name).join(", "),
         trackImage: image,
       },
     });
@@ -62,50 +62,69 @@ const MusicCard = ({
     });
   };
 
+  const handleClickLink = (event) => {
+    event.stopPropagation();
+  };
+
   return (
-    <button className="music-card__button" onClick={handleClick}>
+    <button className="music-card__button" onClick={handleClickButton}>
       <div className="music-card">
         <img className="music-card__image" src={image} alt="musicimg" />
 
         <p className="music-card__title-song">{titleSong}</p>
 
         <div className="music-card__block">
-          <Link className="music-card__link-author" to="/author">
-            <span>{titleAuthor}</span>
-          </Link>
+          {type !== "artist-songs" && (
+            <span className="music-card__block-artists">
+              {artists.map((item, index) => (
+                <div key={index}>
+                  <Link
+                    className="music-card__link-author"
+                    to={`/artists/${item.artistId}`}
+                    onClick={handleClickLink}
+                  >
+                    <span className="music-card__title-artist">
+                      {item.name}
+                    </span>
+                  </Link>
+
+                  {index !== artists.length - 1 && ",\u00A0"}
+                </div>
+              ))}
+            </span>
+          )}
+
+          {yearSong && (
+            <span className="music-card__year-song">{yearSong}</span>
+          )}
 
           <img className="music-card__notes" src={imgNotes} alt="notes" />
         </div>
 
         {isPlayingSong && (
           <>
-            {isLoading ? (
-              <>
-                <img
-                  className="music-card__gif-play-track"
-                  src={imgLoadingTrack}
-                  alt="loading"
-                />
-                <div className="music-card__darken-layer" />
-              </>
-            ) : (
-              <>
-                {isPlaying ? (
-                  <img
-                    className="music-card__gif-play-track"
-                    src={gifPlayTrack}
-                    alt="trackplay"
-                  />
-                ) : (
-                  <img
-                    className="music-card__img-play-track"
-                    src={imgPlayTrack}
-                    alt="trackplay"
-                  />
-                )}
-                <div className="music-card__darken-layer" />
-              </>
-            )}
+            <img
+              className="music-card__gif-play-track"
+              src={imgLoadingTrack}
+              alt="loading"
+              style={{ display: isLoading ? "block" : "none" }}
+            />
+
+            <img
+              className="music-card__gif-play-track"
+              src={gifPlayTrack}
+              alt="trackplay"
+              style={{ display: !isLoading && isPlaying ? "block" : "none" }}
+            />
+
+            <img
+              className="music-card__img-play-track"
+              src={imgPlayTrack}
+              alt="trackplay"
+              style={{ display: !isLoading && !isPlaying ? "block" : "none" }}
+            />
+
+            <div className="music-card__darken-layer" />
           </>
         )}
       </div>

@@ -19,7 +19,7 @@ function reducer(state, action) {
 
     case favouriteTracksContextActions.deleteFavouriteTrack: {
       const newFavouriteTracks = state.favouriteTracks.filter(
-        (item) => item.id !== action.payload
+        (item) => item.idTrack !== action.payload
       );
 
       return {

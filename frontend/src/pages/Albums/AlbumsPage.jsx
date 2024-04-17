@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import _ from "lodash";
 import * as musicService from "../../services/MusicService.js";
 import * as albumTracksService from "../../services/AlbumTracksService.js";
@@ -20,6 +20,9 @@ const AlbumsPage = () => {
   const [loading, setLoading] = useState(true);
 
   const dispatch = useContext(DispatchPlaylistContext);
+  const location = useLocation();
+
+  const pageKey = `scrollPosition_${location.pathname}`;
 
   const fetchData = async () => {
     try {
@@ -31,12 +34,13 @@ const AlbumsPage = () => {
         const newTopSongs = weeklyTopSongs.map((item) => ({
           image: item.trackMetadata.displayImageUri,
           titleSong: item.trackMetadata.trackName,
-          titleAuthor: item.trackMetadata.artists
-            .map((artist) => artist.name)
-            .join(", "),
+          artists: item.trackMetadata.artists.map((artist) => ({
+            name: artist.name,
+            artistId: artist.spotifyUri.split(":")[2],
+          })),
           releaseDate: item.trackMetadata.releaseDate,
           label: item.trackMetadata.labels[0].name,
-          trackUri: item.trackMetadata.trackUri.split(":")[2],
+          idTrack: item.trackMetadata.trackUri.split(":")[2],
         }));
 
         setSongs(newTopSongs);
@@ -53,8 +57,8 @@ const AlbumsPage = () => {
           imageAlbum: imgTrendingMusic,
           artistsAlbum:
             newTopSongs
-              .map((item) => item.titleAuthor)
-              .slice(0, 4)
+              .map((item) => item.artists.map((item) => item.name).join(", "))
+              .slice(0, 3)
               .join(", ") + " and ...",
           countSongs: newTopSongs.length,
         };
@@ -93,13 +97,14 @@ const AlbumsPage = () => {
         const albumSongs = albumTracks.map((item) => ({
           image: albumInfo.imageAlbum,
           titleSong: item.track.name,
-          titleAuthor: item.track.artists.items
-            .map((artist) => artist.profile.name)
-            .join(", "),
+          artists: item.track.artists.items.map((artist) => ({
+            name: artist.profile.name,
+            artistId: artist.uri.split(":")[2],
+          })),
           releaseDate: albumInfo.releaseDate,
           label: albumInfo.label,
           duration: item.track.duration.totalMilliseconds,
-          trackUri: item.track.uri.split(":")[2],
+          idTrack: item.track.uri.split(":")[2],
         }));
 
         setSongs(albumSongs);
@@ -122,11 +127,39 @@ const AlbumsPage = () => {
     fetchData();
   }, []);
 
+  const intervalRef = useRef(null);
+
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-    });
-  }, []);
+    if (loading) {
+      intervalRef.current = setInterval(
+        () =>
+          window.scrollTo({
+            top: 0,
+          }),
+        10
+      );
+    } else {
+      clearInterval(intervalRef.current);
+    }
+
+    return () => {
+      clearInterval(intervalRef.current);
+    };
+  }, [loading]);
+
+  useEffect(() => {
+    if (songs.length) {
+      const scrollPosition = sessionStorage.getItem(pageKey);
+      if (scrollPosition) {
+        window.scrollTo(0, parseInt(scrollPosition, 10));
+        sessionStorage.removeItem(pageKey);
+      } else {
+        window.scrollTo({
+          top: 0,
+        });
+      }
+    }
+  }, [songs]);
 
   return (
     <>

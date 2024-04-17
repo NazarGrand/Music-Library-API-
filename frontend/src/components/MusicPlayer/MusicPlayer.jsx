@@ -10,8 +10,10 @@ import imgPlay from "../../assets/images/PlayMusic.svg";
 import imgPause from "../../assets/images/Pause.svg";
 import imgNextSong from "../../assets/images/NextSong.svg";
 import imgRepeat from "../../assets/images/Repeat.svg";
+
 import imgVolumeOn from "../../assets/images/Volume.svg";
 import imgVolumeOff from "../../assets/images/VolumeOff.svg";
+
 import imgRepeatOnce from "../../assets/images/Repeat-once.svg";
 
 import {
@@ -116,6 +118,7 @@ const MusicPlayer = () => {
   useEffect(() => {
     if (isPlaying) {
       if (isEndingSong && isInfinite) {
+        setIsEndingSong(false);
         setProgressSong({ ...progressSong, progress: 0 });
         audioElem.current.currentTime = 0;
         audioElem.current.play();
@@ -336,11 +339,14 @@ const MusicPlayer = () => {
         type: playlistContextActions.setCurrentIndexTrackPlaying,
         payload: { currentIndexTrackPlaying: newCurrentIndexTrackPlaying },
       });
+
       dispatch({
         type: musicContextActions.setTrack,
         payload: {
           trackName: playlistTracks[newCurrentIndexTrackPlaying].titleSong,
-          trackAuthor: playlistTracks[newCurrentIndexTrackPlaying].titleAuthor,
+          trackAuthor: playlistTracks[newCurrentIndexTrackPlaying].artists
+            .map((item) => item.name)
+            .join(", "),
           trackImage: playlistTracks[newCurrentIndexTrackPlaying].image,
         },
       });
@@ -364,11 +370,14 @@ const MusicPlayer = () => {
       type: playlistContextActions.setCurrentIndexTrackPlaying,
       payload: { currentIndexTrackPlaying: newCurrentIndexTrackPlaying },
     });
+
     dispatch({
       type: musicContextActions.setTrack,
       payload: {
         trackName: playlistTracks[newCurrentIndexTrackPlaying].titleSong,
-        trackAuthor: playlistTracks[newCurrentIndexTrackPlaying].titleAuthor,
+        trackAuthor: playlistTracks[newCurrentIndexTrackPlaying].artists
+          .map((item) => item.name)
+          .join(", "),
         trackImage: playlistTracks[newCurrentIndexTrackPlaying].image,
       },
     });
@@ -501,6 +510,7 @@ const MusicPlayer = () => {
                 </div>
               </div>
             )}
+
             <button
               className="player__button-volume"
               onClick={handleClickVolume}
@@ -511,7 +521,14 @@ const MusicPlayer = () => {
             >
               <img
                 className="player__img-volume"
-                src={imgVolume}
+                src={imgVolumeOn}
+                alt="volume"
+                style={{ display: isVolume ? "block" : "none" }}
+              />
+              <img
+                className="player__img-volume"
+                src={imgVolumeOff}
+                style={{ display: !isVolume ? "block" : "none" }}
                 alt="volume"
               />
             </button>
