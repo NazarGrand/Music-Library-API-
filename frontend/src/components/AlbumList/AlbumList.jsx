@@ -6,6 +6,7 @@ import AlbumTrack from "../AlbumTrack/AlbumTrack";
 import { StateTrackContext } from "../../context/MusicContext";
 import { DispatchPlaylistContext } from "../../context/PlayListContext";
 import { playlistContextActions } from "../../constants/PlaylistContextActions";
+import { useMyContext } from "../../context/FavouriteTracksContext";
 
 const AlbumList = ({ tracks, album }) => {
   const { trackName, trackAuthor, isPlaying } = useContext(StateTrackContext);
@@ -27,6 +28,8 @@ const AlbumList = ({ tracks, album }) => {
       },
     });
   };
+
+  const { data } = useMyContext();
 
   return (
     <>
@@ -51,6 +54,7 @@ const AlbumList = ({ tracks, album }) => {
                   <li key={index}>
                     <TrackItem
                       indexTrack={index + 1}
+                      trackUri={item.trackUri}
                       image={item.image}
                       titleSong={item.titleSong}
                       titleAuthor={item.titleAuthor}
@@ -61,6 +65,9 @@ const AlbumList = ({ tracks, album }) => {
                         trackAuthor === item.titleAuthor
                       }
                       isPlaying={isPlaying}
+                      isFavouriteTrack={data.find(
+                        (elem) => elem === item.trackUri
+                      )}
                     />
                   </li>
                 ))}
@@ -71,6 +78,7 @@ const AlbumList = ({ tracks, album }) => {
                   <li key={index}>
                     <AlbumTrack
                       indexTrack={index + 1}
+                      trackUri={item.trackUri}
                       image={item.image}
                       titleSong={item.titleSong}
                       titleAuthor={item.titleAuthor}
@@ -82,6 +90,9 @@ const AlbumList = ({ tracks, album }) => {
                         trackAuthor === item.titleAuthor
                       }
                       isPlaying={isPlaying}
+                      isFavouriteTrack={data.find(
+                        (elem) => elem === item.trackUri
+                      )}
                     />
                   </li>
                 ))}

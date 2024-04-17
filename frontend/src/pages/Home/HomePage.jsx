@@ -26,6 +26,7 @@ const HomePage = () => {
           .join(", "),
         releaseDate: item.trackMetadata.releaseDate,
         label: item.trackMetadata.labels[0].name,
+        trackUri: item.trackMetadata.trackUri.split(":")[2],
       }));
 
       setTopSongs(newTopSongs);

@@ -5,13 +5,16 @@ import "./index.scss";
 import App from "./App";
 import { MusicProvider } from "./context/MusicContext";
 import { PlaylistProvider } from "./context/PlayListContext";
+import { FavouriteTracksProvider } from "./context/FavouriteTracksContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <MusicProvider>
       <PlaylistProvider>
-        <App />
+        <FavouriteTracksProvider>
+          <App />
+        </FavouriteTracksProvider>
       </PlaylistProvider>
     </MusicProvider>
   </BrowserRouter>

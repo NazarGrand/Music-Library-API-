@@ -3,6 +3,8 @@ import dayjs from "dayjs";
 import "./TrackItem.scss";
 
 import imgHeart from "../../assets/images/Heart.svg";
+import imgHeartFill from "../../assets/images/HeartFill.svg";
+
 import gifPlayTrack from "../../assets/images/TrackPlay.gif";
 import imgPlayTrack from "../../assets/images/PlayMusic.svg";
 import imgLoadingTrack from "../../assets/images/LoadingTrack.svg";
@@ -18,6 +20,10 @@ import {
   StatePlaylistContext,
 } from "../../context/PlayListContext";
 import { playlistContextActions } from "../../constants/PlaylistContextActions";
+import {
+  FavouriteTracksContext,
+  useMyContext,
+} from "../../context/FavouriteTracksContext.jsx";
 
 function formatDate(inputDate) {
   const dateObj = dayjs(inputDate);
@@ -27,6 +33,7 @@ function formatDate(inputDate) {
 
 const TrackItem = ({
   indexTrack,
+  trackUri,
   image,
   titleSong,
   titleAuthor,
@@ -35,12 +42,17 @@ const TrackItem = ({
   isPlayingSong,
   isPlaying,
   initializePlaylistContext,
+  isFavouriteTrack,
 }) => {
   const { isLoading } = useContext(StateTrackContext);
   const dispatch = useContext(DispatchTrackContext);
 
   const { currentIndexTrackPlaying } = useContext(StatePlaylistContext);
   const dispatchPlaylist = useContext(DispatchPlaylistContext);
+
+  const { data, setData } = useMyContext();
+
+  const imageHeart = isFavouriteTrack ? imgHeartFill : imgHeart;
 
   const handleClick = () => {
     if (initializePlaylistContext) {
@@ -72,6 +84,15 @@ const TrackItem = ({
     });
   };
 
+  const handleClickFavourite = () => {
+    if (!isFavouriteTrack) {
+      setData([...data, trackUri]);
+    } else {
+      const newData = data.filter((item) => item !== trackUri);
+      setData(newData);
+    }
+  };
+
   return (
     <div className="track-item">
       <span className="track-item__index-track">#{indexTrack}</span>
@@ -98,8 +119,11 @@ const TrackItem = ({
         <p className="track-item__label">{label}</p>
 
         <div className="track-item__heart">
-          <button className="track-item__button-like">
-            <img src={imgHeart} alt="heart" />
+          <button
+            className="track-item__button-like"
+            onClick={handleClickFavourite}
+          >
+            <img src={imageHeart} alt="heart" />
           </button>
         </div>
 
