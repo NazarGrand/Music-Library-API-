@@ -165,7 +165,10 @@ const AlbumTrack = ({
           </div>
         </div>
 
-        <div className="album-track__block-time-song">
+        <div
+          className="album-track__block-time-song"
+          style={{ marginRight: album === "favourites" ? "50px" : "0px" }}
+        >
           <div className="album-track__heart">
             <button
               className="album-track__button-like"

@@ -28,7 +28,7 @@ const FavouriteTracksPage = () => {
     dispatch({
       type: playlistContextActions.setPlaylist,
       payload: {
-        playlistTracks: favouriteTracks,
+        playlistTracks: favouriteTracks.slice(0, 20),
       },
     });
   };
