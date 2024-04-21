@@ -19,8 +19,6 @@ const TracksList = ({ title, trackItems }) => {
 
   const { favouriteTracks } = useContext(StateFavouriteTracksContext);
 
-  console.log(favouriteTracks);
-
   const initializePlaylistContext = () => {
     dispatch({
       type: playlistContextActions.setPlaylist,
