@@ -201,10 +201,11 @@ const MusicPlayer = () => {
       setIsEndingSong(newIsEndingSong);
 
       if (newIsEndingSong && !isInfinite) {
-        dispatch({
-          type: musicContextActions.setIsPlaying,
-          payload: { isPlaying: false },
-        });
+        // dispatch({
+        //   type: musicContextActions.setIsPlaying,
+        //   payload: { isPlaying: false },
+        // });
+        handleClickNextTrack();
       }
     }
   };
