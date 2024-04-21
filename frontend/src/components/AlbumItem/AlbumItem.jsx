@@ -11,11 +11,13 @@ const AlbumItem = ({ albumItem, type }) => {
 
   const location = useLocation();
 
+  const path = type === "album" ? `/albums/${albumId}` : "#";
+
   return (
     <div className="album-item">
       <Link
         className="album-item__link"
-        to={`/albums/${albumId}`}
+        to={path}
         onClick={() =>
           sessionStorage.setItem(
             `scrollPosition_${location.pathname}`,

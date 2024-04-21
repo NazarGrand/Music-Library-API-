@@ -15,6 +15,8 @@ const MusicCardsList = ({ title, cardItems, type }) => {
 
   const location = useLocation();
 
+  const path = type === "weekly-top" ? `/albums/${album}` : "#";
+
   const initializePlaylistContext = () => {
     dispatch({
       type: playlistContextActions.setPlaylist,
@@ -52,7 +54,7 @@ const MusicCardsList = ({ title, cardItems, type }) => {
           {cardItems.length > 5 && (
             <Link
               className="music-catalog__view-all"
-              to={`/albums/${album}`}
+              to={path}
               onClick={() =>
                 sessionStorage.setItem(
                   `scrollPosition_${location.pathname}`,

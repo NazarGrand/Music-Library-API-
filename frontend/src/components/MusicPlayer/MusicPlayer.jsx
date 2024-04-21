@@ -9,11 +9,11 @@ import imgPrevSong from "../../assets/images/PreviousSong.svg";
 import imgPlay from "../../assets/images/PlayMusic.svg";
 import imgPause from "../../assets/images/Pause.svg";
 import imgNextSong from "../../assets/images/NextSong.svg";
-import imgRepeat from "../../assets/images/Repeat.svg";
 
 import imgVolumeOn from "../../assets/images/Volume.svg";
 import imgVolumeOff from "../../assets/images/VolumeOff.svg";
 
+import imgRepeat from "../../assets/images/Repeat.svg";
 import imgRepeatOnce from "../../assets/images/Repeat-once.svg";
 
 import {
@@ -260,10 +260,6 @@ const MusicPlayer = () => {
     }
   };
 
-  const iconRepeat = !isInfinite ? imgRepeat : imgRepeatOnce;
-
-  const imgVolume = isVolume ? imgVolumeOn : imgVolumeOff;
-
   const handleClickVolume = () => {
     const newIsVolume = !isVolume;
     if (!newIsVolume && trackVolume !== 0) {
@@ -406,11 +402,19 @@ const MusicPlayer = () => {
         </button>
 
         {isPlaying ? (
-          <button className="player__button-pause-play" onClick={PlayPause}>
+          <button
+            className="player__button-pause-play"
+            onClick={PlayPause}
+            disabled={isLoading}
+          >
             <img className="player__img-icon" src={imgPause} alt="pause" />
           </button>
         ) : (
-          <button className="player__button-pause-play" onClick={PlayPause}>
+          <button
+            className="player__button-pause-play"
+            onClick={PlayPause}
+            disabled={isLoading}
+          >
             <img className="player__img-icon" src={imgPlay} alt="pause" />
           </button>
         )}
@@ -541,7 +545,19 @@ const MusicPlayer = () => {
           className="player__button-repeat"
           onClick={() => setIsInfinite(!isInfinite)}
         >
-          <img className="player__img-icon" src={iconRepeat} alt="repeat" />
+          <img
+            className="player__img-icon"
+            src={imgRepeat}
+            alt="repeat"
+            style={{ display: !isInfinite ? "block" : "none" }}
+          />
+
+          <img
+            className="player__img-icon"
+            src={imgRepeatOnce}
+            alt="repeat"
+            style={{ display: isInfinite ? "block" : "none" }}
+          />
         </button>
       )}
     </div>
