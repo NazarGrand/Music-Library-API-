@@ -27,7 +27,7 @@ const Nav = () => {
           </Link>
         </li>
         <li className="nav__item">
-          <Link className="nav__item-link" to="/">
+          <Link className="nav__item-link" to="#">
             Premium
           </Link>
         </li>
